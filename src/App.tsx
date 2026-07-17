@@ -136,50 +136,44 @@ export default function Home() {
 
   return (
     <main className="app-shell">
-      <aside className="sidebar">
-        <div className="brand-lockup"><div className="brand-mark">S</div><span>SARTORO</span></div>
-        <nav className="main-nav" aria-label="Primary navigation">
-          <button title="Home"><Icon>⌂</Icon><span>Home</span></button>
-          <button title="Orders"><Icon>▣</Icon><span>Orders</span></button>
-          <button title="Customers"><Icon>♙</Icon><span>Customers</span></button>
-          <button className="active" title="Analysis"><Icon>◉</Icon><span>Analysis</span></button>
-          <button title="Garments"><Icon>♧</Icon><span>Garments</span></button>
-          <button title="Reports"><Icon>▤</Icon><span>Reports</span></button>
-          <button title="OMA Brain"><Icon>✣</Icon><span>Brain</span></button>
-        </nav>
-        <div className="nav-bottom">
-          <button title="Settings"><Icon>⚙</Icon><span>Settings</span></button>
-          <button className="avatar-button" title="Demo Manager"><span className="avatar">DM</span><span>Manager</span></button>
+      <header className="topbar">
+        <div className="order-identity">
+          <button className="icon-button" aria-label="Back">←</button>
+          <strong>#6608</strong>
+          <span className="customer-name">Demo Customer</span>
+          <div className="garment-strip" aria-label="Order garments">
+            {[0, 1, 2, 3].map((item) => <span key={item} className={`garment-mini garment-${item}`}>♟</span>)}
+            <button aria-label="Add garment">＋</button>
+          </div>
         </div>
-      </aside>
+        <div className="collaboration-note">
+          <strong>Demo Manager</strong><span>Today · Customer photos received and fit profile ready for final analysis.</span>
+        </div>
+        <div className="order-signals" aria-label="Order activity"><span>▣</span><span>♡</span><span>▤</span><span>▧</span></div>
+        <div className="deadline">
+          <span><b>6 Days</b> to ship</span>
+          <div className="deadline-bar"><i /><i /><i /><i /><i /><i /></div>
+        </div>
+        <div className="top-actions">
+          <span className="day-badge">15</span>
+          <button className="new-order-button">New Order</button>
+          <button className="notification-button" aria-label="Notifications">♢<em>12</em></button>
+          <span className="user-avatar">AF</span>
+        </div>
+      </header>
 
-      <section className="workspace">
-        <header className="topbar">
-          <div className="order-identity">
-            <button className="icon-button" aria-label="Back">←</button>
-            <strong>#6608</strong>
-            <span className="customer-name">Demo Customer</span>
-            <div className="garment-strip" aria-label="Order garments">
-              {[0, 1, 2, 3].map((item) => <span key={item} className={`garment-mini garment-${item}`}>♟</span>)}
-              <button aria-label="Add garment">＋</button>
-            </div>
-          </div>
-          <div className="order-meta">
-            <span><small>Order date</small><b>Jul 3, 2025</b></span>
-            <span><small>Customer since</small><b>Jan 12, 2024</b></span>
-            <span><small>Last analysis</small><b>Jun 27, 2025</b></span>
-          </div>
-          <div className="deadline">
-            <span><b>6 Days</b> to ship</span>
-            <div className="deadline-bar"><i /><i /><i /><i /><i /><i /></div>
-          </div>
-          <div className="top-actions">
-            <button className="secondary-button">Assign to Order</button>
-            <button className="primary-button">Save &amp; Ready</button>
-            <button className="notification-button" aria-label="Notifications">♢<em>12</em></button>
-            <span className="user-avatar">AF</span>
-          </div>
-        </header>
+      <div className="app-body">
+        <aside className="order-rail" aria-label="Order and garment navigation">
+          <button className="rail-profile active" aria-label="Current fit profile"><span>♟</span></button>
+          {[0, 1, 2, 3].map((item) => <button key={item} className={`rail-garment rail-garment-${item}`} aria-label={`Open garment ${item + 1}`}><span /></button>)}
+        </aside>
+
+        <section className="workspace">
+          <section className="order-toolbar">
+            <div className="profile-control"><span>Profile</span><button><strong>Jun 27, 2025 · Primary</strong><small>active</small><b>⌄</b></button><button className="assign-button">Assign to Order</button></div>
+            <div className="garment-segments" aria-label="Garments in order"><button className="active">Jackets <b>2</b></button><button>Pants <b>0</b></button><button>Shirts <b>5</b></button><button>Vests <b>0</b></button></div>
+            <nav className="module-actions" aria-label="Order tools"><button>✈</button><button>▣</button><button>♡</button><button>▤</button><button className="active">Analysis</button><button>▧</button><button>▥</button></nav>
+          </section>
 
         <section className={`profile-strip ${profileExpanded ? "expanded" : ""}`}>
           <div className="profile-summary-row">
@@ -295,6 +289,13 @@ export default function Home() {
 
           <aside className="review-rail">
             <div className="visual-and-brain">
+              <section className="recon-card">
+                <header><div><span className="recon-icon">↻</span><strong>Recon</strong><em>10</em></div><b>Required</b><button aria-label="Collapse reconfirm details">⌃</button></header>
+                <div className="recon-timeline"><span><small>Sent out</small><b>Jul 10 · 10:39</b></span><span><small>Received</small><b>Jul 16 · 11:35</b></span><span><small>Impact</small><b>None</b></span></div>
+                <div className="recon-status"><span>Delivery timing</span><b>✓ Okay</b></div>
+                <ul><li><span>Core inputs</span><b>No change</b></li><li><span>Available jacket</span><b className="missing">None</b></li><li><span>Profile photos</span><b>Provided</b></li></ul>
+              </section>
+
               <section className={`photo-card photo-${photo}`} aria-label="Customer photos">
                 <div className="photo-top"><span>5 photos</span><button aria-label="Open full-screen photo">⛶</button></div>
                 <div className="photo-thumbnails">
@@ -336,6 +337,7 @@ export default function Home() {
           </aside>
         </section>
       </section>
+      </div>
 
       <button className="chat-launcher" onClick={() => setChatOpen(!chatOpen)} aria-label="Open order chat"><span>◌</span><b>Order chat</b><em>3</em></button>
       {chatOpen && (
