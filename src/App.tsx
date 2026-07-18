@@ -94,6 +94,7 @@ export default function Home() {
   const [heightTolerance, setHeightTolerance] = useState(1);
   const [weightTolerance, setWeightTolerance] = useState(5);
   const [chatOpen, setChatOpen] = useState(false);
+  const [reconExpanded, setReconExpanded] = useState(true);
   const [brainExpanded, setBrainExpanded] = useState(true);
   const [brainInputsExpanded, setBrainInputsExpanded] = useState(false);
   const [notesExpanded, setNotesExpanded] = useState(false);
@@ -140,6 +141,19 @@ export default function Home() {
 
   return (
     <main className="app-shell">
+      <aside className="global-nav" aria-label="OMA navigation">
+        <div className="global-mark">S</div>
+        <nav>
+          <button aria-label="Home"><Icon>⌂</Icon></button>
+          <button aria-label="Orders"><Icon>▣</Icon></button>
+          <button aria-label="Customers"><Icon>♙</Icon></button>
+          <button className="active" aria-label="Analysis"><Icon>◉</Icon></button>
+          <button aria-label="Garments"><Icon>♧</Icon></button>
+          <button aria-label="Reports"><Icon>▤</Icon></button>
+          <button aria-label="OMA Brain"><Icon>✣</Icon></button>
+        </nav>
+        <div className="global-nav-bottom"><button aria-label="Settings"><Icon>⚙</Icon></button><button aria-label="Help"><Icon>?</Icon></button></div>
+      </aside>
       <header className="topbar">
         <div className="order-identity">
           <button className="icon-button" aria-label="Back">←</button>
@@ -187,7 +201,7 @@ export default function Home() {
             </button>
             <div className="profile-facts">
               {profileItems.map(([label, value]) => (
-                <div key={label} className="fact"><small>{label}</small><strong>{value}</strong></div>
+                <div key={label} className={`fact ${["Height", "Weight", "Age", "BMI"].includes(label) ? "vital" : ""}`}><small>{label}</small><strong>{value}</strong></div>
               ))}
             </div>
             <button className="profile-details-toggle" aria-expanded={profileExpanded} onClick={() => setProfileExpanded(!profileExpanded)}>{profileExpanded ? "Hide details" : "Fit details"}<span>{profileExpanded ? "⌃" : "⌄"}</span></button>
@@ -219,24 +233,24 @@ export default function Home() {
             <div className="measurement-table-wrap">
               <table className={`measurement-table ${showStaff ? "with-staff" : "without-staff"} ${showBrandMeasurements ? "with-brands" : "without-brands"} ${dtaExpanded ? "dta-expanded" : "dta-compact"}`}>
                 <colgroup>
-                  <col className="c-name" /><col className="c-self" />{showStaff && <col className="c-staff" />}
-                  <col className="c-dta" /><col className="c-final" /><col className="c-data" /><col className="c-data" />{showBrandMeasurements && <col className="c-brands" />}
+                  <col className="c-name" /><col className="c-data" /><col className="c-data" />{showBrandMeasurements && <col className="c-brands" />}
+                  <col className="c-self" />{showStaff && <col className="c-staff" />}<col className="c-final" /><col className="c-dta" />
                 </colgroup>
                 <thead>
                   <tr>
                     <th>Measurement</th>
+                    <th>Order Data <small>Avg. (12.5%–87.5%)</small></th>
+                    <th>Brand Data <small>Avg. (12.5%–87.5%)</small></th>
+                    {showBrandMeasurements && <th>Brand Measurements <small>SUSU · AOS</small></th>}
                     <th><span>SM</span><small>Self</small></th>
                     {showStaff && <th><span>Staff</span><small>Measured</small></th>}
+                    <th className="final-head">Final</th>
                     <th className="dta-head">
                       <label className="select-all"><input type="checkbox" checked={allSelected} onChange={toggleAll} /><span>DTA</span></label>
                       <span className="dta-head-note">{selectedCount} of {measurements.length}</span>
                       <button className="dta-width-toggle" aria-label={dtaExpanded ? "Contract DTA notes" : "Expand DTA notes"} title={dtaExpanded ? "Contract DTA notes" : "Expand DTA notes"} onClick={() => setDtaExpanded(!dtaExpanded)}>{dtaExpanded ? "↤" : "↔"}</button>
                       <button className="header-apply" disabled={!selectedCount} onClick={applySelected}>Apply</button>
                     </th>
-                    <th className="final-head">Final</th>
-                    <th>Order Data <small>Average (12.5%–87.5%)</small></th>
-                    <th>Brand Data <small>Average (12.5%–87.5%)</small></th>
-                    {showBrandMeasurements && <th>Brand Measurements <small>SUSU · AOS</small></th>}
                   </tr>
                 </thead>
                 <tbody>
@@ -249,17 +263,17 @@ export default function Home() {
                         <td className="measurement-name">
                           <label><input type="checkbox" checked={selected.has(item.name)} onChange={() => toggleSelected(item.name)} /><span>{item.name}</span></label>
                         </td>
-                        <td className="source-input-cell sm"><input aria-label={`${item.name} self measurement`} placeholder="—" value={sourceValues[`${tab}:${item.name}:sm`] ?? (item.sm === "—" ? "" : item.sm)} onChange={(event) => updateSource(item.name, "sm", event.target.value)} /></td>
-                        {showStaff && <td className="source-input-cell staff"><input aria-label={`${item.name} staff measurement`} placeholder="—" value={sourceValues[`${tab}:${item.name}:staff`] ?? (item.staff === "—" ? "" : item.staff)} onChange={(event) => updateSource(item.name, "staff", event.target.value)} /></td>}
-                        <td className="dta-cell" onClick={() => toggleSelected(item.name)}>
-                          <div className="dta-content"><span className={`dta-value ${tone(item.confidence)}`}>{item.dta}</span><span className={`confidence ${tone(item.confidence)}`}><i />{item.confidence}%</span><span className="rationale" title={item.rationale}>{item.rationale}</span></div>
-                        </td>
-                        <td className={`final-cell ${isDtaDifferent ? "decision" : ""} ${isChanged ? "changed" : ""}`}>
-                          <input aria-label={`${item.name} final measurement`} title={isDtaDifferent ? "Final differs from the DTA recommendation" : "Final measurement"} value={value} onChange={(event) => setFinals({ ...finals, [item.name]: event.target.value })} />
-                        </td>
                         <td className="cohort-data"><CohortValue values={item.order} /></td>
                         <td className="cohort-data"><CohortValue values={item.brand} /></td>
                         {showBrandMeasurements && <td className="double"><span>{item.labels[0]}</span><span>{item.labels[1]}</span></td>}
+                        <td className="source-input-cell sm"><input aria-label={`${item.name} self measurement`} placeholder="—" value={sourceValues[`${tab}:${item.name}:sm`] ?? (item.sm === "—" ? "" : item.sm)} onChange={(event) => updateSource(item.name, "sm", event.target.value)} /></td>
+                        {showStaff && <td className="source-input-cell staff"><input aria-label={`${item.name} staff measurement`} placeholder="—" value={sourceValues[`${tab}:${item.name}:staff`] ?? (item.staff === "—" ? "" : item.staff)} onChange={(event) => updateSource(item.name, "staff", event.target.value)} /></td>}
+                        <td className={`final-cell ${isDtaDifferent ? "decision" : ""} ${isChanged ? "changed" : ""}`}>
+                          <input aria-label={`${item.name} final measurement`} title={isDtaDifferent ? "Final differs from the DTA recommendation" : "Final measurement"} value={value} onChange={(event) => setFinals({ ...finals, [item.name]: event.target.value })} />
+                        </td>
+                        <td className="dta-cell" onClick={() => toggleSelected(item.name)}>
+                          <div className="dta-content"><span className={`dta-value ${tone(item.confidence)}`}>{item.dta}</span><span className={`confidence ${tone(item.confidence)}`}><i />{item.confidence}%</span><span className="rationale" title={item.rationale}>{item.rationale}</span></div>
+                        </td>
                       </tr>
                     );
                   })}
@@ -268,7 +282,7 @@ export default function Home() {
             </div>
 
             <section className={`cohort-panel ${cohortExpanded ? "expanded" : ""}`}>
-              <div className="cohort-title"><strong>Reference Cohort Search</strong><span><b>106</b> matching profiles</span><button onClick={() => setCohortExpanded(!cohortExpanded)}>{cohortExpanded ? "Fewer filters" : "More filters"}<i>{cohortExpanded ? "⌃" : "⌄"}</i></button><button>Reset</button></div>
+              <div className="cohort-title"><strong>Reference Cohort Search</strong><button onClick={() => setCohortExpanded(!cohortExpanded)}>{cohortExpanded ? "Fewer filters" : "More filters"}<i>{cohortExpanded ? "⌃" : "⌄"}</i></button><button>Reset</button></div>
               <div className="expected-lengths" aria-label="Expected length references for this height">
                 <strong>Expected lengths <small>at 6&apos;3&quot;</small></strong>
                 {[["Jacket", ["31″", "32″", "33″"]], ["Sleeve", ["25.5″", "26.5″", "27.5″"]], ["Outseam", ["41″", "41.7″", "42.4″"]], ["Inseam", ["30.9″", "31.4″", "31.9″"]]].map(([label, values]) => (
@@ -276,13 +290,13 @@ export default function Home() {
                 ))}
               </div>
               <div className="cohort-primary-fields">
-                <div className="cohort-range-field"><small>Height range</small><b>{75 - heightTolerance}–{75 + heightTolerance} in</b><div><button aria-label="Decrease height range" onClick={() => setHeightTolerance(Math.max(1, heightTolerance - 1))}>−</button><span>± {heightTolerance}&quot;</span><button aria-label="Increase height range" onClick={() => setHeightTolerance(heightTolerance + 1)}>+</button></div></div>
-                <div className="cohort-range-field"><small>Weight range</small><b>{185 - weightTolerance}–{185 + weightTolerance} lbs</b><div><button aria-label="Decrease weight range" onClick={() => setWeightTolerance(Math.max(5, weightTolerance - 5))}>−</button><span>± {weightTolerance}</span><button aria-label="Increase weight range" onClick={() => setWeightTolerance(weightTolerance + 5)}>+</button></div></div>
+                <div className="cohort-core-field" aria-label={`Height 75 inches, plus or minus ${heightTolerance} inches`}><b>75<small>in</small></b><div><button aria-label="Decrease height tolerance" onClick={() => setHeightTolerance(Math.max(1, heightTolerance - 1))}>−</button><span>± {heightTolerance}&quot;</span><button aria-label="Increase height tolerance" onClick={() => setHeightTolerance(heightTolerance + 1)}>+</button></div></div>
+                <div className="cohort-core-field" aria-label={`Weight 185 pounds, plus or minus ${weightTolerance} pounds`}><b>185<small>lb</small></b><div><button aria-label="Decrease weight tolerance" onClick={() => setWeightTolerance(Math.max(5, weightTolerance - 5))}>−</button><span>± {weightTolerance}</span><button aria-label="Increase weight tolerance" onClick={() => setWeightTolerance(weightTolerance + 5)}>+</button></div></div>
                 {[["Jacket", "40"], ["Length", "L"], ["Pants", "34"]].map(([label, value]) => (
                   <button className="cohort-select" key={label}><small>{label}</small><b>{value}</b><span>⌄</span></button>
                 ))}
                 <button className="cohort-search" onClick={() => { setToast("Reference cohort updated"); setTimeout(() => setToast(""), 2200); }}>⌕ Search</button>
-                <button className="cohort-results"><span><i />106</span><b>results</b><em>⌄</em></button>
+                <button className="cohort-results" aria-label="106 matching profiles"><span><i />106</span><em>⌄</em></button>
               </div>
               {cohortExpanded && <div className="cohort-secondary-fields">
                 {[["Fit Pref.", "Modern"], ["Shoulder", "Average"], ["Arms", "Long"], ["Rise", "Mid"], ["Seat", "Average"]].map(([label, value]) => (
@@ -301,11 +315,11 @@ export default function Home() {
 
           <aside className="review-rail">
             <div className="visual-and-brain">
-              <section className="recon-card">
-                <header><div><span className="recon-icon">↻</span><strong>Recon</strong><em>10</em></div><b>Required</b><button aria-label="Collapse reconfirm details">⌃</button></header>
-                <div className="recon-timeline"><span><small>Sent out</small><b>Jul 10 · 10:39</b></span><span><small>Received</small><b>Jul 16 · 11:35</b></span><span><small>Impact</small><b>None</b></span></div>
+              <section className={`recon-card ${reconExpanded ? "expanded" : "collapsed"}`}>
+                <header><div><span className="recon-icon">↻</span><strong>Recon</strong><em>10</em></div><b>Required</b><button aria-label={reconExpanded ? "Collapse reconfirm details" : "Expand reconfirm details"} onClick={() => setReconExpanded(!reconExpanded)}>{reconExpanded ? "⌃" : "⌄"}</button></header>
+                {reconExpanded && <><div className="recon-timeline"><span><small>Sent out</small><b>Jul 10 · 10:39</b></span><span><small>Received</small><b>Jul 16 · 11:35</b></span><span><small>Impact</small><b>None</b></span></div>
                 <div className="recon-status"><span>Delivery timing</span><b>✓ Okay</b></div>
-                <ul><li><span>Core inputs</span><b>No change</b></li><li><span>Available jacket</span><b className="missing">None</b></li><li><span>Profile photos</span><b>Provided</b></li></ul>
+                <ul><li><span>Core inputs</span><b>No change</b></li><li><span>Available jacket</span><b className="missing">None</b></li><li><span>Profile photos</span><b>Provided</b></li></ul></>}
               </section>
 
               <section className={`photo-card photo-${photo}`} aria-label="Customer photos">
