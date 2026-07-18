@@ -61,7 +61,7 @@ const garmentMeasurements: Measurement[] = [
 ];
 
 const profileItems = [
-  ["Sex", "Male"], ["Height", "6'3\""], ["Weight", "185.0 lbs"], ["Age", "26 yrs"],
+  ["Sex", "Male"], ["Height", "6'3\""], ["Weight", "185 lbs"], ["Age", "26"],
   ["BMI", "23.1"], ["Torso", "Rectangle"], ["Jacket", "40"], ["Pants", "34"],
   ["Shirt", "15.5 / 36"], ["Fit Pref.", "Modern"], ["Shoulder", "Average"], ["Arms", "Long"],
   ["Rise", "Mid"], ["Seat", "Average"],

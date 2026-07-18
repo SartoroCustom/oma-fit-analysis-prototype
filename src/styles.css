@@ -726,6 +726,7 @@ button { color: inherit; }
 /* Published-layout overrides: keep these last in the cascade. */
 .profile-strip { height: 78px; flex-basis: 78px; }
 .profile-summary-row { height: 62px; }
+.profile-facts { grid-template-columns: .6fr .84fr 1.08fr .78fr .66fr 1.02fr .58fr .58fr .95fr .8fr .84fr .62fr .56fr .75fr; }
 .fact small { font-size: 9.5px; }
 .fact strong { font-size: 13px; }
 .fact.vital strong { font-size: 16.5px; }
@@ -736,6 +737,8 @@ button { color: inherit; }
 .expected-lengths > strong { font-size: 11px; }
 .expected-lengths > strong small { font-size: 9.5px; }
 .length-reference > span { font-size: 10.5px; }
+.length-reference { flex-direction: column; align-items: flex-start; justify-content: center; gap: 2px; }
+.length-reference > div { width: 100%; }
 .length-reference b { padding-inline: 5px; font-size: 11px; }
 .length-reference b.average { font-size: 12.5px; }
 .cohort-primary-fields { height: 58px; grid-template-columns: 1.25fr 1.35fr .68fr .6fr .68fr .72fr .58fr; }
