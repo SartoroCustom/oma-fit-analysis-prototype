@@ -387,7 +387,7 @@ button { color: inherit; }
 @media (max-height: 960px) {
   .cohort-panel { height: 132px; flex-basis: 132px; }
   .cohort-panel.expanded { height: 174px; flex-basis: 174px; }
-  .review-rail { grid-template-rows: 174px auto minmax(0, 1fr); }
+  .review-rail { grid-template-rows: 174px auto minmax(0, 1fr); } /* superseded by the published-layout cascade */
   .recon-card { padding-block: 8px; }
   .recon-timeline { margin-top: 4px; }
   .recon-status { margin-top: 5px; }
@@ -397,6 +397,41 @@ button { color: inherit; }
   .notes-card { grid-row: 2; }
   .notes-card p:nth-of-type(2),
   .note-tags { display: initial; }
+}
+
+/* Final decision-flow overrides. */
+.profile-strip { height: 78px; flex-basis: 78px; }
+.profile-summary-row { height: 62px; }
+.fact small { font-size: 9.5px; }
+.fact strong { font-size: 13px; }
+.fact.vital strong { font-size: 16.5px; }
+.cohort-data span { font-size: .9em; }
+.cohort-panel { height: 138px; flex-basis: 138px; }
+.cohort-panel.expanded { height: 180px; flex-basis: 180px; }
+.expected-lengths { height: 45px; }
+.expected-lengths > strong { font-size: 11px; }
+.expected-lengths > strong small { font-size: 9.5px; }
+.length-reference > span { font-size: 10.5px; }
+.length-reference b { padding-inline: 5px; font-size: 11px; }
+.length-reference b.average { font-size: 12.5px; }
+.cohort-primary-fields { height: 58px; grid-template-columns: 1.25fr 1.35fr .68fr .6fr .68fr .72fr .58fr; }
+
+@media (max-width: 1320px) {
+  .topbar { grid-template-columns: minmax(350px, 1fr) 145px 125px auto; }
+  .collaboration-note { display: none; }
+  .analysis-layout { grid-template-columns: minmax(700px, 1.85fr) minmax(350px, .9fr); }
+  .review-rail { grid-template-columns: 1fr; grid-template-rows: auto auto 410px auto; overflow-x: hidden; overflow-y: auto; padding-right: 2px; }
+  .recon-card { grid-column: 1; grid-row: 1; }
+  .notes-card { grid-column: 1; grid-row: 2; }
+  .visual-and-brain > .photo-card { grid-column: 1; grid-row: 3; min-height: 410px; }
+  .brain-card { grid-column: 1; grid-row: 4; min-height: 600px; }
+}
+
+@media (max-height: 960px) {
+  .profile-strip { height: 76px; flex-basis: 76px; }
+  .profile-summary-row { height: 60px; }
+  .cohort-panel { height: 136px; flex-basis: 136px; }
+  .cohort-panel.expanded { height: 178px; flex-basis: 178px; }
 }
 
 /* Decision-flow pass: global OMA context, scannable profile data, and evidence-first measurements. */
@@ -686,4 +721,39 @@ button { color: inherit; }
   .notes-card { grid-row: 2; }
   .notes-card p:nth-of-type(2),
   .note-tags { display: initial; }
+}
+
+/* Published-layout overrides: keep these last in the cascade. */
+.profile-strip { height: 78px; flex-basis: 78px; }
+.profile-summary-row { height: 62px; }
+.fact small { font-size: 9.5px; }
+.fact strong { font-size: 13px; }
+.fact.vital strong { font-size: 16.5px; }
+.cohort-data span { font-size: .9em; }
+.cohort-panel { height: 138px; flex-basis: 138px; }
+.cohort-panel.expanded { height: 180px; flex-basis: 180px; }
+.expected-lengths { height: 45px; }
+.expected-lengths > strong { font-size: 11px; }
+.expected-lengths > strong small { font-size: 9.5px; }
+.length-reference > span { font-size: 10.5px; }
+.length-reference b { padding-inline: 5px; font-size: 11px; }
+.length-reference b.average { font-size: 12.5px; }
+.cohort-primary-fields { height: 58px; grid-template-columns: 1.25fr 1.35fr .68fr .6fr .68fr .72fr .58fr; }
+
+@media (max-width: 1320px) {
+  .topbar { grid-template-columns: minmax(350px, 1fr) 145px 125px auto; }
+  .collaboration-note { display: none; }
+  .analysis-layout { grid-template-columns: minmax(700px, 1.85fr) minmax(350px, .9fr); }
+  .review-rail { grid-template-columns: 1fr; grid-template-rows: auto auto 410px auto; overflow-x: hidden; overflow-y: auto; padding-right: 2px; }
+  .recon-card { grid-column: 1; grid-row: 1; }
+  .notes-card { grid-column: 1; grid-row: 2; }
+  .visual-and-brain > .photo-card { grid-column: 1; grid-row: 3; min-height: 410px; }
+  .brain-card { grid-column: 1; grid-row: 4; min-height: 600px; }
+}
+
+@media (max-height: 960px) {
+  .profile-strip { height: 76px; flex-basis: 76px; }
+  .profile-summary-row { height: 60px; }
+  .cohort-panel { height: 136px; flex-basis: 136px; }
+  .cohort-panel.expanded { height: 178px; flex-basis: 178px; }
 }
