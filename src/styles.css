@@ -451,3 +451,112 @@ button { color: inherit; }
 @media (max-height: 960px) {
   .topbar { height: 58px; flex-basis: 58px; }.garment-mini, .garment-strip button { height: 40px; }.order-toolbar { height: 53px; flex-basis: 53px; padding-block: 5px; }.order-rail { padding-top: 6px; }.rail-profile { height: 60px; flex-basis: 60px; }.rail-garment { height: 72px; flex-basis: 72px; }.profile-strip { height: 68px; flex-basis: 68px; margin-top: 6px; margin-bottom: 6px; }.profile-strip.expanded { height: 118px; flex-basis: 118px; }.profile-summary-row { height: 52px; }.analysis-toolbar { height: 38px; flex-basis: 38px; }.measurement-table th { height: 34px; }.measurement-table tbody tr { height: auto; }.cohort-panel { height: 108px; flex-basis: 108px; }.action-bar { height: 42px; flex-basis: 42px; }.review-rail { grid-template-rows: 162px minmax(0,1fr) auto; }.visual-and-brain > .photo-card { grid-row: 2 / 4; }.brain-card { grid-row: 1 / 3; }.source-card { display: none; }.notes-card { grid-row: 3; }.notes-card p:nth-of-type(2), .note-tags { display: none; }
 }
+
+/* Final cascade: the readability pass must override the compact Phase Two base above. */
+.garment-segments { padding: 0; border: 0; border-radius: 0; gap: 0; background: transparent; }
+.garment-segments span { height: 34px; padding: 0 10px; border-right: 1px solid var(--line); display: flex; align-items: center; justify-content: center; gap: 6px; color: #8a9390; background: transparent; font-size: 11px; font-weight: 680; white-space: nowrap; }
+.garment-segments span:first-child { border-left: 1px solid var(--line); }
+.garment-segments span.has-orders { color: var(--teal-dark); background: #f1f8f6; }
+.garment-segments b { min-width: 20px; margin: 0; padding: 2px 5px; color: #fff; background: #a6afad; font-size: 9px; line-height: 1.2; text-align: center; }
+.garment-segments .has-orders b { background: var(--teal); }
+.module-actions button { width: 34px; min-width: 34px; height: 34px; padding: 0; display: grid; place-items: center; background: #f7f9f8; }
+
+.measurement-table { font-size: clamp(11px, .735vw, 12px); }
+.measurement-table.without-staff.without-brands.dta-compact .c-name { width: 13.5%; }
+.measurement-table.without-staff.without-brands.dta-compact .c-self { width: 5.5%; }
+.measurement-table.without-staff.without-brands.dta-compact .c-dta { width: 33%; }
+.measurement-table.without-staff.without-brands.dta-compact .c-final { width: 6.5%; }
+.measurement-table.without-staff.without-brands.dta-compact .c-data { width: 20.75%; }
+.measurement-table.without-staff.without-brands.dta-expanded .c-name { width: 13%; }
+.measurement-table.without-staff.without-brands.dta-expanded .c-self { width: 5.5%; }
+.measurement-table.without-staff.without-brands.dta-expanded .c-dta { width: 42%; }
+.measurement-table.without-staff.without-brands.dta-expanded .c-final { width: 6.5%; }
+.measurement-table.without-staff.without-brands.dta-expanded .c-data { width: 16.5%; }
+.measurement-table.with-staff.without-brands.dta-compact .c-name { width: 12.5%; }
+.measurement-table.with-staff.without-brands.dta-compact .c-self,
+.measurement-table.with-staff.without-brands.dta-compact .c-staff { width: 5%; }
+.measurement-table.with-staff.without-brands.dta-compact .c-dta { width: 32%; }
+.measurement-table.with-staff.without-brands.dta-compact .c-final { width: 6%; }
+.measurement-table.with-staff.without-brands.dta-compact .c-data { width: 19.75%; }
+.measurement-table.with-staff.without-brands.dta-expanded .c-name { width: 12%; }
+.measurement-table.with-staff.without-brands.dta-expanded .c-self,
+.measurement-table.with-staff.without-brands.dta-expanded .c-staff { width: 4.75%; }
+.measurement-table.with-staff.without-brands.dta-expanded .c-dta { width: 40%; }
+.measurement-table.with-staff.without-brands.dta-expanded .c-final { width: 6%; }
+.measurement-table.with-staff.without-brands.dta-expanded .c-data { width: 16.25%; }
+.measurement-table th { height: 36px; }
+.measurement-table td { height: 21px; }
+.dta-content { grid-template-columns: 40px 43px minmax(0, 1fr); }
+.rationale { font-size: .9em; }
+.dta-expanded .rationale { font-size: .94em; }
+.cohort-data span { font-size: .79em; }
+
+.cohort-panel { height: 134px; flex: 0 0 134px; padding: 5px 9px 7px; }
+.cohort-panel.expanded { height: 176px; flex-basis: 176px; }
+.cohort-title { height: 22px; font-size: 10px; }
+.cohort-title strong { font-size: 12px; }
+.cohort-title span,
+.cohort-title button { font-size: 9.5px; }
+.cohort-primary-fields { height: 56px; grid-template-columns: 1.46fr 1.58fr .62fr .55fr .62fr .85fr .72fr; gap: 6px; }
+.cohort-range-field,
+.cohort-select { padding: 5px 7px; }
+.cohort-range-field small,
+.cohort-select small { font-size: 8.5px; }
+.cohort-range-field > b,
+.cohort-select b { font-size: 11.5px; }
+.cohort-range-field > div button { width: 22px; height: 22px; font-size: 13px; }
+.cohort-range-field > div span { font-size: 9.5px; }
+.cohort-select > span { right: 7px; bottom: 18px; font-size: 9px; }
+.cohort-search { font-size: 11px; }
+.cohort-secondary-fields { height: 37px; margin-top: 5px; }
+.cohort-summary { font-size: 9px; }
+
+.review-rail { grid-template-columns: minmax(248px, 1.32fr) minmax(210px, 1fr); grid-template-rows: 180px auto minmax(0, 1fr); }
+.recon-card { grid-column: 1; grid-row: 1; }
+.recon-card header strong { font-size: 14px; }
+.recon-timeline small { font-size: 8.5px; }
+.recon-timeline b { font-size: 10px; }
+.recon-status { font-size: 9.5px; }
+.recon-card li span { font-size: 8.5px; }
+.recon-card li b { font-size: 10.5px; }
+.notes-card { grid-column: 1; grid-row: 2; padding: 9px 11px; }
+.notes-card header { margin: 0; }
+.notes-card header strong { font-size: 11.5px; }
+.notes-card header button { font-size: 9px; }
+.notes-card.expanded header { margin-bottom: 8px; }
+.notes-card p { font-size: 10px; }
+.visual-and-brain > .photo-card { grid-column: 1; grid-row: 3; background-size: contain; background-position: center; }
+.brain-card { grid-column: 2; grid-row: 1 / 4; align-self: stretch; }
+.brain-card > header { height: 56px; flex-basis: 56px; }
+.brain-card header strong { font-size: 13px; }
+.brain-card header small { display: block; font-size: 9px; }
+.brain-score { height: 98px; flex-basis: 98px; }
+.brain-score small,
+.brain-score span { font-size: 9.5px; }
+.brain-score b { font-size: 11.5px; }
+.brain-body { overflow-y: auto; }
+.brain-body h3 { font-size: 11px; }
+.brain-body li b { font-size: 10.5px; }
+.brain-body li span,
+.analysis-summary,
+.details-button { font-size: 10px; }
+
+@media (max-width: 1500px) {
+  .module-actions button,
+  .module-actions button:nth-child(6),
+  .module-actions button:nth-child(7) { width: 31px; min-width: 31px; height: 31px; display: grid; font-size: 14px; }
+  .measurement-table { font-size: 11.1px; }
+  .review-rail { grid-template-columns: minmax(240px, 1.3fr) minmax(205px, 1fr); }
+}
+
+@media (max-height: 960px) {
+  .cohort-panel { height: 132px; flex-basis: 132px; }
+  .cohort-panel.expanded { height: 174px; flex-basis: 174px; }
+  .review-rail { grid-template-rows: 174px auto minmax(0, 1fr); }
+  .recon-card { padding-block: 8px; }
+  .visual-and-brain > .photo-card { grid-row: 3; }
+  .brain-card { grid-row: 1 / 4; }
+  .notes-card { grid-row: 2; }
+  .notes-card p:nth-of-type(2),
+  .note-tags { display: initial; }
+}
