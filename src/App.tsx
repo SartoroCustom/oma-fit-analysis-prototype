@@ -95,6 +95,10 @@ export default function Home() {
   const [weightTolerance, setWeightTolerance] = useState(5);
   const [chatOpen, setChatOpen] = useState(false);
   const [brainExpanded, setBrainExpanded] = useState(true);
+  const [brainInputsExpanded, setBrainInputsExpanded] = useState(false);
+  const [notesExpanded, setNotesExpanded] = useState(false);
+  const [cohortExpanded, setCohortExpanded] = useState(false);
+  const [dtaExpanded, setDtaExpanded] = useState(false);
   const [photo, setPhoto] = useState(0);
   const [toast, setToast] = useState("");
   const selectedCount = selected.size;
@@ -171,8 +175,8 @@ export default function Home() {
         <section className="workspace">
           <section className="order-toolbar">
             <div className="profile-control"><span>Profile</span><button><strong>Jun 27, 2025 · Primary</strong><small>active</small><b>⌄</b></button><button className="assign-button">Assign to Order</button></div>
-            <div className="garment-segments" aria-label="Garments in order"><button className="active">Jackets <b>2</b></button><button>Pants <b>0</b></button><button>Shirts <b>5</b></button><button>Vests <b>0</b></button></div>
-            <nav className="module-actions" aria-label="Order tools"><button>✈</button><button>▣</button><button>♡</button><button>▤</button><button className="active">Analysis</button><button>▧</button><button>▥</button></nav>
+            <div className="garment-segments" aria-label="Customer order history"><span className="has-orders">Jackets <b>2</b></span><span>Pants <b>0</b></span><span className="has-orders">Shirts <b>5</b></span><span>Vests <b>0</b></span></div>
+            <nav className="module-actions" aria-label="Order tools"><button aria-label="Shipping">✈</button><button aria-label="Delivery">▣</button><button aria-label="Customer messages">▧</button><button aria-label="Favorites">♡</button><button aria-label="Documents">▤</button><button aria-label="Measurements">◉</button><button aria-label="Print">▥</button></nav>
           </section>
 
         <section className={`profile-strip ${profileExpanded ? "expanded" : ""}`}>
@@ -213,7 +217,7 @@ export default function Home() {
             </div>
 
             <div className="measurement-table-wrap">
-              <table className={`measurement-table ${showStaff ? "with-staff" : "without-staff"} ${showBrandMeasurements ? "with-brands" : "without-brands"}`}>
+              <table className={`measurement-table ${showStaff ? "with-staff" : "without-staff"} ${showBrandMeasurements ? "with-brands" : "without-brands"} ${dtaExpanded ? "dta-expanded" : "dta-compact"}`}>
                 <colgroup>
                   <col className="c-name" /><col className="c-self" />{showStaff && <col className="c-staff" />}
                   <col className="c-dta" /><col className="c-final" /><col className="c-data" /><col className="c-data" />{showBrandMeasurements && <col className="c-brands" />}
@@ -226,6 +230,7 @@ export default function Home() {
                     <th className="dta-head">
                       <label className="select-all"><input type="checkbox" checked={allSelected} onChange={toggleAll} /><span>DTA</span></label>
                       <span className="dta-head-note">{selectedCount} of {measurements.length}</span>
+                      <button className="dta-width-toggle" aria-label={dtaExpanded ? "Contract DTA notes" : "Expand DTA notes"} title={dtaExpanded ? "Contract DTA notes" : "Expand DTA notes"} onClick={() => setDtaExpanded(!dtaExpanded)}>{dtaExpanded ? "↤" : "↔"}</button>
                       <button className="header-apply" disabled={!selectedCount} onClick={applySelected}>Apply</button>
                     </th>
                     <th className="final-head">Final</th>
@@ -247,7 +252,7 @@ export default function Home() {
                         <td className="source-input-cell sm"><input aria-label={`${item.name} self measurement`} placeholder="—" value={sourceValues[`${tab}:${item.name}:sm`] ?? (item.sm === "—" ? "" : item.sm)} onChange={(event) => updateSource(item.name, "sm", event.target.value)} /></td>
                         {showStaff && <td className="source-input-cell staff"><input aria-label={`${item.name} staff measurement`} placeholder="—" value={sourceValues[`${tab}:${item.name}:staff`] ?? (item.staff === "—" ? "" : item.staff)} onChange={(event) => updateSource(item.name, "staff", event.target.value)} /></td>}
                         <td className="dta-cell" onClick={() => toggleSelected(item.name)}>
-                          <div className="dta-content"><span className="dta-value">{item.dta}</span><span className={`confidence ${tone(item.confidence)}`}><i />{item.confidence}%</span><span className="rationale">{item.rationale}</span></div>
+                          <div className="dta-content"><span className={`dta-value ${tone(item.confidence)}`}>{item.dta}</span><span className={`confidence ${tone(item.confidence)}`}><i />{item.confidence}%</span><span className="rationale" title={item.rationale}>{item.rationale}</span></div>
                         </td>
                         <td className={`final-cell ${isDtaDifferent ? "decision" : ""} ${isChanged ? "changed" : ""}`}>
                           <input aria-label={`${item.name} final measurement`} title={isDtaDifferent ? "Final differs from the DTA recommendation" : "Final measurement"} value={value} onChange={(event) => setFinals({ ...finals, [item.name]: event.target.value })} />
@@ -262,22 +267,29 @@ export default function Home() {
               </table>
             </div>
 
-            <section className="cohort-panel">
-              <div className="cohort-title"><strong>Reference Cohort Search</strong><span><b>106</b> results found</span><button>Reset</button></div>
+            <section className={`cohort-panel ${cohortExpanded ? "expanded" : ""}`}>
+              <div className="cohort-title"><strong>Reference Cohort Search</strong><span><b>106</b> matching profiles</span><button onClick={() => setCohortExpanded(!cohortExpanded)}>{cohortExpanded ? "Fewer filters" : "More filters"}<i>{cohortExpanded ? "⌃" : "⌄"}</i></button><button>Reset</button></div>
+              <div className="expected-lengths" aria-label="Expected length references for this height">
+                <strong>Expected lengths <small>at 6&apos;3&quot;</small></strong>
+                {[["Jacket", ["31″", "32″", "33″"]], ["Sleeve", ["25.5″", "26.5″", "27.5″"]], ["Outseam", ["41″", "41.7″", "42.4″"]], ["Inseam", ["30.9″", "31.4″", "31.9″"]]].map(([label, values]) => (
+                  <div className="length-reference" key={label as string}><span>{label as string}</span><div>{(values as string[]).map((value, index) => <b className={index === 1 ? "average" : ""} key={value}>{value}</b>)}</div></div>
+                ))}
+              </div>
               <div className="cohort-primary-fields">
-                <div className="cohort-range-field"><small>Height</small><b>6&apos;3&quot;</b><div><button onClick={() => setHeightTolerance(Math.max(1, heightTolerance - 1))}>−</button><span>± {heightTolerance} in</span><button onClick={() => setHeightTolerance(heightTolerance + 1)}>+</button></div></div>
-                <div className="cohort-range-field"><small>Weight</small><b>185 lbs</b><div><button onClick={() => setWeightTolerance(Math.max(5, weightTolerance - 5))}>−</button><span>± {weightTolerance} lbs</span><button onClick={() => setWeightTolerance(weightTolerance + 5)}>+</button></div></div>
-                {[["Jacket Size", "40"], ["Jacket Length", "Long"], ["Pants Size", "34"], ["Sleeve", "25.5\"–26.5\""], ["Outseam", "41.0\"–42.5\""], ["Inseam", "30.0\"–31.5\""]].map(([label, value]) => (
+                <div className="cohort-range-field"><small>Height range</small><b>{75 - heightTolerance}–{75 + heightTolerance} in</b><div><button aria-label="Decrease height range" onClick={() => setHeightTolerance(Math.max(1, heightTolerance - 1))}>−</button><span>± {heightTolerance}&quot;</span><button aria-label="Increase height range" onClick={() => setHeightTolerance(heightTolerance + 1)}>+</button></div></div>
+                <div className="cohort-range-field"><small>Weight range</small><b>{185 - weightTolerance}–{185 + weightTolerance} lbs</b><div><button aria-label="Decrease weight range" onClick={() => setWeightTolerance(Math.max(5, weightTolerance - 5))}>−</button><span>± {weightTolerance}</span><button aria-label="Increase weight range" onClick={() => setWeightTolerance(weightTolerance + 5)}>+</button></div></div>
+                {[["Jacket", "40"], ["Length", "L"], ["Pants", "34"]].map(([label, value]) => (
                   <button className="cohort-select" key={label}><small>{label}</small><b>{value}</b><span>⌄</span></button>
                 ))}
                 <button className="cohort-search" onClick={() => { setToast("Reference cohort updated"); setTimeout(() => setToast(""), 2200); }}>⌕ Search</button>
+                <button className="cohort-results"><span><i />106</span><b>results</b><em>⌄</em></button>
               </div>
-              <div className="cohort-secondary-fields">
+              {cohortExpanded && <div className="cohort-secondary-fields">
                 {[["Fit Pref.", "Modern"], ["Shoulder", "Average"], ["Arms", "Long"], ["Rise", "Mid"], ["Seat", "Average"]].map(([label, value]) => (
                   <button className="cohort-select" key={label}><small>{label}</small><b>{value}</b><span>⌄</span></button>
                 ))}
-                <span className="cohort-summary">Height 74–76 in · Weight 180–190 lbs</span>
-              </div>
+                <span className="cohort-summary">Advanced filters refine the same historical cohort.</span>
+              </div>}
             </section>
 
             <footer className="action-bar">
@@ -317,22 +329,21 @@ export default function Home() {
                     <li><i /><div><b>Thigh</b><span>Prediction sits near the cohort’s lower boundary.</span></div></li>
                   </ul>
                   <div className="analysis-summary">Overall proportions are consistent with a 40 Long, modern-fit profile. The strongest contradiction is the 20.0 shoulder SM; wrist and lower-body depth require manager judgment.</div>
+                  <div className={`brain-inputs ${brainInputsExpanded ? "expanded" : "collapsed"}`}>
+                    <button onClick={() => setBrainInputsExpanded(!brainInputsExpanded)}><span><b>Analysis inputs</b><small>3 complete · 1 unavailable</small></span><em>{brainInputsExpanded ? "⌃" : "⌄"}</em></button>
+                    {brainInputsExpanded && <ul><li><i className="done" />Fit profile + SM</li><li><i className="done" />5 customer photos</li><li><i className="done" />Order + brand cohorts</li><li><i />No prior fit outcome</li></ul>}
+                  </div>
                   <button className="details-button">View full analysis trail →</button>
                 </div>
               </section>
             </div>
 
-            <section className="notes-card">
-              <header><strong>Customer &amp; Fit Notes</strong><button>Edit</button></header>
-              <p>Demo note: Customer needs the order for an upcoming wedding and prefers a clean, modern fit.</p>
+            <section className={`notes-card ${notesExpanded ? "expanded" : "collapsed"}`}>
+              <header><strong>Customer &amp; Fit Notes</strong><div><button>Edit</button><button className="notes-toggle" aria-label={notesExpanded ? "Collapse customer notes" : "Expand customer notes"} onClick={() => setNotesExpanded(!notesExpanded)}>{notesExpanded ? "⌃" : "⌄"}</button></div></header>
+              {notesExpanded && <><p>Demo note: Customer needs the order for an upcoming wedding and prefers a clean, modern fit.</p>
               <p>Demo note: Review the previous fit profile before confirming final measurements.</p>
               <div className="note-tags"><span>Wedding deadline</span><span>Prior profile requested</span></div>
-              <button className="view-notes">View all notes →</button>
-            </section>
-
-            <section className="source-card">
-              <div><strong>Analysis inputs</strong><span>Complete</span></div>
-              <ul><li><i className="done" />Fit profile + SM</li><li><i className="done" />5 customer photos</li><li><i className="done" />Order + brand cohorts</li><li><i />No prior fit outcome</li></ul>
+              <button className="view-notes">View all notes →</button></>}
             </section>
           </aside>
         </section>
