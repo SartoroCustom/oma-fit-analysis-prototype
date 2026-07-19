@@ -434,6 +434,98 @@ button { color: inherit; }
   .cohort-panel.expanded { height: 178px; flex-basis: 178px; }
 }
 
+/* True final cascade for the three-column manager review workspace. */
+.analysis-stage .profile-summary-row { height: 52px; }
+.analysis-stage .fact small { font-size: 9.5px; font-weight: 650; }
+.analysis-stage .fact strong { font-size: 14.5px; }
+.analysis-stage .fact.vital strong { font-size: 18px; }
+.analysis-stage .dta-content { grid-template-columns: 48px 48px minmax(0, 1fr); gap: 6px; }
+.analysis-stage .deselected .dta-cell { opacity: .42; }
+.analysis-stage .cohort-panel { height: 118px; flex-basis: 118px; }
+.analysis-stage .cohort-panel.expanded { height: 160px; flex-basis: 160px; }
+.analysis-stage .expected-lengths { height: 34px; }
+.analysis-stage .cohort-primary-fields { height: 52px; }
+.analysis-stage .cohort-primary-fields .cohort-select small { font-size: 9.5px; }
+.analysis-stage .cohort-primary-fields .cohort-select b { font-size: 15.5px; }
+.analysis-stage .action-bar { height: 48px; flex-basis: 48px; }
+.analysis-stage .save-status,
+.analysis-stage .switch-label { font-size: 9.5px; }
+.analysis-stage .action-bar .save-close,
+.analysis-stage .action-bar .save-ready { min-height: 34px; font-size: 10.5px; }
+.analysis-stage .review-rail { display: contents; }
+.analysis-stage .review-context { grid-column: 2; grid-row: 2; }
+.analysis-stage .review-context > .notes-card,
+.analysis-stage .review-context > .recon-card { grid-column: auto; grid-row: auto; }
+.analysis-stage .brain-card {
+  min-height: 0;
+  grid-column: 3;
+  grid-row: 1 / 3;
+  align-self: stretch;
+}
+.analysis-stage .brain-card > header { height: 56px; flex-basis: 56px; }
+.analysis-stage .brain-card header .brain-heading strong { font-size: 14px; }
+.analysis-stage .brain-card header .brain-heading small { display: block; font-size: 9.5px; }
+.analysis-stage .brain-score { height: 98px; flex-basis: 98px; }
+.analysis-stage .brain-score small,
+.analysis-stage .brain-score span { font-size: 9.5px; }
+.analysis-stage .brain-score b { font-size: 12px; }
+.analysis-stage .brain-body { flex: 0 0 auto; overflow: visible; }
+.analysis-stage .brain-body .attention-list li b { font-size: 10.5px; }
+.analysis-stage .brain-body .attention-list li span,
+.analysis-stage .analysis-summary span { font-size: 9.5px; }
+.analysis-stage .brain-chat { min-height: 158px; }
+.chat-launcher { background: #465451; }
+
+@media (max-width: 1320px) {
+  .analysis-stage .brain-card { grid-column: 1 / 3; grid-row: 3; min-height: 620px; }
+}
+
+/* Final decision-workspace bridge — these rules intentionally close the legacy cascade. */
+.analysis-stage .profile-summary-row { height: 52px; }
+.analysis-stage .fact small { font-size: 9.5px; font-weight: 650; }
+.analysis-stage .fact strong { font-size: 14.5px; }
+.analysis-stage .fact.vital strong { font-size: 18px; }
+.analysis-stage .dta-content { grid-template-columns: 48px 48px minmax(0, 1fr); gap: 6px; }
+.analysis-stage .deselected .dta-cell { opacity: .42; }
+.analysis-stage .cohort-panel { height: 118px; flex-basis: 118px; }
+.analysis-stage .cohort-panel.expanded { height: 160px; flex-basis: 160px; }
+.analysis-stage .expected-lengths { height: 34px; }
+.analysis-stage .cohort-primary-fields { height: 52px; }
+.analysis-stage .cohort-primary-fields .cohort-select small { font-size: 9.5px; }
+.analysis-stage .cohort-primary-fields .cohort-select b { font-size: 15.5px; }
+.analysis-stage .action-bar { height: 48px; flex-basis: 48px; }
+.analysis-stage .save-status,
+.analysis-stage .switch-label { font-size: 9.5px; }
+.analysis-stage .action-bar .save-close,
+.analysis-stage .action-bar .save-ready { min-height: 34px; font-size: 10.5px; }
+.analysis-stage .review-rail { display: contents; }
+.analysis-stage .review-context { grid-column: 2; grid-row: 2; }
+.analysis-stage .review-context > .notes-card,
+.analysis-stage .review-context > .recon-card { grid-column: auto; grid-row: auto; }
+.analysis-stage .brain-card {
+  min-height: 0;
+  grid-column: 3;
+  grid-row: 1 / 3;
+  align-self: stretch;
+}
+.analysis-stage .brain-card > header { height: 56px; flex-basis: 56px; }
+.analysis-stage .brain-card header .brain-heading strong { font-size: 14px; }
+.analysis-stage .brain-card header .brain-heading small { display: block; font-size: 9.5px; }
+.analysis-stage .brain-score { height: 98px; flex-basis: 98px; }
+.analysis-stage .brain-score small,
+.analysis-stage .brain-score span { font-size: 9.5px; }
+.analysis-stage .brain-score b { font-size: 12px; }
+.analysis-stage .brain-body { flex: 0 0 auto; overflow: visible; }
+.analysis-stage .brain-body .attention-list li b { font-size: 10.5px; }
+.analysis-stage .brain-body .attention-list li span,
+.analysis-stage .analysis-summary span { font-size: 9.5px; }
+.analysis-stage .brain-chat { min-height: 158px; }
+.chat-launcher { background: #465451; }
+
+@media (max-width: 1320px) {
+  .analysis-stage .brain-card { grid-column: 1 / 3; grid-row: 3; min-height: 620px; }
+}
+
 /* Decision-workspace revision: evidence stays compact while Brain gets a true working column. */
 .analysis-stage {
   min-width: 0;
