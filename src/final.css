@@ -829,3 +829,108 @@
   .analysis-stage.garment-mode .review-context { grid-column: 2; }
   .analysis-stage.garment-mode .brain-card { grid-column: 1 / 3; grid-row: 3; min-height: 620px; }
 }
+
+/* Remake-aware garment analysis. */
+.garment-mode .analysis-card { position: relative; }
+.garment-mode .garment-type-tabs { grid-template-columns: repeat(6, 82px); }
+.garment-mode .history-record-bar {
+  grid-template-columns: 155px 145px 220px;
+  justify-content: start;
+}
+.garment-mode .history-record-bar .sku-picker { width: 220px; }
+
+.scenario-controls {
+  position: absolute;
+  z-index: 5;
+  top: 49px;
+  right: 12px;
+  height: 26px;
+  padding: 2px 3px 2px 7px;
+  border: 1px solid #d8e1de;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  background: rgba(255,255,255,.96);
+  box-shadow: 0 3px 10px rgba(30,50,45,.08);
+}
+.scenario-controls > span { margin-right: 2px; color: #8b9491; font-size: 7px; font-weight: 700; text-transform: uppercase; }
+.scenario-controls button { height: 20px; padding: 0 6px; border: 0; border-radius: 999px; display: flex; align-items: center; gap: 4px; color: #7a8581; background: transparent; font-size: 7.5px; font-weight: 740; cursor: pointer; }
+.scenario-controls button i { width: 6px; height: 6px; border-radius: 50%; background: #b9c2bf; }
+.scenario-controls button.active { color: #155b50; background: #e8f4f1; }
+.scenario-controls button.active i { background: #19956b; box-shadow: 0 0 0 2px #d5eee6; }
+
+.garment-data-layout { grid-template-columns: 108px minmax(0, 1fr); }
+.garment-data-layout .garment-measurement-table { max-width: 600px; }
+.garment-data-layout .garment-measurement-table col.g-name { width: 82px; }
+.garment-data-layout .garment-measurement-table col.g-data { width: 74px; }
+.garment-data-layout .garment-measurement-table col.g-brands { width: 60px; }
+.garment-data-layout .garment-measurement-table col.g-input { width: 41px; }
+.garment-data-layout .garment-measurement-table col.g-hist { width: 48px; }
+.garment-data-layout .garment-measurement-table col.g-finish { width: 66px; }
+.garment-data-layout .garment-measurement-table col.g-notes { width: 126px; }
+.garment-data-layout .garment-body-reference > header { padding-inline: 6px; }
+.garment-data-layout .garment-body-reference > header strong { font-size: 8.5px; }
+.garment-data-layout .garment-body-reference > div > div { padding-inline: 6px 4px; }
+.garment-data-layout .garment-body-reference > div span { font-size: 7.8px; }
+.garment-data-layout .garment-body-reference > div b { width: 34px; flex-basis: 34px; font-size: 9px; }
+.garment-data-layout .garment-measurement-table th { font-size: 8.8px; }
+.garment-data-layout .garment-measurement-table th.customer-note-head {
+  padding-left: 7px;
+  color: #52625e;
+  background: #f4f7f6;
+  text-align: left;
+}
+.garment-data-layout .garment-measurement-table .cohort-data b { font-size: 9px; }
+.garment-data-layout .garment-measurement-table .cohort-data span { font-size: 6.8px; }
+.garment-data-layout .garment-input-cell input { padding-inline: 1px; font-size: 9px; }
+.garment-data-layout .garment-input-cell.alt.has-adjustment input {
+  border-color: #e2a5a0;
+  color: #9f3731;
+  background: #fff1f0;
+  font-weight: 850;
+}
+.garment-data-layout .historical-cell span { min-width: 34px; padding-inline: 2px; font-size: 9px; }
+.garment-data-layout .finish-cell { padding-inline: 4px !important; }
+.garment-data-layout .finish-cell input { font-size: 10.5px; }
+.customer-note-cell { padding: 0 6px !important; color: #9aa29f; background: #fafbfb; }
+.customer-note-cell span { display: block; overflow: hidden; font-size: 7.6px; font-weight: 560; text-overflow: ellipsis; white-space: nowrap; }
+.customer-note-cell.has-note { color: #5f4c42; background: #fff9f5; box-shadow: inset 2px 0 0 #d79c7d; }
+.customer-note-cell.has-note span { font-weight: 680; }
+
+.review-context.has-remake {
+  grid-template-rows: auto minmax(215px, 1fr) auto auto auto;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+.review-context.has-remake::-webkit-scrollbar { display: none; }
+.review-context.has-remake.without-reconfirm { grid-template-rows: auto minmax(300px, 1fr) auto auto; }
+.remake-card {
+  min-width: 0;
+  padding: 8px 9px;
+  border: 1px solid #e4c9c6 !important;
+  border-radius: 10px;
+  background: #fff !important;
+  box-shadow: var(--shadow);
+}
+.remake-card > header { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+.remake-card > header > div { min-width: 0; display: flex; align-items: center; gap: 5px; }
+.remake-icon { width: 24px; height: 24px; flex: 0 0 24px; border-radius: 6px; display: grid; place-items: center; color: #a43c36; background: #fde8e6; font-size: 14px; }
+.remake-card header strong { font-size: 10px; white-space: nowrap; }
+.remake-card header em { padding: 3px 5px; border-radius: 999px; color: #9b312c; background: #fde1df; font-size: 6.5px; font-style: normal; font-weight: 800; text-transform: uppercase; }
+.remake-card header button { width: 22px; height: 22px; padding: 0; border: 1px solid #e1e6e4; border-radius: 5px; color: #687470; background: #fff; cursor: pointer; }
+.remake-body { margin-top: 7px; padding-top: 7px; border-top: 1px solid #f0dfdd; }
+.remake-meta { display: grid; grid-template-columns: 1.2fr .85fr .9fr; gap: 5px; }
+.remake-meta span { min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.remake-meta small { color: #8b9491; font-size: 6.5px; text-transform: uppercase; }
+.remake-meta b { overflow: hidden; font-size: 8px; text-overflow: ellipsis; white-space: nowrap; }
+.remake-meta .urgent b { color: #c43f38; }
+.remake-body p { margin: 7px 0 6px; padding: 6px 7px; border-radius: 6px; color: #635c59; background: #fbf7f5; font-size: 7.6px; line-height: 1.35; }
+.remake-footer { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+.remake-footer span { min-width: 0; overflow: hidden; color: #56615e; font-size: 7.5px; font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }
+.remake-footer button { flex: 0 0 auto; padding: 0; border: 0; color: var(--teal); background: transparent; font-size: 7.5px; font-weight: 760; cursor: pointer; }
+.remake-photos .photo-thumbnails { grid-template-columns: repeat(3, 1fr); }
+
+@media (max-width: 1320px) {
+  .scenario-controls { display: none; }
+}
