@@ -422,39 +422,42 @@
 .analysis-stage .cohort-primary-fields {
   height: 70px;
   display: grid;
-  grid-template-columns: 300px minmax(0, 1fr);
-  gap: 6px;
+  grid-template-columns: 330px minmax(0, 1fr);
+  gap: 8px;
 }
 .analysis-stage .expected-lengths {
   width: auto;
   height: 70px;
   margin: 0;
-  padding: 6px 7px;
+  padding: 6px 8px;
   grid-template-columns: 1fr 1fr;
-  gap: 8px;
+  gap: 10px;
   border-color: #dce5e2;
   background: #fff;
 }
-.analysis-stage .length-stack { gap: 4px; }
-.analysis-stage .length-reference { gap: 5px; }
+.analysis-stage .length-stack { gap: 5px; }
+.analysis-stage .length-reference { gap: 6px; }
 .analysis-stage .length-reference > span {
-  width: 39px;
-  flex-basis: 39px;
+  width: 44px;
+  flex-basis: 44px;
   color: #56635f;
-  font-size: 9.5px;
-  font-weight: 720;
-}
-.analysis-stage .length-reference > div { gap: 3px; }
-.analysis-stage .length-reference b {
-  padding: 3px 2px;
-  border-radius: 5px;
   font-size: 10.5px;
+  font-weight: 760;
+}
+.analysis-stage .length-reference > div { gap: 4px; }
+.analysis-stage .length-reference b {
+  min-width: 27px;
+  padding: 4px 3px;
+  border-radius: 5px;
+  font-size: 11.5px;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
   line-height: 1;
 }
 .analysis-stage .length-reference b.average {
   color: #075f52;
   background: #dcefeb;
-  font-size: 11.5px;
+  font-size: 12.5px;
 }
 .cohort-search-controls {
   min-width: 0;
@@ -516,7 +519,7 @@
 
 /* Clear, balanced measurement-unit control. */
 .analysis-stage .unit-toggle {
-  height: 28px;
+  height: 30px;
   padding: 2px;
   border: 1px solid #d3ddda;
   border-radius: 7px;
@@ -526,16 +529,16 @@
   background: #eef2f1;
 }
 .analysis-stage .unit-toggle button {
-  width: 28px;
-  height: 22px;
+  width: 31px;
+  height: 24px;
   padding: 0;
   border: 0;
   border-radius: 5px;
   color: #7a8581;
   background: transparent;
-  font-size: 8.5px;
+  font-size: 9.5px;
   font-weight: 760;
-  line-height: 22px;
+  line-height: 24px;
   cursor: pointer;
 }
 .analysis-stage .unit-toggle button.active {
