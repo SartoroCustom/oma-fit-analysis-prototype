@@ -737,11 +737,101 @@ button { color: inherit; }
 .expected-lengths > strong { font-size: 11px; }
 .expected-lengths > strong small { font-size: 9.5px; }
 .length-reference > span { font-size: 10.5px; }
-.length-reference { flex-direction: column; align-items: flex-start; justify-content: center; gap: 2px; }
+.length-reference { flex-direction: row; align-items: center; justify-content: flex-start; gap: 6px; }
 .length-reference > div { width: 100%; }
 .length-reference b { padding-inline: 5px; font-size: 11px; }
 .length-reference b.average { font-size: 12.5px; }
 .cohort-primary-fields { height: 58px; grid-template-columns: 1.25fr 1.35fr .68fr .6fr .68fr .72fr .58fr; }
+
+/* Human review density: fixed evidence columns, flexible DTA rationale. */
+.measurement-table col.c-name { width: 116px !important; }
+.measurement-table col.c-data { width: 150px !important; }
+.measurement-table col.c-self,
+.measurement-table col.c-staff { width: 54px !important; }
+.measurement-table col.c-final { width: 60px !important; }
+.measurement-table col.c-brands { width: 112px !important; }
+.measurement-table col.c-dta { width: auto !important; }
+.measurement-name { padding-left: 8px !important; }
+.measurement-name > span { display: block; overflow: hidden; text-overflow: ellipsis; }
+.dta-content { grid-template-columns: 14px 40px 43px minmax(0, 1fr); gap: 5px; }
+.dta-select { width: 12px; height: 12px; margin: 0; accent-color: var(--teal); cursor: pointer; }
+.deselected .dta-cell { opacity: .58; }
+.measurement-table tbody tr:nth-child(even) td { background-color: #f6f8f7; }
+.measurement-table tbody tr:hover td { background-color: #eef6f3; }
+.measurement-table tbody tr:nth-child(even) .dta-value.good { background: #e4f2ee; }
+.measurement-table tbody tr:nth-child(even) .dta-value.watch { background: #fff3d7; }
+.measurement-table tbody tr:nth-child(even) .dta-value.risk { background: #fdebe8; }
+.header-apply { min-width: 82px; padding: 5px 8px; font-size: 8.5px; }
+
+/* A shorter, more legible profile instrument panel. */
+.profile-strip { height: 72px; flex-basis: 72px; }
+.profile-summary-row { height: 56px; }
+.profile-select { width: 210px; flex-basis: 210px; }
+.profile-details-toggle { width: 74px; flex-basis: 74px; }
+.profile-facts { grid-template-columns: .58fr .8fr 1.02fr .7fr .62fr .98fr .54fr .54fr .9fr .76fr .8fr .58fr .52fr .7fr; }
+.fact { margin-block: 2px; padding-block: 3px; }
+.fact small { font-size: 9px; letter-spacing: .02em; }
+.fact strong { font-size: 13.5px; }
+.fact.vital strong { font-size: 17px; }
+.fact.group-end { margin-right: 5px; border-right: 1px solid #dce5e2; border-radius: 0; }
+
+/* Cohort controls prioritize the values managers change and compare. */
+.expected-lengths { height: 38px; grid-template-columns: 100px repeat(4, minmax(0, 1fr)); gap: 8px; }
+.expected-lengths > strong { font-size: 10.5px; }
+.length-reference > span { font-size: 10px; }
+.length-reference > div { display: flex; align-items: center; gap: 3px; white-space: nowrap; }
+.length-reference b { padding: 2px 4px; font-size: 11.5px; }
+.length-reference b.average { font-size: 12.5px; }
+.cohort-primary-fields { height: 56px; grid-template-columns: 1.3fr 1.42fr .72fr .62fr .72fr .64fr .54fr; }
+.cohort-core-field > b { font-size: 21px; }
+.cohort-core-field span { font-size: 12.5px; }
+.cohort-core-field button { width: 22px; height: 22px; }
+.cohort-primary-fields .cohort-select small { font-size: 9px; }
+.cohort-primary-fields .cohort-select b { font-size: 14px; }
+.cohort-search { height: 40px; border-color: #171b1a; color: #fff; background: #171b1a; font-size: 10px; }
+.cohort-search:hover { background: #000; }
+.cohort-results { height: 40px; }
+
+/* One balanced completion cluster; the final workflow action is blue. */
+.action-bar { padding-inline: 10px; }
+.action-bar > div:last-child { gap: 8px; }
+.action-bar .save-close,
+.action-bar .save-ready { min-width: 108px; min-height: 30px; padding: 7px 14px; font-size: 9.5px; }
+.action-bar .save-ready { border-color: #1673b8; background: #1673b8; }
+.action-bar .save-ready:hover { background: #0f609c; }
+
+/* Recon reads as a concise operational outcome rather than a tiny data box. */
+.review-rail { grid-template-rows: 188px auto minmax(0, 1fr); }
+.recon-card { padding: 10px 11px; }
+.recon-card header { height: 30px; }
+.recon-card header strong { font-size: 15px; }
+.recon-icon { width: 24px; height: 24px; }
+.recon-timeline { margin-top: 7px; gap: 5px; }
+.recon-timeline span { padding: 6px 7px; border: 1px solid #e7ecea; background: #fafbfb; }
+.recon-timeline small { font-size: 9px; }
+.recon-timeline b { font-size: 11px; }
+.recon-status { padding: 6px 8px; font-size: 10px; }
+.recon-status b { font-size: 11px; }
+.recon-card ul { gap: 5px; }
+.recon-card li { padding: 5px 6px; border-radius: 5px; background: #f5f8f7; }
+.recon-card li span { font-size: 8.5px; }
+.recon-card li b { font-size: 11px; }
+
+/* One floating chat surface with AI and team modes. */
+.chat-launcher { background: linear-gradient(135deg, #5323a8, #7624c7); }
+.chat-launcher b { font-size: 10px; }
+.chat-popover { width: 360px; height: 475px; }
+.chat-popover header { height: 48px; flex-basis: 48px; }
+.chat-popover header strong { font-size: 11.5px; }
+.chat-modes { height: 42px; flex: 0 0 42px; padding: 5px; border-bottom: 1px solid var(--line); display: grid; grid-template-columns: 1fr 1fr; gap: 4px; background: #f7f9f8; }
+.chat-modes button { border: 0; border-radius: 6px; color: #66716e; background: transparent; font-size: 9.5px; font-weight: 720; cursor: pointer; }
+.chat-modes button.active { color: #fff; background: #5f2abd; }
+.chat-modes em { display: inline-grid; min-width: 16px; height: 16px; margin-left: 4px; place-items: center; border-radius: 999px; color: #5f2abd; background: #fff; font-size: 7px; font-style: normal; }
+.brain-thread { background: #faf9fd; }
+.chat-thread .brain-message { width: 100%; border-color: #e4dcf2; border-radius: 8px; background: #fff; }
+.chat-prompts { display: flex; flex-direction: column; gap: 6px; }
+.chat-prompts button { padding: 8px 9px; border: 1px solid #e2dcef; border-radius: 7px; color: #5d3a89; background: #fff; font-size: 9px; text-align: left; cursor: pointer; }
+.chat-prompts button:hover { border-color: #9c79c9; background: #f7f2fd; }
 
 @media (max-width: 1320px) {
   .topbar { grid-template-columns: minmax(350px, 1fr) 145px 125px auto; }

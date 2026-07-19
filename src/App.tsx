@@ -94,6 +94,7 @@ export default function Home() {
   const [heightTolerance, setHeightTolerance] = useState(1);
   const [weightTolerance, setWeightTolerance] = useState(5);
   const [chatOpen, setChatOpen] = useState(false);
+  const [chatMode, setChatMode] = useState<"brain" | "clickup">("brain");
   const [reconExpanded, setReconExpanded] = useState(true);
   const [brainExpanded, setBrainExpanded] = useState(true);
   const [brainInputsExpanded, setBrainInputsExpanded] = useState(false);
@@ -201,7 +202,7 @@ export default function Home() {
             </button>
             <div className="profile-facts">
               {profileItems.map(([label, value]) => (
-                <div key={label} className={`fact ${["Height", "Weight", "Age", "BMI"].includes(label) ? "vital" : ""}`}><small>{label}</small><strong>{value}</strong></div>
+                <div key={label} className={`fact ${["Height", "Weight", "Age", "BMI"].includes(label) ? "vital" : ""} ${["Torso", "Shirt"].includes(label) ? "group-end" : ""}`}><small>{label}</small><strong>{value}</strong></div>
               ))}
             </div>
             <button className="profile-details-toggle" aria-expanded={profileExpanded} onClick={() => setProfileExpanded(!profileExpanded)}>{profileExpanded ? "Hide details" : "Fit details"}<span>{profileExpanded ? "⌃" : "⌄"}</span></button>
@@ -249,7 +250,7 @@ export default function Home() {
                       <label className="select-all"><input type="checkbox" checked={allSelected} onChange={toggleAll} /><span>DTA</span></label>
                       <span className="dta-head-note">{selectedCount} of {measurements.length}</span>
                       <button className="dta-width-toggle" aria-label={dtaExpanded ? "Contract DTA notes" : "Expand DTA notes"} title={dtaExpanded ? "Contract DTA notes" : "Expand DTA notes"} onClick={() => setDtaExpanded(!dtaExpanded)}>{dtaExpanded ? "↤" : "↔"}</button>
-                      <button className="header-apply" disabled={!selectedCount} onClick={applySelected}>Apply</button>
+                      <button className="header-apply" disabled={!selectedCount} onClick={applySelected}>Apply Selected</button>
                     </th>
                   </tr>
                 </thead>
@@ -261,7 +262,7 @@ export default function Home() {
                     return (
                       <tr key={item.name} className={`${selected.has(item.name) ? "selected" : "deselected"} ${tone(item.confidence) === "risk" ? "needs-review" : ""}`}>
                         <td className="measurement-name">
-                          <label><input type="checkbox" checked={selected.has(item.name)} onChange={() => toggleSelected(item.name)} /><span>{item.name}</span></label>
+                          <span>{item.name}</span>
                         </td>
                         <td className="cohort-data"><CohortValue values={item.order} /></td>
                         <td className="cohort-data"><CohortValue values={item.brand} /></td>
@@ -272,7 +273,7 @@ export default function Home() {
                           <input aria-label={`${item.name} final measurement`} title={isDtaDifferent ? "Final differs from the DTA recommendation" : "Final measurement"} value={value} onChange={(event) => setFinals({ ...finals, [item.name]: event.target.value })} />
                         </td>
                         <td className="dta-cell" onClick={() => toggleSelected(item.name)}>
-                          <div className="dta-content"><span className={`dta-value ${tone(item.confidence)}`}>{item.dta}</span><span className={`confidence ${tone(item.confidence)}`}><i />{item.confidence}%</span><span className="rationale" title={item.rationale}>{item.rationale}</span></div>
+                          <div className="dta-content"><input className="dta-select" aria-label={`Use ${item.name} DTA value`} type="checkbox" checked={selected.has(item.name)} onClick={(event) => event.stopPropagation()} onChange={() => toggleSelected(item.name)} /><span className={`dta-value ${tone(item.confidence)}`}>{item.dta}</span><span className={`confidence ${tone(item.confidence)}`}><i />{item.confidence}%</span><span className="rationale" title={item.rationale}>{item.rationale}</span></div>
                         </td>
                       </tr>
                     );
@@ -307,9 +308,9 @@ export default function Home() {
             </section>
 
             <footer className="action-bar">
-              <div><button className="text-button">Cancel</button><button className="secondary-button">Save &amp; Close</button></div>
+              <div><button className="text-button">Cancel</button></div>
               <div className="save-status"><span className="status-dot" /> All changes saved <b>{changedCount ? `· ${changedCount} edited` : ""}</b></div>
-              <div><label className="switch-label">Include in data set <input type="checkbox" defaultChecked /><i /></label><label className="switch-label">Lock FP <input type="checkbox" /><i /></label><button className="primary-button">Save &amp; Ready</button></div>
+              <div><label className="switch-label">Include in data set <input type="checkbox" defaultChecked /><i /></label><label className="switch-label">Lock FP <input type="checkbox" /><i /></label><button className="secondary-button save-close">Save &amp; Close</button><button className="primary-button save-ready">Save &amp; Ready</button></div>
             </footer>
           </section>
 
@@ -364,16 +365,20 @@ export default function Home() {
       </section>
       </div>
 
-      <button className="chat-launcher" onClick={() => setChatOpen(!chatOpen)} aria-label="Open order chat"><span>◌</span><b>Order chat</b><em>3</em></button>
+      <button className="chat-launcher" onClick={() => setChatOpen(!chatOpen)} aria-label="Open Brain and team chat"><span>✣</span><b>Chat</b><em>3</em></button>
       {chatOpen && (
         <section className="chat-popover">
-          <header><div><strong>Order Chat</strong><span>Connected</span></div><button onClick={() => setChatOpen(false)}>×</button></header>
-          <div className="chat-thread">
+          <header><div><strong>Order Intelligence</strong><span>Connected</span></div><button onClick={() => setChatOpen(false)}>×</button></header>
+          <div className="chat-modes" role="tablist"><button className={chatMode === "brain" ? "active" : ""} onClick={() => setChatMode("brain")}>✣ OMA Brain</button><button className={chatMode === "clickup" ? "active" : ""} onClick={() => setChatMode("clickup")}>ClickUp Team <em>3</em></button></div>
+          {chatMode === "brain" ? <div className="chat-thread brain-thread">
+            <article className="brain-message"><b>OMA Brain <small>Analysis context loaded</small></b><p>Ask about any prediction, source conflict, cohort, or recommended final measurement for this profile.</p></article>
+            <div className="chat-prompts"><button>Why is shoulder 17.2?</button><button>Which values need review?</button><button>Summarize the cohort evidence</button></div>
+          </div> : <div className="chat-thread">
             <article><b>Demo Manager <small>Jul 9 · 02:23</small></b><p>Were the requested customer photos added to the fit profile?</p></article>
             <article className="reply"><b>Demo Specialist <small>Jul 11 · 17:45</small></b><p>Yes — the demo photos are attached and ready for analysis.</p></article>
             <article><b>Demo Manager <small>Jul 12 · 19:14</small></b><p>Perfect. Please complete the final fit review before moving the order to Ready.</p></article>
-          </div>
-          <footer><input placeholder="Type a message…" /><button>Send</button></footer>
+          </div>}
+          <footer><input placeholder={chatMode === "brain" ? "Ask OMA Brain…" : "Message the ClickUp team…"} /><button>Send</button></footer>
         </section>
       )}
       {toast && <div className="toast">✓ {toast}</div>}
