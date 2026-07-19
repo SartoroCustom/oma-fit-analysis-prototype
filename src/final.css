@@ -135,6 +135,7 @@
 .assignee-button small { align-self: end; color: #8a9491; font-size: 7px; text-align: left; }
 .assignee-button strong { align-self: start; font-size: 9.5px; text-align: left; white-space: nowrap; }
 .assignee-button > b { grid-column: 3; grid-row: 1 / 3; color: #7b8582; font-size: 9px; }
+.topbar { width: calc(100% - 54px); margin-left: 54px; }
 @media (max-width: 1500px) {
   .collaboration-note { display: none; }
   .topbar { grid-template-columns: minmax(400px, 1fr) 140px 120px minmax(286px, auto); gap: 9px; }
