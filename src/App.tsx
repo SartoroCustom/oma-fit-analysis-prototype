@@ -43,11 +43,13 @@ type GarmentType = "jacket" | "pants" | "shirt" | "vest" | "coat" | "shorts";
 
 type GarmentMeasurement = {
   name: string;
+  bodyName: string;
   body: string;
   mg: string;
   alt: string;
   hist: string;
   finish: string;
+  note: string;
   order: [string, string, string];
   brand: [string, string, string];
   labels: [string, string];
@@ -55,15 +57,17 @@ type GarmentMeasurement = {
 
 const bodyFinalMap = Object.fromEntries(bodyMeasurements.map((item) => [item.name, item.final]));
 
-function garmentRow(name: string, bodyName: string, finish: number, options: Partial<Pick<GarmentMeasurement, "mg" | "alt" | "hist">> = {}): GarmentMeasurement {
+function garmentRow(name: string, bodyName: string, finish: number, options: Partial<Pick<GarmentMeasurement, "mg" | "alt" | "hist" | "note">> = {}): GarmentMeasurement {
   const average = finish.toFixed(1);
   return {
     name,
+    bodyName,
     body: bodyName ? (bodyFinalMap[bodyName] ?? "—") : "—",
     mg: options.mg ?? "",
     alt: options.alt ?? "",
     hist: options.hist ?? (finish - .1).toFixed(1),
     finish: average,
+    note: options.note ?? "",
     order: [(finish - .6).toFixed(1), average, (finish + .6).toFixed(1)],
     brand: [(finish - .5).toFixed(1), (finish + .1).toFixed(1), (finish + .7).toFixed(1)],
     labels: [(finish - .2).toFixed(1), (finish + .2).toFixed(1)],
@@ -72,21 +76,21 @@ function garmentRow(name: string, bodyName: string, finish: number, options: Par
 
 const garmentMeasurements: Record<GarmentType, GarmentMeasurement[]> = {
   jacket: [
-    garmentRow("Neck", "Neck", 17.4), garmentRow("Chest", "Chest", 43.5, { mg: "43.4" }), garmentRow("Upper Waist", "Upper Waist", 39.0), garmentRow("Belly", "Belly", 40.0),
+    garmentRow("Neck", "Neck", 17.4), garmentRow("Chest", "Chest", 43.5, { mg: "43.4", note: "Chest fit felt good." }), garmentRow("Upper Waist", "Upper Waist", 39.0), garmentRow("Belly", "Belly", 40.0),
     garmentRow("Hips / Seat", "Hips", 44.5), garmentRow("Shoulder", "Shoulder", 18.2, { hist: "18.1" }), garmentRow("Arm Length", "Arm Length", 26.0), garmentRow("Bicep", "Bicep", 15.5),
-    garmentRow("Forearm", "Forearm", 13.0), garmentRow("Wrist / Cuff", "Wrist", 10.5), garmentRow("Stance", "", 17.0), garmentRow("Front Length", "Jacket Front", 32.0),
-    garmentRow("Back Length", "Jacket Back", 31.5), garmentRow("Left Sleeve", "Arm Length", 26.0), garmentRow("Right Sleeve", "Arm Length", 26.0), garmentRow("Upper Back", "Shoulder", 18.8),
+    garmentRow("Forearm", "Forearm", 13.0, { alt: "−0.3", note: "Sleeves felt full below elbow." }), garmentRow("Wrist / Cuff", "Wrist", 10.5), garmentRow("Stance", "", 17.0), garmentRow("Front Length", "Jacket Front", 32.0),
+    garmentRow("Back Length", "Jacket Back", 31.5), garmentRow("Left Sleeve", "Arm Length", 26.0, { alt: "−1.0", note: "Sleeve was too long." }), garmentRow("Right Sleeve", "Arm Length", 26.0, { alt: "−1.0", note: "Match left sleeve adjustment." }), garmentRow("Upper Back", "Shoulder", 18.8),
     garmentRow("Center Back", "Jacket Back", 31.5), garmentRow("Lower Back", "Beltline", 20.0), garmentRow("Jacket Base", "Hips", 45.0), garmentRow("Button Position", "", 18.5),
   ],
   pants: [
-    garmentRow("Waistband", "Beltline", 36.0), garmentRow("Seat", "Hips", 44.0), garmentRow("Front Rise", "Crotch", 10.8), garmentRow("Back Rise", "Crotch", 15.7),
+    garmentRow("Waistband", "Beltline", 36.0, { alt: "+0.5", note: "Waist felt snug when seated." }), garmentRow("Seat", "Hips", 44.0), garmentRow("Front Rise", "Crotch", 10.8), garmentRow("Back Rise", "Crotch", 15.7),
     garmentRow("Thigh", "Thigh", 25.0), garmentRow("Knee", "", 18.0), garmentRow("Calf", "Calf", 17.2), garmentRow("Leg Opening", "", 15.5),
-    garmentRow("Outseam", "Outseam", 42.4), garmentRow("Inseam", "Inseam", 31.4), garmentRow("Waistband Height", "", 1.6), garmentRow("Fly Length", "", 7.2),
+    garmentRow("Outseam", "Outseam", 42.4), garmentRow("Inseam", "Inseam", 31.4, { alt: "−0.5", note: "Trouser break was too long." }), garmentRow("Waistband Height", "", 1.6), garmentRow("Fly Length", "", 7.2),
     garmentRow("Front Pocket", "", 6.5), garmentRow("Back Pocket", "", 5.5),
   ],
   shirt: [
     garmentRow("Collar", "Neck", 16.0), garmentRow("Chest", "Chest", 44.0), garmentRow("Waist", "Upper Waist", 40.0), garmentRow("Seat", "Hips", 44.5),
-    garmentRow("Shoulder", "Shoulder", 18.4), garmentRow("Sleeve Left", "Arm Length", 36.0), garmentRow("Sleeve Right", "Arm Length", 36.0), garmentRow("Bicep", "Bicep", 16.0),
+    garmentRow("Shoulder", "Shoulder", 18.4), garmentRow("Sleeve Left", "Arm Length", 36.0, { alt: "−0.5", note: "Cuff covered too much of hand." }), garmentRow("Sleeve Right", "Arm Length", 36.0, { alt: "−0.5" }), garmentRow("Bicep", "Bicep", 16.0),
     garmentRow("Forearm", "Forearm", 13.5), garmentRow("Cuff Left", "Wrist", 9.2), garmentRow("Cuff Right", "Wrist", 9.2), garmentRow("Front Length", "Jacket Front", 31.5),
     garmentRow("Back Length", "Jacket Back", 32.0), garmentRow("Yoke", "Shoulder", 18.5), garmentRow("Armhole", "Armscye", 21.5),
   ],
@@ -175,6 +179,9 @@ export default function Home() {
   const [heightTolerance, setHeightTolerance] = useState(1);
   const [weightTolerance, setWeightTolerance] = useState(5);
   const [reconExpanded, setReconExpanded] = useState(true);
+  const [showReconfirm, setShowReconfirm] = useState(true);
+  const [showRemake, setShowRemake] = useState(true);
+  const [remakeExpanded, setRemakeExpanded] = useState(true);
   const [intelligenceTab, setIntelligenceTab] = useState<"brain" | "clickup">("brain");
   const [notesExpanded, setNotesExpanded] = useState(false);
   const [printNotesExpanded, setPrintNotesExpanded] = useState(false);
@@ -411,17 +418,22 @@ export default function Home() {
                   <label className="sku-picker"><span>Garment / SKU</span><select aria-label="Historical garment SKU" value={historicalSku} onChange={(event) => setHistoricalSku(event.target.value)}>{garmentSkuOptions[activeGarment].map((sku) => <option key={sku}>{sku}</option>)}</select></label>
                   <div className="record-loaded"><i />QC measurements loaded</div>
                 </div>
+                <div className="scenario-controls" aria-label="Prototype scenario controls">
+                  <span>Demo</span>
+                  <button className={showRemake ? "active" : ""} aria-pressed={showRemake} onClick={() => setShowRemake(!showRemake)}><i />Remake</button>
+                  <button className={showReconfirm ? "active" : ""} aria-pressed={showReconfirm} onClick={() => setShowReconfirm(!showReconfirm)}><i />Reconfirm</button>
+                </div>
               </section>
 
               <div className="garment-data-layout">
                 <aside className="garment-body-reference" aria-label="Body final measurements">
                   <header><strong>Body Data</strong><span>Final</span></header>
-                  <div>{bodyMeasurements.map((item) => <div key={item.name}><span>{item.name}</span><b>{finals[item.name] ?? item.final}</b></div>)}</div>
+                  <div style={{ gridTemplateRows: `repeat(${garmentMeasurements[activeGarment].length}, minmax(0, 1fr))` }}>{garmentMeasurements[activeGarment].map((item) => <div key={item.name}><span>{item.bodyName}</span><b>{item.bodyName ? (finals[item.bodyName] ?? item.body) : "—"}</b></div>)}</div>
                 </aside>
                 <div className="garment-table-wrap">
                 <table className={`garment-measurement-table ${showBrandMeasurements ? "with-brands" : "without-brands"}`}>
-                  <colgroup><col className="g-name" /><col className="g-data" /><col className="g-data" />{showBrandMeasurements && <col className="g-brands" />}<col className="g-input" /><col className="g-input" /><col className="g-hist" /><col className="g-finish" /></colgroup>
-                  <thead><tr><th>Measurement</th><th>Brand Data</th><th>Order Data</th>{showBrandMeasurements && <th>Brands<small>SUSU · AOS</small></th>}<th>MG</th><th>ALT</th><th>HIST<small>QC record</small></th><th className="finish-head">Finish</th></tr></thead>
+                  <colgroup><col className="g-name" /><col className="g-data" /><col className="g-data" />{showBrandMeasurements && <col className="g-brands" />}<col className="g-input" /><col className="g-input" /><col className="g-hist" /><col className="g-finish" /><col className="g-notes" /></colgroup>
+                  <thead><tr><th>Measurement</th><th>Brand Data</th><th>Order Data</th>{showBrandMeasurements && <th>Brands<small>SUSU · AOS</small></th>}<th>MG</th><th>ALT</th><th>HIST<small>QC record</small></th><th className="finish-head">Finish</th><th className="customer-note-head">Customer Notes</th></tr></thead>
                   <tbody>{garmentMeasurements[activeGarment].map((item) => {
                     const key = `${activeGarment}:${item.name}`;
                     const historyOffset = historicalOrder.startsWith("#6041") ? 0 : historicalOrder.startsWith("#5718") ? -.2 : .2;
@@ -433,9 +445,10 @@ export default function Home() {
                       <td className="cohort-data"><CohortValue values={item.order} /></td>
                       {showBrandMeasurements && <td className="double"><span>{item.labels[0]}</span><span>{item.labels[1]}</span></td>}
                       <td className="garment-input-cell mg"><input aria-label={`${item.name} MG measurement`} placeholder="—" value={garmentInputs[`${key}:mg`] ?? item.mg} onChange={(event) => setGarmentInputs((current) => ({ ...current, [`${key}:mg`]: event.target.value }))} /></td>
-                      <td className="garment-input-cell alt"><input aria-label={`${item.name} alteration`} placeholder="—" value={garmentInputs[`${key}:alt`] ?? item.alt} onChange={(event) => setGarmentInputs((current) => ({ ...current, [`${key}:alt`]: event.target.value }))} /></td>
+                      <td className={`garment-input-cell alt ${showRemake && item.alt ? "has-adjustment" : ""}`}><input aria-label={`${item.name} alteration`} placeholder="—" value={garmentInputs[`${key}:alt`] ?? (showRemake ? item.alt : "")} onChange={(event) => setGarmentInputs((current) => ({ ...current, [`${key}:alt`]: event.target.value }))} /></td>
                       <td className="historical-cell" title={`${historicalOrder} · ${historicalSku}`}><span>{historicalValue}</span></td>
                       <td className={`finish-cell ${finishValue !== item.finish ? "changed" : ""}`}><input aria-label={`${item.name} finished garment measurement`} value={finishValue} onChange={(event) => setGarmentFinishes((current) => ({ ...current, [key]: event.target.value }))} /></td>
+                      <td className={`customer-note-cell ${showRemake && item.note ? "has-note" : ""}`} title={showRemake ? item.note : ""}><span>{showRemake && item.note ? item.note : "—"}</span></td>
                     </tr>;
                   })}</tbody>
                 </table>
@@ -476,11 +489,20 @@ export default function Home() {
           </section>
 
           <aside className="review-rail">
-            <div className="review-context">
-              <section className={`photo-card photo-${photo}`} aria-label="Customer photos">
-                <div className="photo-top"><span>5 photos</span><button aria-label="Open full-screen photo">⛶</button></div>
+            <div className={`review-context ${tab === "garment" && showRemake ? "has-remake" : ""} ${tab === "garment" && !showReconfirm ? "without-reconfirm" : ""}`}>
+              {tab === "garment" && showRemake && <section className={`remake-card ${remakeExpanded ? "expanded" : "collapsed"}`}>
+                <header><div><span className="remake-icon">↺</span><strong>Remake Request</strong><em>Submitted</em></div><button aria-label={remakeExpanded ? "Collapse remake request" : "Expand remake request"} onClick={() => setRemakeExpanded(!remakeExpanded)}>{remakeExpanded ? "⌃" : "⌄"}</button></header>
+                {remakeExpanded && <div className="remake-body">
+                  <div className="remake-meta"><span><small>Submitted</small><b>Jul 3 · 3:15 PM</b></span><span className="urgent"><small>Ship speed</small><b>Rush ($70)</b></span><span className="urgent"><small>Ship by</small><b>Jul 6, 2025</b></span></div>
+                  <p>Attending a wedding in 10 days. Sleeves were too long and expensive to alter locally.</p>
+                  <div className="remake-footer"><span>Jacket · Pants · Vest · 2 Shirts</span><button>View order →</button></div>
+                </div>}
+              </section>}
+
+              <section className={`photo-card photo-${photo} ${tab === "garment" && showRemake ? "remake-photos" : ""}`} aria-label={tab === "garment" && showRemake ? "Remake photos" : "Customer photos"}>
+                <div className="photo-top"><span>{tab === "garment" && showRemake ? "3 remake photos" : "5 photos"}</span><button aria-label="Open full-screen photo">⛶</button></div>
                 <div className="photo-thumbnails">
-                  {[0, 1, 2, 3, 4].map((item) => <button key={item} className={photo === item ? "active" : ""} onClick={() => setPhoto(item)} aria-label={`View customer photo ${item + 1}`}><span /></button>)}
+                  {(tab === "garment" && showRemake ? [0, 1, 2] : [0, 1, 2, 3, 4]).map((item) => <button key={item} className={photo === item ? "active" : ""} onClick={() => setPhoto(item)} aria-label={`View ${tab === "garment" && showRemake ? "remake" : "customer"} photo ${item + 1}`}><span /></button>)}
                 </div>
               </section>
 
@@ -497,12 +519,12 @@ export default function Home() {
                 {printNotesExpanded && <div className="print-notes-editor"><textarea aria-label="Notes printed with the order" placeholder="Add a note for the tailor or production team…" value={printSheetNotes} onChange={(event) => setPrintSheetNotes(event.target.value)} /><div><small>Printed with the production sheet</small><button onClick={() => { setToast("Print sheet note saved"); setTimeout(() => setToast(""), 2200); }}>Save note</button></div></div>}
               </section>
 
-              <section className={`recon-card ${reconExpanded ? "expanded" : "collapsed"}`}>
+              {(tab === "body" || showReconfirm) && <section className={`recon-card ${reconExpanded ? "expanded" : "collapsed"}`}>
                 <header><div><span className="recon-icon">↻</span><strong>Recon</strong><em>10</em></div><b>Required</b><button aria-label={reconExpanded ? "Collapse reconfirm details" : "Expand reconfirm details"} onClick={() => setReconExpanded(!reconExpanded)}>{reconExpanded ? "⌃" : "⌄"}</button></header>
                 {reconExpanded && <><div className="recon-timeline"><span><small>Sent out</small><b>Jul 10 · 10:39</b></span><span><small>Received</small><b>Jul 16 · 11:35</b></span><span><small>Impact</small><b>None</b></span></div>
                 <div className="recon-status"><span>Delivery timing</span><b>✓ Okay</b></div>
                 <ul><li><span>Core inputs</span><b>No change</b></li><li><span>Available jacket</span><b className="missing">None</b></li><li><span>Profile photos</span><b>Provided</b></li></ul></>}
-              </section>
+              </section>}
             </div>
 
             <section className="brain-card intelligence-card">
