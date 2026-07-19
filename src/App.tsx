@@ -85,9 +85,22 @@ function ClickUpLogo() {
   return <svg className="intelligence-logo clickup-logo" viewBox="0 0 22 20" aria-hidden="true"><path d="M4 7.7 11 2l7 5.7-2.4 2.8L11 6.8l-4.6 3.7L4 7.7Z" fill="#ff5ac8"/><path d="M4.7 12.1 7.6 10c.9 1.3 2 2 3.4 2s2.5-.7 3.4-2l2.9 2.1C15.8 14.7 13.7 16 11 16s-4.8-1.3-6.3-3.9Z" fill="#7b38e8"/></svg>;
 }
 
-function CohortValue({ values }: { values: [string, string, string] }) {
+function CohortValue({ values, compact = false }: { values: [string, string, string]; compact?: boolean }) {
   if (values.every((value) => value === "—")) return <span className="no-cohort-data">—</span>;
-  return <><b>{values[1]}</b><span>({values[0]}–{values[2]})</span></>;
+  return <><b>{values[1]}</b>{!compact && <span>({values[0]}–{values[2]})</span>}</>;
+}
+
+function finalRangeStatus(value: string, order: [string, string, string]) {
+  const finalValue = Number.parseFloat(value);
+  const low = Number.parseFloat(order[0]);
+  const high = Number.parseFloat(order[2]);
+  if (![finalValue, low, high].every(Number.isFinite) || finalValue === 0) return null;
+  const boundary = finalValue < low ? low : finalValue > high ? high : null;
+  if (boundary === null) return null;
+  const deviation = Math.abs(finalValue - boundary) / boundary;
+  if (deviation >= .03) return "risk";
+  if (deviation >= .015) return "watch";
+  return null;
 }
 
 export default function Home() {
@@ -104,6 +117,8 @@ export default function Home() {
   const [reconExpanded, setReconExpanded] = useState(true);
   const [intelligenceTab, setIntelligenceTab] = useState<"brain" | "clickup">("brain");
   const [notesExpanded, setNotesExpanded] = useState(false);
+  const [printNotesExpanded, setPrintNotesExpanded] = useState(false);
+  const [printSheetNotes, setPrintSheetNotes] = useState("");
   const [cohortExpanded, setCohortExpanded] = useState(false);
   const [dtaExpanded, setDtaExpanded] = useState(false);
   const [photo, setPhoto] = useState(0);
@@ -143,6 +158,11 @@ export default function Home() {
 
   function updateSource(name: string, source: "sm" | "staff", value: string) {
     setSourceValues((current) => ({ ...current, [`${tab}:${name}:${source}`]: value }));
+  }
+
+  function runDta() {
+    setToast("OMA Brain DTA analysis refreshed");
+    setTimeout(() => setToast(""), 2400);
   }
 
   return (
@@ -240,8 +260,8 @@ export default function Home() {
                 <thead>
                   <tr>
                     <th>Measurement</th>
-                    <th>Brand Data</th>
-                    <th>Order Data</th>
+                    <th>{dtaExpanded ? "Brand" : "Brand Data"}</th>
+                    <th>{dtaExpanded ? "Order" : "Order Data"}</th>
                     {showBrandMeasurements && <th>Brand Measurements <small>SUSU · AOS</small></th>}
                     <th>SM</th>
                     {showStaff && <th><span>Staff</span><small>Measured</small></th>}
@@ -251,6 +271,7 @@ export default function Home() {
                       {!allSelected && <button className="select-all-action" onClick={toggleAll}>Select all</button>}
                       <button className="header-apply" disabled={!selectedCount} onClick={applySelected}>Apply Selected</button>
                       <button className="dta-width-toggle" aria-label={dtaExpanded ? "Restore standard DTA width" : "Give DTA more width"} title={dtaExpanded ? "Restore standard DTA width" : "Give DTA more width"} onClick={() => setDtaExpanded(!dtaExpanded)}>{dtaExpanded ? "↤" : "↔"}</button>
+                      <button className="dta-run-button" onClick={runDta}>Run</button>
                     </th>
                   </tr>
                 </thead>
@@ -259,18 +280,20 @@ export default function Home() {
                     const value = finals[item.name] ?? item.final;
                     const isChanged = value !== item.final;
                     const isDtaDifferent = item.dta !== item.final;
+                    const rangeStatus = finalRangeStatus(value, item.order);
+                    const rangeMessage = rangeStatus === "risk" ? "Final is materially outside the historical Order range" : rangeStatus === "watch" ? "Final is outside the historical Order range" : isDtaDifferent ? "Final differs from the DTA recommendation" : "Final measurement";
                     return (
                       <tr key={item.name} className={`${selected.has(item.name) ? "selected" : "deselected"} ${tone(item.confidence) === "risk" ? "needs-review" : ""}`}>
                         <td className="measurement-name">
                           <span>{item.name}</span>
                         </td>
-                        <td className="cohort-data"><CohortValue values={item.brand} /></td>
-                        <td className="cohort-data"><CohortValue values={item.order} /></td>
+                        <td className="cohort-data"><CohortValue values={item.brand} compact={dtaExpanded} /></td>
+                        <td className="cohort-data"><CohortValue values={item.order} compact={dtaExpanded} /></td>
                         {showBrandMeasurements && <td className="double"><span>{item.labels[0]}</span><span>{item.labels[1]}</span></td>}
                         <td className="source-input-cell sm"><input aria-label={`${item.name} self measurement`} placeholder="—" value={sourceValues[`${tab}:${item.name}:sm`] ?? (item.sm === "—" ? "" : item.sm)} onChange={(event) => updateSource(item.name, "sm", event.target.value)} /></td>
                         {showStaff && <td className="source-input-cell staff"><input aria-label={`${item.name} staff measurement`} placeholder="—" value={sourceValues[`${tab}:${item.name}:staff`] ?? (item.staff === "—" ? "" : item.staff)} onChange={(event) => updateSource(item.name, "staff", event.target.value)} /></td>}
-                        <td className={`final-cell ${isDtaDifferent ? "decision" : ""} ${isChanged ? "changed" : ""}`}>
-                          <input aria-label={`${item.name} final measurement`} title={isDtaDifferent ? "Final differs from the DTA recommendation" : "Final measurement"} value={value} onChange={(event) => setFinals({ ...finals, [item.name]: event.target.value })} />
+                        <td className={`final-cell ${isDtaDifferent ? "decision" : ""} ${isChanged ? "changed" : ""} ${rangeStatus ? `range-${rangeStatus}` : ""}`}>
+                          <input aria-label={`${item.name} final measurement`} title={rangeMessage} value={value} onChange={(event) => setFinals({ ...finals, [item.name]: event.target.value })} />
                         </td>
                         <td className="dta-cell">
                           <div className="dta-content"><button className={`dta-value ${tone(item.confidence)}`} aria-label={`${selected.has(item.name) ? "Exclude" : "Include"} ${item.name} DTA value ${item.dta}`} aria-pressed={selected.has(item.name)} onClick={() => toggleSelected(item.name)}>{item.dta}</button><span className={`confidence ${tone(item.confidence)}`}><i />{item.confidence}%</span><span className="rationale" title={item.rationale}>{item.rationale}</span></div>
@@ -329,6 +352,11 @@ export default function Home() {
                 <button className="view-notes">View all notes →</button></>}
               </section>
 
+              <section className={`print-notes-card ${printNotesExpanded ? "expanded" : "collapsed"}`}>
+                <header><div><span className="print-note-icon">▤</span><strong>Print Sheet Notes</strong></div><button className="notes-toggle" aria-label={printNotesExpanded ? "Collapse print sheet notes" : "Expand print sheet notes"} onClick={() => setPrintNotesExpanded(!printNotesExpanded)}>{printNotesExpanded ? "⌃" : "⌄"}</button></header>
+                {printNotesExpanded && <div className="print-notes-editor"><textarea aria-label="Notes printed with the order" placeholder="Add a note for the tailor or production team…" value={printSheetNotes} onChange={(event) => setPrintSheetNotes(event.target.value)} /><div><small>Printed with the production sheet</small><button onClick={() => { setToast("Print sheet note saved"); setTimeout(() => setToast(""), 2200); }}>Save note</button></div></div>}
+              </section>
+
               <section className={`recon-card ${reconExpanded ? "expanded" : "collapsed"}`}>
                 <header><div><span className="recon-icon">↻</span><strong>Recon</strong><em>10</em></div><b>Required</b><button aria-label={reconExpanded ? "Collapse reconfirm details" : "Expand reconfirm details"} onClick={() => setReconExpanded(!reconExpanded)}>{reconExpanded ? "⌃" : "⌄"}</button></header>
                 {reconExpanded && <><div className="recon-timeline"><span><small>Sent out</small><b>Jul 10 · 10:39</b></span><span><small>Received</small><b>Jul 16 · 11:35</b></span><span><small>Impact</small><b>None</b></span></div>
@@ -343,7 +371,6 @@ export default function Home() {
                   <button className={intelligenceTab === "brain" ? "active" : ""} role="tab" aria-selected={intelligenceTab === "brain"} onClick={() => setIntelligenceTab("brain")}><BrainLogo /><b>OMA Brain</b></button>
                   <button className={intelligenceTab === "clickup" ? "active" : ""} role="tab" aria-selected={intelligenceTab === "clickup"} onClick={() => setIntelligenceTab("clickup")}><ClickUpLogo /><b>ClickUp</b><em>3</em></button>
                 </div>
-                {intelligenceTab === "brain" && <button className="run-button">Run Again</button>}
                 {intelligenceTab === "clickup" && <span className="connected-status">Connected</span>}
               </header>
 
