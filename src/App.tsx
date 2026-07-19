@@ -114,15 +114,6 @@ const garmentSkuOptions: Record<GarmentType, string[]> = {
   shirt: ["SHT-15.5/36 · White Poplin", "SHT-15.5/36 · Blue Twill"], vest: ["VST-40L · Navy Hopsack"], coat: ["COT-40L · Camel Wool"], shorts: ["SHR-34 · Stone Cotton"],
 };
 
-const garmentBodyReferences: Record<GarmentType, string[]> = {
-  jacket: ["Neck", "Chest", "Upper Waist", "Belly", "Shoulder", "Arm Length", "Armscye", "Bicep", "Forearm", "Wrist", "Jacket Front", "Jacket Back", "Beltline", "Hips"],
-  pants: ["Upper Waist", "Belly", "Beltline", "Hips", "Crotch", "Thigh", "Thigh Height", "Calf", "Inseam", "Outseam"],
-  shirt: ["Neck", "Chest", "Upper Waist", "Belly", "Shoulder", "Arm Length", "Armscye", "Bicep", "Forearm", "Wrist", "Jacket Front", "Jacket Back", "Hips"],
-  vest: ["Chest", "Upper Waist", "Belly", "Shoulder", "Armscye", "Jacket Front", "Jacket Back", "Beltline", "Hips"],
-  coat: ["Neck", "Chest", "Upper Waist", "Belly", "Shoulder", "Arm Length", "Armscye", "Bicep", "Wrist", "Jacket Front", "Jacket Back", "Hips"],
-  shorts: ["Upper Waist", "Belly", "Beltline", "Hips", "Crotch", "Thigh", "Thigh Height", "Outseam"],
-};
-
 const profileItems = [
   ["Sex", "Male"], ["Height", "6'3\""], ["Weight", "185 lbs"], ["Age", "26"],
   ["BMI", "23.1"], ["Torso", "Rectangle"], ["Jacket", "40"], ["Pants", "34"],
@@ -422,10 +413,15 @@ export default function Home() {
                 </div>
               </section>
 
-              <div className="garment-table-wrap">
+              <div className="garment-data-layout">
+                <aside className="garment-body-reference" aria-label="Body final measurements">
+                  <header><strong>Body Data</strong><span>Final</span></header>
+                  <div>{bodyMeasurements.map((item) => <div key={item.name}><span>{item.name}</span><b>{finals[item.name] ?? item.final}</b></div>)}</div>
+                </aside>
+                <div className="garment-table-wrap">
                 <table className={`garment-measurement-table ${showBrandMeasurements ? "with-brands" : "without-brands"}`}>
-                  <colgroup><col className="g-name" /><col className="g-body" /><col className="g-data" /><col className="g-data" />{showBrandMeasurements && <col className="g-brands" />}<col className="g-input" /><col className="g-input" /><col className="g-hist" /><col className="g-finish" /></colgroup>
-                  <thead><tr><th>Measurement</th><th>Body Final</th><th>Brand Data</th><th>Order Data</th>{showBrandMeasurements && <th>Brands<small>SUSU · AOS</small></th>}<th>MG</th><th>ALT</th><th>HIST<small>QC record</small></th><th className="finish-head">Finish</th></tr></thead>
+                  <colgroup><col className="g-name" /><col className="g-data" /><col className="g-data" />{showBrandMeasurements && <col className="g-brands" />}<col className="g-input" /><col className="g-input" /><col className="g-hist" /><col className="g-finish" /></colgroup>
+                  <thead><tr><th>Measurement</th><th>Brand Data</th><th>Order Data</th>{showBrandMeasurements && <th>Brands<small>SUSU · AOS</small></th>}<th>MG</th><th>ALT</th><th>HIST<small>QC record</small></th><th className="finish-head">Finish</th></tr></thead>
                   <tbody>{garmentMeasurements[activeGarment].map((item) => {
                     const key = `${activeGarment}:${item.name}`;
                     const historyOffset = historicalOrder.startsWith("#6041") ? 0 : historicalOrder.startsWith("#5718") ? -.2 : .2;
@@ -433,7 +429,6 @@ export default function Home() {
                     const finishValue = garmentFinishes[key] ?? item.finish;
                     return <tr key={item.name}>
                       <td className="garment-measurement-name">{item.name}</td>
-                      <td className="body-final-cell"><span>{item.body}</span></td>
                       <td className="cohort-data"><CohortValue values={item.brand} /></td>
                       <td className="cohort-data"><CohortValue values={item.order} /></td>
                       {showBrandMeasurements && <td className="double"><span>{item.labels[0]}</span><span>{item.labels[1]}</span></td>}
@@ -444,7 +439,33 @@ export default function Home() {
                     </tr>;
                   })}</tbody>
                 </table>
+                </div>
               </div>
+
+              <section className={`cohort-panel ${cohortExpanded ? "expanded" : ""}`}>
+                <div className="cohort-title"><strong>Reference Cohort Search</strong><button className="cohort-results" aria-label="106 matching profiles"><span><i />106</span><em>⌄</em></button><button onClick={() => setCohortExpanded(!cohortExpanded)}>{cohortExpanded ? "Fewer filters" : "More filters"}<i>{cohortExpanded ? "⌃" : "⌄"}</i></button><button>Reset</button></div>
+                <div className="cohort-primary-fields">
+                  <div className="expected-lengths" aria-label="Expected length references for this height">
+                    {[[["Jacket", ["31.0", "32.0", "33.0"]], ["Sleeve", ["25.5", "26.5", "27.5"]]], [["Outseam", ["41.0", "41.7", "42.4"]], ["Inseam", ["30.9", "31.4", "31.9"]]]].map((group, groupIndex) => (
+                      <div className="length-stack" key={groupIndex}>{group.map(([label, values]) => <div className="length-reference" key={label as string}><span>{label as string}</span><div>{(values as string[]).map((value, index) => <b className={index === 1 ? "average" : ""} key={value}>{value}</b>)}</div></div>)}</div>
+                    ))}
+                  </div>
+                  <div className="cohort-search-controls">
+                    <div className="cohort-core-row">
+                      <div className="cohort-core-field" aria-label={`Height 75 inches, plus or minus ${heightTolerance} inches`}><b>75<small>in</small></b><div><button aria-label="Decrease height tolerance" onClick={() => setHeightTolerance(Math.max(1, heightTolerance - 1))}>−</button><span>± {heightTolerance} in</span><button aria-label="Increase height tolerance" onClick={() => setHeightTolerance(heightTolerance + 1)}>+</button></div></div>
+                      <div className="cohort-core-field" aria-label={`Weight 185 pounds, plus or minus ${weightTolerance} pounds`}><b>185<small>lb</small></b><div><button aria-label="Decrease weight tolerance" onClick={() => setWeightTolerance(Math.max(5, weightTolerance - 5))}>−</button><span>± {weightTolerance} lb</span><button aria-label="Increase weight tolerance" onClick={() => setWeightTolerance(weightTolerance + 5)}>+</button></div></div>
+                    </div>
+                    <div className="cohort-filter-row">
+                      {[["Jacket", "40"], ["Length", "L"], ["Pants", "34"]].map(([label, value]) => <button className="cohort-select" key={label}><small>{label}</small><b>{value}</b><span>⌄</span></button>)}
+                      <button className="cohort-search" onClick={() => { setToast("Reference cohort updated"); setTimeout(() => setToast(""), 2200); }}>⌕ Search</button>
+                    </div>
+                  </div>
+                </div>
+                {cohortExpanded && <div className="cohort-secondary-fields">
+                  {[["Fit Pref.", "Modern"], ["Shoulder", "Average"], ["Arms", "Long"], ["Rise", "Mid"], ["Seat", "Average"]].map(([label, value]) => <button className="cohort-select" key={label}><small>{label}</small><b>{value}</b><span>⌄</span></button>)}
+                  <span className="cohort-summary">Advanced filters refine the same historical cohort.</span>
+                </div>}
+              </section>
             </>}
 
             <footer className="action-bar">
@@ -454,7 +475,7 @@ export default function Home() {
             </footer>
           </section>
 
-          {tab === "body" ? <aside className="review-rail">
+          <aside className="review-rail">
             <div className="review-context">
               <section className={`photo-card photo-${photo}`} aria-label="Customer photos">
                 <div className="photo-top"><span>5 photos</span><button aria-label="Open full-screen photo">⛶</button></div>
@@ -525,17 +546,7 @@ export default function Home() {
                 <div className="team-chat-input"><input aria-label="Message the ClickUp team" placeholder="Message the ClickUp team…" /><button>Send</button></div>
               </div>}
             </section>
-          </aside> : <aside className="garment-reference-rail">
-            <header><div><span>↔</span><div><strong>Body Final Reference</strong><small>Current approved fit-profile measurements</small></div></div><em>{garmentTypeLabels[activeGarment]} relevant</em></header>
-            <div className="body-reference-list">
-              {bodyMeasurements.map((item) => {
-                const isRelevant = garmentBodyReferences[activeGarment].includes(item.name);
-                const currentValue = finals[item.name] ?? item.final;
-                return <div key={item.name} className={isRelevant ? "relevant" : ""}><span>{item.name}</span><b>{currentValue}</b></div>;
-              })}
-            </div>
-            <footer><span><i />Highlighted values feed this {garmentTypeLabels[activeGarment].toLowerCase()} view</span><button onClick={() => changeTab("body")}>Review body finals →</button></footer>
-          </aside>}
+          </aside>
         </section>
       </section>
       </div>
