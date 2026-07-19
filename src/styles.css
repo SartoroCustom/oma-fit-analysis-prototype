@@ -434,6 +434,232 @@ button { color: inherit; }
   .cohort-panel.expanded { height: 178px; flex-basis: 178px; }
 }
 
+/* Decision-workspace revision: evidence stays compact while Brain gets a true working column. */
+.analysis-stage {
+  min-width: 0;
+  min-height: 0;
+  flex: 1;
+  padding: 0 10px 10px;
+  display: grid;
+  grid-template-columns: minmax(700px, 1fr) minmax(215px, .32fr) minmax(295px, .44fr);
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: 9px;
+  overflow: hidden;
+}
+.analysis-stage > .profile-strip {
+  grid-column: 1 / 3;
+  grid-row: 1;
+  width: auto;
+  height: 72px;
+  min-height: 72px;
+  margin: 0;
+  padding-inline: 8px;
+}
+.analysis-stage > .profile-strip.expanded { height: 126px; min-height: 126px; }
+.analysis-stage > .analysis-card { grid-column: 1; grid-row: 2; }
+.review-rail { display: contents; }
+.review-context {
+  min-width: 0;
+  min-height: 0;
+  grid-column: 2;
+  grid-row: 2;
+  display: grid;
+  grid-template-rows: minmax(270px, 1fr) auto auto;
+  gap: 9px;
+}
+.review-context > section,
+.brain-card {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: var(--shadow);
+}
+
+/* The profile selector lives in the toolbar above; this row is only scan-critical customer input. */
+.profile-facts {
+  grid-template-columns: .58fr .8fr 1.05fr .72fr .66fr 1.05fr .58fr .58fr .96fr .82fr .86fr .62fr .56fr .74fr;
+}
+.fact { padding-inline: 5px; }
+.fact small { font-size: 9.5px; font-weight: 650; }
+.fact strong { margin-top: 4px; font-size: 14.5px; }
+.fact.vital strong { font-size: 18px; letter-spacing: -.02em; }
+.profile-details-toggle { width: 72px; flex-basis: 72px; font-size: 9.5px; }
+
+/* DTA is a read-only recommendation and a selection target, not another input field. */
+.dta-head { gap: 6px; }
+.dta-title { display: inline-flex; align-items: baseline; gap: 5px; white-space: nowrap; }
+.dta-title b { font-size: 11px; }
+.dta-title small { color: #78837f; font-size: 8.5px; font-weight: 600; }
+.select-all-action {
+  padding: 2px 5px;
+  border: 0;
+  color: var(--teal);
+  background: transparent;
+  font-size: 8px;
+  font-weight: 750;
+  cursor: pointer;
+}
+.dta-content { grid-template-columns: 48px 48px minmax(0, 1fr); gap: 6px; }
+button.dta-value {
+  width: 46px;
+  height: 19px;
+  padding: 0 4px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  display: inline-grid;
+  place-items: center;
+  font-size: 10.5px;
+  font-weight: 800;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.42);
+}
+button.dta-value.good { border-color: #9bcabb; background: #dff1eb; color: #075f52; }
+button.dta-value.watch { border-color: #e4c57d; background: #fff0c9; color: #79540d; }
+button.dta-value.risk { border-color: #e3aaa5; background: #fde7e4; color: #982f29; }
+button.dta-value:hover { filter: brightness(.96); box-shadow: 0 0 0 2px rgba(0,109,98,.12); }
+.deselected .dta-cell { opacity: .42; }
+.deselected button.dta-value { color: #6f7976; border-color: #cfd8d5; background: #eef1f0; box-shadow: none; }
+.dta-cell { cursor: default; }
+.confidence { font-size: 10px; }
+.rationale { font-size: 10px; }
+.header-apply { height: 25px; min-width: 88px; font-size: 9px; }
+
+/* Search remains complete, but no longer consumes more vertical space than the measurements. */
+.cohort-panel { height: 120px; flex-basis: 120px; padding-block: 4px 6px; }
+.cohort-panel.expanded { height: 162px; flex-basis: 162px; }
+.cohort-title { height: 20px; }
+.expected-lengths { height: 34px; }
+.cohort-primary-fields { height: 52px; }
+.cohort-primary-fields .cohort-select { padding: 4px 7px; }
+.cohort-primary-fields .cohort-select small { font-size: 9.5px; }
+.cohort-primary-fields .cohort-select b { font-size: 15.5px; }
+.cohort-core-field > b { font-size: 21px; }
+.cohort-core-field span { font-size: 12px; }
+.cohort-search, .cohort-results { height: 38px; align-self: center; }
+
+/* Completion controls are deliberately readable and balanced. */
+.action-bar { height: 50px; flex-basis: 50px; padding-inline: 11px; }
+.action-bar .text-button { padding: 7px 6px; font-size: 10.5px; font-weight: 650; }
+.save-status { font-size: 9.5px; }
+.status-dot { width: 7px; height: 7px; }
+.switch-label { gap: 6px; font-size: 9.5px; }
+.switch-label i { width: 25px; height: 14px; }
+.switch-label i::after { width: 10px; height: 10px; }
+.switch-label input:checked + i::after { left: 13px; }
+.action-bar .save-close,
+.action-bar .save-ready { min-width: 106px; min-height: 34px; padding: 8px 14px; font-size: 10.5px; }
+
+/* Photo first, notes second, Recon last: visual evidence leads; operational timing remains available. */
+.review-context > .photo-card {
+  min-height: 0;
+  position: relative;
+  overflow: hidden;
+  background-color: #30413c;
+  background-image: url('/synthetic-customer.jpg');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center 42%;
+}
+.review-context > .photo-card.photo-1 { background-position: 47% 42%; filter: saturate(.92); }
+.review-context > .photo-card.photo-2 { background-position: 53% 41%; filter: contrast(1.03); }
+.review-context > .photo-card.photo-3 { background-position: 45% 43%; filter: brightness(.98); }
+.review-context > .photo-card.photo-4 { background-position: 55% 42%; filter: saturate(1.05); }
+.review-context > .notes-card { grid-column: auto; grid-row: auto; min-height: 45px; padding: 10px 11px; }
+.review-context > .notes-card header { margin: 0; }
+.review-context > .notes-card.expanded header { margin-bottom: 8px; }
+.review-context > .notes-card header strong { font-size: 11.5px; }
+.review-context > .recon-card { grid-column: auto; grid-row: auto; min-height: 48px; }
+.review-context > .recon-card.collapsed { padding-block: 8px; }
+
+/* OMA Brain is a full decision-support workspace with its own contextual chat. */
+.brain-card {
+  min-height: 0;
+  grid-column: 3;
+  grid-row: 1 / 3;
+  align-self: stretch;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.brain-card > header { height: 60px; flex: 0 0 60px; padding: 9px 11px; background: linear-gradient(180deg,#fff,#fbfafc); }
+.brain-card header > div:first-child { gap: 9px; }
+.brain-heading { min-width: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; }
+.brain-card header .brain-heading strong { font-size: 14px; }
+.brain-card header .brain-heading small { display: block; font-size: 9.5px; }
+.brain-spark { width: 31px; height: 31px; flex: 0 0 31px; font-size: 17px; }
+.run-button { padding: 6px 8px; font-size: 9px; }
+.collapse-button { width: 26px; height: 26px; font-size: 10px; }
+.brain-score { height: 105px; flex: 0 0 105px; padding: 12px 14px; gap: 13px; background: #fbfdfc; }
+.score-ring { width: 70px; height: 70px; flex-basis: 70px; }
+.score-ring strong { font-size: 16px; }
+.brain-score small { font-size: 9.5px; }
+.brain-score b { margin-block: 5px 4px; font-size: 12px; line-height: 1.3; }
+.brain-score span { font-size: 9.5px; }
+.brain-body { flex: 0 0 auto; padding: 13px 14px 11px; overflow: visible; }
+.brain-section-title { margin-bottom: 9px; display: flex; align-items: center; justify-content: space-between; }
+.brain-section-title h3 { margin: 0; font-size: 12px; }
+.brain-section-title > span { padding: 3px 7px; border-radius: 999px; color: #8f5d08; background: #fff0d2; font-size: 8.5px; font-weight: 750; }
+.brain-body .attention-list { gap: 7px; }
+.brain-body .attention-list li { padding: 7px 8px; border: 1px solid #ecefed; border-radius: 7px; background: #fff; }
+.brain-body .attention-list li.high { border-color: #f0d1ce; background: #fffaf9; }
+.brain-body .attention-list li > i { margin-top: 5px; }
+.brain-body .attention-list li b { display: flex; align-items: center; gap: 5px; font-size: 10.5px; }
+.brain-body .attention-list li b em { padding: 2px 5px; border-radius: 999px; color: #8a6220; background: #fff1d7; font-size: 7px; font-style: normal; font-weight: 720; }
+.brain-body .attention-list li.high b em { color: #a03d36; background: #fbe5e2; }
+.brain-body .attention-list li span { margin-top: 3px; font-size: 9.5px; line-height: 1.42; }
+.brain-body .attention-list li span strong { color: #263330; font-size: inherit; }
+.analysis-summary { margin-top: 9px; padding: 9px 10px; display: flex; flex-direction: column; gap: 4px; border-left: 3px solid var(--teal); background: #f1f7f5; }
+.analysis-summary b { color: #194942; font-size: 9.5px; }
+.analysis-summary span { font-size: 9.5px; line-height: 1.42; }
+.brain-analysis-actions { margin-top: 8px; display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+.brain-analysis-actions .brain-inputs { flex: 1; }
+.brain-analysis-actions .details-button { flex: 0 0 auto; margin-top: 7px; font-size: 9px; }
+.brain-chat { min-height: 176px; margin: auto 10px 10px; padding: 10px; border: 1px solid #ddd6e9; border-radius: 9px; display: flex; flex-direction: column; gap: 8px; background: linear-gradient(180deg,#fbf9fe,#f7f4fb); }
+.brain-chat-title { display: flex; align-items: center; justify-content: space-between; }
+.brain-chat-title > div { display: flex; align-items: center; gap: 6px; }
+.brain-chat-title > div > span { color: #6c35ba; font-size: 15px; }
+.brain-chat-title strong { font-size: 11px; }
+.brain-chat-title small { color: #8b8494; font-size: 8px; }
+.brain-chat-message { padding: 8px 9px; border: 1px solid #e6e0ef; border-radius: 7px; background: #fff; }
+.brain-chat-message b { color: #5d318f; font-size: 9px; }
+.brain-chat-message p { margin: 4px 0 0; color: #62606a; font-size: 9px; line-height: 1.4; }
+.brain-chat-prompts { display: flex; gap: 5px; }
+.brain-chat-prompts button { padding: 5px 7px; border: 1px solid #dcd3e9; border-radius: 999px; color: #623d8c; background: #fff; font-size: 8px; cursor: pointer; }
+.brain-chat-input { margin-top: auto; display: flex; gap: 6px; }
+.brain-chat-input input { min-width: 0; height: 34px; flex: 1; padding: 0 9px; border: 1px solid #d8d0e4; border-radius: 7px; outline: 0; background: #fff; font-size: 9px; }
+.brain-chat-input input:focus { border-color: #8c64be; box-shadow: 0 0 0 2px rgba(108,53,186,.1); }
+.brain-chat-input button { height: 34px; padding: 0 11px; border: 0; border-radius: 7px; color: #fff; background: #6332a3; font-size: 9px; font-weight: 750; cursor: pointer; }
+.brain-card.collapsed { align-self: start; }
+.brain-card.collapsed .brain-score,
+.brain-card.collapsed .brain-body,
+.brain-card.collapsed .brain-chat { display: none; }
+
+/* ClickUp remains available without consuming permanent analysis space. */
+.chat-launcher { background: #465451; }
+.chat-launcher > span { font-size: 16px; }
+.chat-popover { height: 410px; }
+
+@media (max-width: 1320px) {
+  .analysis-stage { grid-template-columns: minmax(690px, 1fr) minmax(210px, .3fr); grid-template-rows: auto minmax(0, 1fr); overflow-y: auto; }
+  .analysis-stage > .profile-strip { grid-column: 1 / 3; }
+  .analysis-stage > .analysis-card { grid-column: 1; }
+  .review-context { grid-column: 2; }
+  .brain-card { grid-column: 1 / 3; grid-row: 3; min-height: 620px; }
+}
+
+@media (max-height: 960px) and (min-width: 1321px) {
+  .analysis-stage > .profile-strip { height: 68px; min-height: 68px; }
+  .profile-summary-row { height: 52px; }
+  .cohort-panel { height: 118px; flex-basis: 118px; }
+  .action-bar { height: 48px; flex-basis: 48px; }
+  .brain-card > header { height: 56px; flex-basis: 56px; }
+  .brain-score { height: 98px; flex-basis: 98px; }
+  .brain-body { padding-block: 10px 8px; }
+  .brain-body .attention-list li { padding-block: 5px; }
+  .brain-chat { min-height: 158px; }
+}
+
 /* Decision-flow pass: global OMA context, scannable profile data, and evidence-first measurements. */
 .global-nav {
   position: absolute;

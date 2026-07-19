@@ -94,7 +94,6 @@ export default function Home() {
   const [heightTolerance, setHeightTolerance] = useState(1);
   const [weightTolerance, setWeightTolerance] = useState(5);
   const [chatOpen, setChatOpen] = useState(false);
-  const [chatMode, setChatMode] = useState<"brain" | "clickup">("brain");
   const [reconExpanded, setReconExpanded] = useState(true);
   const [brainExpanded, setBrainExpanded] = useState(true);
   const [brainInputsExpanded, setBrainInputsExpanded] = useState(false);
@@ -194,12 +193,9 @@ export default function Home() {
             <nav className="module-actions" aria-label="Order tools"><button aria-label="Shipping">✈</button><button aria-label="Delivery">▣</button><button aria-label="Customer messages">▧</button><button aria-label="Favorites">♡</button><button aria-label="Documents">▤</button><button aria-label="Measurements">◉</button><button aria-label="Print">▥</button></nav>
           </section>
 
+        <section className="analysis-stage">
         <section className={`profile-strip ${profileExpanded ? "expanded" : ""}`}>
           <div className="profile-summary-row">
-            <button className="profile-select" aria-label="Choose fit profile">
-              <span className="profile-identity"><small>Fit profile</small><strong>Jun 27, 2025 · Primary</strong></span>
-              <b>Active</b><span className="profile-chevron">⌄</span>
-            </button>
             <div className="profile-facts">
               {profileItems.map(([label, value]) => (
                 <div key={label} className={`fact ${["Height", "Weight", "Age", "BMI"].includes(label) ? "vital" : ""} ${["Torso", "Shirt"].includes(label) ? "group-end" : ""}`}><small>{label}</small><strong>{value}</strong></div>
@@ -216,7 +212,6 @@ export default function Home() {
           )}
         </section>
 
-        <section className="analysis-layout">
           <section className="analysis-card">
             <div className="analysis-toolbar">
               <div className="tabs" role="tablist">
@@ -247,8 +242,8 @@ export default function Home() {
                     {showStaff && <th><span>Staff</span><small>Measured</small></th>}
                     <th className="final-head">Final</th>
                     <th className="dta-head">
-                      <label className="select-all"><input type="checkbox" checked={allSelected} onChange={toggleAll} /><span>DTA</span></label>
-                      <span className="dta-head-note">{selectedCount} of {measurements.length}</span>
+                      <span className="dta-title"><b>DTA</b><small>{selectedCount} selected</small></span>
+                      {!allSelected && <button className="select-all-action" onClick={toggleAll}>Select all</button>}
                       <button className="dta-width-toggle" aria-label={dtaExpanded ? "Contract DTA notes" : "Expand DTA notes"} title={dtaExpanded ? "Contract DTA notes" : "Expand DTA notes"} onClick={() => setDtaExpanded(!dtaExpanded)}>{dtaExpanded ? "↤" : "↔"}</button>
                       <button className="header-apply" disabled={!selectedCount} onClick={applySelected}>Apply Selected</button>
                     </th>
@@ -272,8 +267,8 @@ export default function Home() {
                         <td className={`final-cell ${isDtaDifferent ? "decision" : ""} ${isChanged ? "changed" : ""}`}>
                           <input aria-label={`${item.name} final measurement`} title={isDtaDifferent ? "Final differs from the DTA recommendation" : "Final measurement"} value={value} onChange={(event) => setFinals({ ...finals, [item.name]: event.target.value })} />
                         </td>
-                        <td className="dta-cell" onClick={() => toggleSelected(item.name)}>
-                          <div className="dta-content"><input className="dta-select" aria-label={`Use ${item.name} DTA value`} type="checkbox" checked={selected.has(item.name)} onClick={(event) => event.stopPropagation()} onChange={() => toggleSelected(item.name)} /><span className={`dta-value ${tone(item.confidence)}`}>{item.dta}</span><span className={`confidence ${tone(item.confidence)}`}><i />{item.confidence}%</span><span className="rationale" title={item.rationale}>{item.rationale}</span></div>
+                        <td className="dta-cell">
+                          <div className="dta-content"><button className={`dta-value ${tone(item.confidence)}`} aria-label={`${selected.has(item.name) ? "Exclude" : "Include"} ${item.name} DTA value ${item.dta}`} aria-pressed={selected.has(item.name)} onClick={() => toggleSelected(item.name)}>{item.dta}</button><span className={`confidence ${tone(item.confidence)}`}><i />{item.confidence}%</span><span className="rationale" title={item.rationale}>{item.rationale}</span></div>
                         </td>
                       </tr>
                     );
@@ -315,14 +310,7 @@ export default function Home() {
           </section>
 
           <aside className="review-rail">
-            <div className="visual-and-brain">
-              <section className={`recon-card ${reconExpanded ? "expanded" : "collapsed"}`}>
-                <header><div><span className="recon-icon">↻</span><strong>Recon</strong><em>10</em></div><b>Required</b><button aria-label={reconExpanded ? "Collapse reconfirm details" : "Expand reconfirm details"} onClick={() => setReconExpanded(!reconExpanded)}>{reconExpanded ? "⌃" : "⌄"}</button></header>
-                {reconExpanded && <><div className="recon-timeline"><span><small>Sent out</small><b>Jul 10 · 10:39</b></span><span><small>Received</small><b>Jul 16 · 11:35</b></span><span><small>Impact</small><b>None</b></span></div>
-                <div className="recon-status"><span>Delivery timing</span><b>✓ Okay</b></div>
-                <ul><li><span>Core inputs</span><b>No change</b></li><li><span>Available jacket</span><b className="missing">None</b></li><li><span>Profile photos</span><b>Provided</b></li></ul></>}
-              </section>
-
+            <div className="review-context">
               <section className={`photo-card photo-${photo}`} aria-label="Customer photos">
                 <div className="photo-top"><span>5 photos</span><button aria-label="Open full-screen photo">⛶</button></div>
                 <div className="photo-thumbnails">
@@ -330,55 +318,66 @@ export default function Home() {
                 </div>
               </section>
 
-              <section className={`brain-card ${brainExpanded ? "expanded" : "collapsed"}`}>
-                <header><div><span className="brain-spark">✣</span><strong>OMA Brain</strong><small>Phase 2 analysis</small></div><div><button className="run-button">Run Again</button><button className="collapse-button" onClick={() => setBrainExpanded(!brainExpanded)}>{brainExpanded ? "−" : "+"}</button></div></header>
-                <div className="brain-score">
-                  <div className="score-ring"><strong>78%</strong></div>
-                  <div><small>Overall confidence</small><b>Strong fit match</b><span>28 comparable orders · 5 photos</span></div>
-                </div>
-                <div className="brain-body">
-                  <h3>Manager attention <span>3</span></h3>
-                  <ul>
-                    <li className="high"><i /><div><b>Shoulder</b><span>SM appears too wide; photo and order cohorts support 17.2.</span></div></li>
-                    <li><i /><div><b>Crotch</b><span>Low historical depth. Review before applying.</span></div></li>
-                    <li><i /><div><b>Thigh</b><span>Prediction sits near the cohort’s lower boundary.</span></div></li>
-                  </ul>
-                  <div className="analysis-summary">Overall proportions are consistent with a 40 Long, modern-fit profile. The strongest contradiction is the 20.0 shoulder SM; wrist and lower-body depth require manager judgment.</div>
+              <section className={`notes-card ${notesExpanded ? "expanded" : "collapsed"}`}>
+                <header><strong>Customer &amp; Fit Notes</strong><div><button>Edit</button><button className="notes-toggle" aria-label={notesExpanded ? "Collapse customer notes" : "Expand customer notes"} onClick={() => setNotesExpanded(!notesExpanded)}>{notesExpanded ? "⌃" : "⌄"}</button></div></header>
+                {notesExpanded && <><p>Demo note: Customer needs the order for an upcoming wedding and prefers a clean, modern fit.</p>
+                <p>Demo note: Review the previous fit profile before confirming final measurements.</p>
+                <div className="note-tags"><span>Wedding deadline</span><span>Prior profile requested</span></div>
+                <button className="view-notes">View all notes →</button></>}
+              </section>
+
+              <section className={`recon-card ${reconExpanded ? "expanded" : "collapsed"}`}>
+                <header><div><span className="recon-icon">↻</span><strong>Recon</strong><em>10</em></div><b>Required</b><button aria-label={reconExpanded ? "Collapse reconfirm details" : "Expand reconfirm details"} onClick={() => setReconExpanded(!reconExpanded)}>{reconExpanded ? "⌃" : "⌄"}</button></header>
+                {reconExpanded && <><div className="recon-timeline"><span><small>Sent out</small><b>Jul 10 · 10:39</b></span><span><small>Received</small><b>Jul 16 · 11:35</b></span><span><small>Impact</small><b>None</b></span></div>
+                <div className="recon-status"><span>Delivery timing</span><b>✓ Okay</b></div>
+                <ul><li><span>Core inputs</span><b>No change</b></li><li><span>Available jacket</span><b className="missing">None</b></li><li><span>Profile photos</span><b>Provided</b></li></ul></>}
+              </section>
+            </div>
+
+            <section className={`brain-card ${brainExpanded ? "expanded" : "collapsed"}`}>
+              <header><div><span className="brain-spark">✣</span><span className="brain-heading"><strong>OMA Brain Analysis</strong><small>Phase 2 decision support</small></span></div><div><button className="run-button">Run Again</button><button className="collapse-button" aria-label={brainExpanded ? "Collapse OMA Brain" : "Expand OMA Brain"} onClick={() => setBrainExpanded(!brainExpanded)}>{brainExpanded ? "−" : "+"}</button></div></header>
+              <div className="brain-score">
+                <div className="score-ring"><strong>78%</strong></div>
+                <div><small>Overall fit confidence</small><b>Strong match — manager review recommended</b><span>28 comparable orders · 5 profile photos</span></div>
+              </div>
+              <div className="brain-body">
+                <div className="brain-section-title"><h3>Review before finalizing</h3><span>3 items</span></div>
+                <ul className="attention-list">
+                  <li className="high"><i /><div><b>Shoulder <em>High priority</em></b><span>SM appears too wide; photo proportions and both cohorts support <strong>17.2</strong>.</span></div></li>
+                  <li><i /><div><b>Crotch <em>Low confidence</em></b><span>Limited comparable outcomes. Confirm the predicted <strong>27.2</strong> before applying.</span></div></li>
+                  <li><i /><div><b>Thigh <em>Boundary</em></b><span>The prediction sits near the lower edge of the reference cohort.</span></div></li>
+                </ul>
+                <div className="analysis-summary"><b>Brain recommendation</b><span>Overall proportions support a 40 Long, modern-fit profile. Use the DTA set with manager judgment on shoulder, crotch, and thigh.</span></div>
+                <div className="brain-analysis-actions">
                   <div className={`brain-inputs ${brainInputsExpanded ? "expanded" : "collapsed"}`}>
                     <button onClick={() => setBrainInputsExpanded(!brainInputsExpanded)}><span><b>Analysis inputs</b><small>3 complete · 1 unavailable</small></span><em>{brainInputsExpanded ? "⌃" : "⌄"}</em></button>
                     {brainInputsExpanded && <ul><li><i className="done" />Fit profile + SM</li><li><i className="done" />5 customer photos</li><li><i className="done" />Order + brand cohorts</li><li><i />No prior fit outcome</li></ul>}
                   </div>
-                  <button className="details-button">View full analysis trail →</button>
+                  <button className="details-button">Full analysis trail →</button>
                 </div>
-              </section>
-            </div>
-
-            <section className={`notes-card ${notesExpanded ? "expanded" : "collapsed"}`}>
-              <header><strong>Customer &amp; Fit Notes</strong><div><button>Edit</button><button className="notes-toggle" aria-label={notesExpanded ? "Collapse customer notes" : "Expand customer notes"} onClick={() => setNotesExpanded(!notesExpanded)}>{notesExpanded ? "⌃" : "⌄"}</button></div></header>
-              {notesExpanded && <><p>Demo note: Customer needs the order for an upcoming wedding and prefers a clean, modern fit.</p>
-              <p>Demo note: Review the previous fit profile before confirming final measurements.</p>
-              <div className="note-tags"><span>Wedding deadline</span><span>Prior profile requested</span></div>
-              <button className="view-notes">View all notes →</button></>}
+              </div>
+              <div className="brain-chat">
+                <div className="brain-chat-title"><div><span>✣</span><strong>Ask OMA Brain</strong></div><small>Profile context is attached</small></div>
+                <div className="brain-chat-message"><b>OMA Brain</b><p>Ask me to explain a prediction, compare evidence, or recommend the final value for any measurement.</p></div>
+                <div className="brain-chat-prompts"><button>Explain shoulder 17.2</button><button>What needs review?</button></div>
+                <div className="brain-chat-input"><input aria-label="Ask OMA Brain" placeholder="Ask about this analysis…" /><button>Send</button></div>
+              </div>
             </section>
           </aside>
         </section>
       </section>
       </div>
 
-      <button className="chat-launcher" onClick={() => setChatOpen(!chatOpen)} aria-label="Open Brain and team chat"><span>✣</span><b>Chat</b><em>3</em></button>
+      <button className="chat-launcher" onClick={() => setChatOpen(!chatOpen)} aria-label="Open ClickUp team chat"><span>▧</span><b>ClickUp</b><em>3</em></button>
       {chatOpen && (
         <section className="chat-popover">
-          <header><div><strong>Order Intelligence</strong><span>Connected</span></div><button onClick={() => setChatOpen(false)}>×</button></header>
-          <div className="chat-modes" role="tablist"><button className={chatMode === "brain" ? "active" : ""} onClick={() => setChatMode("brain")}>✣ OMA Brain</button><button className={chatMode === "clickup" ? "active" : ""} onClick={() => setChatMode("clickup")}>ClickUp Team <em>3</em></button></div>
-          {chatMode === "brain" ? <div className="chat-thread brain-thread">
-            <article className="brain-message"><b>OMA Brain <small>Analysis context loaded</small></b><p>Ask about any prediction, source conflict, cohort, or recommended final measurement for this profile.</p></article>
-            <div className="chat-prompts"><button>Why is shoulder 17.2?</button><button>Which values need review?</button><button>Summarize the cohort evidence</button></div>
-          </div> : <div className="chat-thread">
+          <header><div><strong>ClickUp Team Chat</strong><span>Connected</span></div><button aria-label="Close team chat" onClick={() => setChatOpen(false)}>×</button></header>
+          <div className="chat-thread">
             <article><b>Demo Manager <small>Jul 9 · 02:23</small></b><p>Were the requested customer photos added to the fit profile?</p></article>
             <article className="reply"><b>Demo Specialist <small>Jul 11 · 17:45</small></b><p>Yes — the demo photos are attached and ready for analysis.</p></article>
             <article><b>Demo Manager <small>Jul 12 · 19:14</small></b><p>Perfect. Please complete the final fit review before moving the order to Ready.</p></article>
-          </div>}
-          <footer><input placeholder={chatMode === "brain" ? "Ask OMA Brain…" : "Message the ClickUp team…"} /><button>Send</button></footer>
+          </div>
+          <footer><input placeholder="Message the ClickUp team…" /><button>Send</button></footer>
         </section>
       )}
       {toast && <div className="toast">✓ {toast}</div>}
