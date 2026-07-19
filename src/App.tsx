@@ -283,7 +283,7 @@ export default function Home() {
             </div>
 
             <section className={`cohort-panel ${cohortExpanded ? "expanded" : ""}`}>
-              <div className="cohort-title"><strong>Reference Cohort Search</strong><button onClick={() => setCohortExpanded(!cohortExpanded)}>{cohortExpanded ? "Fewer filters" : "More filters"}<i>{cohortExpanded ? "⌃" : "⌄"}</i></button><button>Reset</button></div>
+              <div className="cohort-title"><strong>Reference Cohort Search</strong><button className="cohort-results" aria-label="106 matching profiles"><span><i />106</span><em>⌄</em></button><button onClick={() => setCohortExpanded(!cohortExpanded)}>{cohortExpanded ? "Fewer filters" : "More filters"}<i>{cohortExpanded ? "⌃" : "⌄"}</i></button><button>Reset</button></div>
               <div className="cohort-primary-fields">
                 <div className="expected-lengths" aria-label="Expected length references for this height">
                   {[[["Jacket", ["31″", "32″", "33″"]], ["Sleeve", ["25.5″", "26.5″", "27.5″"]]], [["Outseam", ["41″", "41.7″", "42.4″"]], ["Inseam", ["30.9″", "31.4″", "31.9″"]]]].map((group, groupIndex) => (
@@ -296,7 +296,6 @@ export default function Home() {
                   <button className="cohort-select" key={label}><small>{label}</small><b>{value}</b><span>⌄</span></button>
                 ))}
                 <button className="cohort-search" onClick={() => { setToast("Reference cohort updated"); setTimeout(() => setToast(""), 2200); }}>⌕ Search</button>
-                <button className="cohort-results" aria-label="106 matching profiles"><span><i />106</span><em>⌄</em></button>
               </div>
               {cohortExpanded && <div className="cohort-secondary-fields">
                 {[["Fit Pref.", "Modern"], ["Shoulder", "Average"], ["Arms", "Long"], ["Rise", "Mid"], ["Seat", "Average"]].map(([label, value]) => (
