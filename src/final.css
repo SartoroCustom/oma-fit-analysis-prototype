@@ -52,7 +52,7 @@
 
 /* Final measurement hierarchy: compact evidence, spacious decision field, flexible DTA. */
 .analysis-stage .measurement-table col.c-name { width: 110px !important; }
-.analysis-stage .measurement-table col.c-data { width: 120px !important; }
+.analysis-stage .measurement-table col.c-data { width: 108px !important; }
 .analysis-stage .measurement-table col.c-self,
 .analysis-stage .measurement-table col.c-staff { width: 62px !important; }
 .analysis-stage .measurement-table col.c-final { width: 88px !important; }
@@ -263,10 +263,10 @@
   text-align: left;
 }
 .analysis-stage .dta-title { flex: 0 0 auto; }
-.analysis-stage .header-apply { margin-left: 2px; }
+.analysis-stage .header-apply { min-width: 76px; margin-left: 2px; }
 .analysis-stage .dta-width-toggle { flex: 0 0 23px; margin-left: 1px; }
 .analysis-stage .dta-run-button {
-  width: 40px;
+  width: 38px;
   height: 25px;
   margin-left: auto;
   padding: 0;
