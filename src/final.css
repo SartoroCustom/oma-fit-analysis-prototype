@@ -874,6 +874,7 @@
 .garment-data-layout .garment-body-reference > div > div { padding-inline: 6px 4px; }
 .garment-data-layout .garment-body-reference > div span { font-size: 7.8px; }
 .garment-data-layout .garment-body-reference > div b { width: 34px; flex-basis: 34px; font-size: 9px; }
+.garment-data-layout .garment-body-reference > div b.empty { border-color: transparent; background: transparent; }
 .garment-data-layout .garment-measurement-table th { font-size: 8.8px; }
 .garment-data-layout .garment-measurement-table th.customer-note-head {
   padding-left: 7px;
