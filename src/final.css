@@ -253,3 +253,141 @@
 .analysis-stage .brain-chat-prompts button { font-size: 9.5px; }
 .analysis-stage .brain-chat-input input,
 .analysis-stage .brain-chat-input button { font-size: 10px; }
+
+/* Final review pass: DTA actions, meaningful expansion, and historical-range warnings. */
+.analysis-stage .dta-head {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding-right: 5px;
+  text-align: left;
+}
+.analysis-stage .dta-title { flex: 0 0 auto; }
+.analysis-stage .header-apply { margin-left: 2px; }
+.analysis-stage .dta-width-toggle { flex: 0 0 23px; margin-left: 1px; }
+.analysis-stage .dta-run-button {
+  width: 40px;
+  height: 25px;
+  margin-left: auto;
+  padding: 0;
+  border: 1px solid #aabdb8;
+  border-radius: 5px;
+  color: #28534c;
+  background: #fff;
+  font-size: 9px;
+  font-weight: 780;
+  cursor: pointer;
+}
+.analysis-stage .dta-run-button:hover { border-color: var(--teal); background: #eef7f4; }
+
+/* Expanded DTA mode removes secondary range text and reclaims real width for rationale. */
+.analysis-stage .measurement-table.dta-expanded col.c-data { width: 70px !important; }
+.analysis-stage .measurement-table.dta-expanded col.c-name { width: 104px !important; }
+.analysis-stage .measurement-table.dta-expanded col.c-self,
+.analysis-stage .measurement-table.dta-expanded col.c-staff { width: 56px !important; }
+.analysis-stage .measurement-table.dta-expanded col.c-final { width: 88px !important; }
+.analysis-stage .measurement-table.dta-expanded col.c-brands { width: 82px !important; }
+.analysis-stage .measurement-table.dta-expanded .cohort-data b { font-size: 11px; }
+
+.analysis-stage .final-cell { position: relative; }
+.analysis-stage .final-cell.range-watch input,
+.analysis-stage .final-cell.range-risk input { padding-right: 11px; }
+.analysis-stage .final-cell.range-watch input {
+  border-color: #d5a33b;
+  color: #694b0b;
+  background: #fff8e8;
+  box-shadow: inset 3px 0 0 #e6ad31;
+}
+.analysis-stage .final-cell.range-risk input {
+  border-color: #cc6a61;
+  color: #8c2c26;
+  background: #fff0ee;
+  box-shadow: inset 3px 0 0 #d8574c;
+}
+.analysis-stage .final-cell.range-watch::after,
+.analysis-stage .final-cell.range-risk::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+.analysis-stage .final-cell.range-watch::after { background: #d89512; }
+.analysis-stage .final-cell.range-risk::after { background: #c83f35; }
+
+/* Reference inputs stay tightly grouped so length guidance gets the useful space. */
+.analysis-stage .cohort-primary-fields {
+  grid-template-columns: minmax(286px, 1fr) 92px 98px 52px 48px 52px 68px;
+  gap: 4px;
+}
+.analysis-stage .cohort-core-field {
+  justify-content: flex-start;
+  gap: 7px;
+  padding-inline: 6px;
+}
+.analysis-stage .cohort-core-field > div { flex: 0 0 auto; gap: 2px; }
+.analysis-stage .cohort-core-field > b { flex: 0 0 auto; font-size: 18px; }
+.analysis-stage .cohort-core-field span { font-size: 11.5px; }
+.analysis-stage .length-reference > span { width: 34px; flex-basis: 34px; font-size: 8.5px; }
+.analysis-stage .length-reference b { font-size: 8.5px; }
+.analysis-stage .length-reference b.average { font-size: 9.5px; }
+.analysis-stage .cohort-primary-fields .cohort-select b { font-size: 16.5px; }
+.analysis-stage .cohort-title > .cohort-results span { font-size: 13px; font-weight: 820; }
+
+/* Print-sheet instructions sit with the other operational context and expand only when needed. */
+.analysis-stage .review-context > .print-notes-card {
+  min-height: 45px;
+  padding: 10px 11px;
+}
+.print-notes-card header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.print-notes-card header > div { display: flex; align-items: center; gap: 7px; }
+.print-notes-card header strong { font-size: 11.5px; }
+.print-note-icon { color: #71807c; font-size: 13px; }
+.print-notes-card .notes-toggle {
+  width: 25px;
+  height: 23px;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  color: #64716d;
+  background: #fff;
+  font-size: 9px;
+  cursor: pointer;
+}
+.print-notes-editor { margin-top: 9px; }
+.print-notes-editor textarea {
+  width: 100%;
+  min-height: 64px;
+  padding: 8px 9px;
+  resize: vertical;
+  border: 1px solid #cfd9d6;
+  border-radius: 7px;
+  outline: 0;
+  color: #394642;
+  background: #fff;
+  font: inherit;
+  font-size: 10px;
+  line-height: 1.4;
+}
+.print-notes-editor textarea:focus { border-color: var(--teal); box-shadow: 0 0 0 2px rgba(0,109,98,.09); }
+.print-notes-editor > div { margin-top: 6px; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.print-notes-editor small { color: #87918e; font-size: 8.5px; }
+.print-notes-editor button {
+  height: 27px;
+  padding: 0 9px;
+  border: 0;
+  border-radius: 5px;
+  color: #fff;
+  background: var(--teal);
+  font-size: 9px;
+  font-weight: 750;
+  cursor: pointer;
+}
