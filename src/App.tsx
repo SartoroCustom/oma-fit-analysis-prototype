@@ -93,10 +93,8 @@ export default function Home() {
   const [showBrandMeasurements, setShowBrandMeasurements] = useState(false);
   const [heightTolerance, setHeightTolerance] = useState(1);
   const [weightTolerance, setWeightTolerance] = useState(5);
-  const [chatOpen, setChatOpen] = useState(false);
   const [reconExpanded, setReconExpanded] = useState(true);
-  const [brainExpanded, setBrainExpanded] = useState(true);
-  const [brainInputsExpanded, setBrainInputsExpanded] = useState(false);
+  const [intelligenceTab, setIntelligenceTab] = useState<"brain" | "clickup">("brain");
   const [notesExpanded, setNotesExpanded] = useState(false);
   const [cohortExpanded, setCohortExpanded] = useState(false);
   const [dtaExpanded, setDtaExpanded] = useState(false);
@@ -175,8 +173,7 @@ export default function Home() {
         <div className="top-actions">
           <span className="day-badge">15</span>
           <button className="new-order-button">New Order</button>
-          <button className="notification-button" aria-label="Notifications">♢<em>12</em></button>
-          <span className="user-avatar">AF</span>
+          <button className="assignee-button" aria-label="Assigned to Andy Fine"><span>AF</span><small>Assigned to</small><strong>Andy Fine</strong><b>⌄</b></button>
         </div>
       </header>
 
@@ -198,7 +195,7 @@ export default function Home() {
           <div className="profile-summary-row">
             <div className="profile-facts">
               {profileItems.map(([label, value]) => (
-                <div key={label} className={`fact ${["Height", "Weight", "Age", "BMI"].includes(label) ? "vital" : ""} ${["Torso", "Shirt"].includes(label) ? "group-end" : ""}`}><small>{label}</small><strong>{value}</strong></div>
+                <div key={label} className={`fact ${["Height", "Weight", "Age", "BMI"].includes(label) ? "vital" : ""} ${["Jacket", "Pants", "Shirt"].includes(label) ? "size-fact" : ""} ${["Torso", "Shirt"].includes(label) ? "group-end" : ""}`}><small>{label}</small><strong>{value}</strong></div>
               ))}
             </div>
             <button className="profile-details-toggle" aria-expanded={profileExpanded} onClick={() => setProfileExpanded(!profileExpanded)}>{profileExpanded ? "Hide details" : "Fit details"}<span>{profileExpanded ? "⌃" : "⌄"}</span></button>
@@ -235,16 +232,16 @@ export default function Home() {
                 <thead>
                   <tr>
                     <th>Measurement</th>
-                    <th>Order Data <small>Avg. (12.5%–87.5%)</small></th>
-                    <th>Brand Data <small>Avg. (12.5%–87.5%)</small></th>
+                    <th>Order Data</th>
+                    <th>Brand Data</th>
                     {showBrandMeasurements && <th>Brand Measurements <small>SUSU · AOS</small></th>}
-                    <th><span>SM</span><small>Self</small></th>
+                    <th>SM</th>
                     {showStaff && <th><span>Staff</span><small>Measured</small></th>}
                     <th className="final-head">Final</th>
                     <th className="dta-head">
                       <span className="dta-title"><b>DTA</b><small>{selectedCount} selected</small></span>
                       {!allSelected && <button className="select-all-action" onClick={toggleAll}>Select all</button>}
-                      <button className="dta-width-toggle" aria-label={dtaExpanded ? "Contract DTA notes" : "Expand DTA notes"} title={dtaExpanded ? "Contract DTA notes" : "Expand DTA notes"} onClick={() => setDtaExpanded(!dtaExpanded)}>{dtaExpanded ? "↤" : "↔"}</button>
+                      <button className="dta-width-toggle" aria-label={dtaExpanded ? "Restore standard DTA width" : "Give DTA more width"} title={dtaExpanded ? "Restore standard DTA width" : "Give DTA more width"} onClick={() => setDtaExpanded(!dtaExpanded)}>{dtaExpanded ? "Standard" : "Widen"}</button>
                       <button className="header-apply" disabled={!selectedCount} onClick={applySelected}>Apply Selected</button>
                     </th>
                   </tr>
@@ -334,52 +331,53 @@ export default function Home() {
               </section>
             </div>
 
-            <section className={`brain-card ${brainExpanded ? "expanded" : "collapsed"}`}>
-              <header><div><span className="brain-spark">✣</span><span className="brain-heading"><strong>OMA Brain Analysis</strong><small>Phase 2 decision support</small></span></div><div><button className="run-button">Run Again</button><button className="collapse-button" aria-label={brainExpanded ? "Collapse OMA Brain" : "Expand OMA Brain"} onClick={() => setBrainExpanded(!brainExpanded)}>{brainExpanded ? "−" : "+"}</button></div></header>
-              <div className="brain-score">
-                <div className="score-ring"><strong>78%</strong></div>
-                <div><small>Overall fit confidence</small><b>Strong match — manager review recommended</b><span>28 comparable orders · 5 profile photos</span></div>
-              </div>
-              <div className="brain-body">
-                <div className="brain-section-title"><h3>Review before finalizing</h3><span>3 items</span></div>
-                <ul className="attention-list">
-                  <li className="high"><i /><div><b>Shoulder <em>High priority</em></b><span>SM appears too wide; photo proportions and both cohorts support <strong>17.2</strong>.</span></div></li>
-                  <li><i /><div><b>Crotch <em>Low confidence</em></b><span>Limited comparable outcomes. Confirm the predicted <strong>27.2</strong> before applying.</span></div></li>
-                  <li><i /><div><b>Thigh <em>Boundary</em></b><span>The prediction sits near the lower edge of the reference cohort.</span></div></li>
-                </ul>
-                <div className="analysis-summary"><b>Brain recommendation</b><span>Overall proportions support a 40 Long, modern-fit profile. Use the DTA set with manager judgment on shoulder, crotch, and thigh.</span></div>
-                <div className="brain-analysis-actions">
-                  <div className={`brain-inputs ${brainInputsExpanded ? "expanded" : "collapsed"}`}>
-                    <button onClick={() => setBrainInputsExpanded(!brainInputsExpanded)}><span><b>Analysis inputs</b><small>3 complete · 1 unavailable</small></span><em>{brainInputsExpanded ? "⌃" : "⌄"}</em></button>
-                    {brainInputsExpanded && <ul><li><i className="done" />Fit profile + SM</li><li><i className="done" />5 customer photos</li><li><i className="done" />Order + brand cohorts</li><li><i />No prior fit outcome</li></ul>}
-                  </div>
+            <section className="brain-card intelligence-card">
+              <header className="intelligence-header">
+                <div className="intelligence-tabs" role="tablist" aria-label="Order intelligence">
+                  <button className={intelligenceTab === "brain" ? "active" : ""} role="tab" aria-selected={intelligenceTab === "brain"} onClick={() => setIntelligenceTab("brain")}><span>✣</span><b>OMA Brain</b></button>
+                  <button className={intelligenceTab === "clickup" ? "active" : ""} role="tab" aria-selected={intelligenceTab === "clickup"} onClick={() => setIntelligenceTab("clickup")}><span>▧</span><b>ClickUp</b><em>3</em></button>
+                </div>
+                {intelligenceTab === "brain" && <button className="run-button">Run Again</button>}
+                {intelligenceTab === "clickup" && <span className="connected-status">Connected</span>}
+              </header>
+
+              {intelligenceTab === "brain" ? <>
+                <div className="brain-score">
+                  <div className="score-ring"><strong>78%</strong></div>
+                  <div><small>Overall fit confidence</small><b>Strong match — manager review recommended</b><span>28 comparable orders · 5 profile photos</span></div>
+                </div>
+                <div className="brain-body">
+                  <div className="analysis-summary"><b>Brain recommendation</b><span>Overall proportions support a 40 Long, modern-fit profile. Use the DTA set with manager judgment on shoulder, crotch, and thigh.</span></div>
+                  <div className="brain-section-title"><h3>Review before finalizing</h3><span>3 items</span></div>
+                  <ul className="attention-list">
+                    <li className="high"><i /><div><b>Shoulder <em>High priority</em></b><span>SM appears too wide; photo proportions and both cohorts support <strong>17.2</strong>.</span></div></li>
+                    <li><i /><div><b>Crotch <em>Low confidence</em></b><span>Limited comparable outcomes. Confirm the predicted <strong>27.2</strong> before applying.</span></div></li>
+                    <li><i /><div><b>Thigh <em>Boundary</em></b><span>The prediction sits near the lower edge of the reference cohort.</span></div></li>
+                  </ul>
+                  <div className="evidence-coverage"><div><b>Evidence coverage</b><span>Fit profile, photos, order data and brand data included</span></div><em>Prior fit outcome unavailable</em></div>
                   <button className="details-button">Full analysis trail →</button>
                 </div>
-              </div>
-              <div className="brain-chat">
-                <div className="brain-chat-title"><div><span>✣</span><strong>Ask OMA Brain</strong></div><small>Profile context is attached</small></div>
-                <div className="brain-chat-message"><b>OMA Brain</b><p>Ask me to explain a prediction, compare evidence, or recommend the final value for any measurement.</p></div>
-                <div className="brain-chat-prompts"><button>Explain shoulder 17.2</button><button>What needs review?</button></div>
-                <div className="brain-chat-input"><input aria-label="Ask OMA Brain" placeholder="Ask about this analysis…" /><button>Send</button></div>
-              </div>
+                <div className="brain-chat">
+                  <div className="brain-chat-title"><div><span>✣</span><strong>Ask OMA Brain</strong></div><small>Profile context is attached</small></div>
+                  <div className="brain-chat-message"><b>OMA Brain</b><p>Ask me to explain a prediction, compare evidence, or recommend the final value for any measurement.</p></div>
+                  <div className="brain-chat-prompts"><button>Explain shoulder 17.2</button><button>What needs review?</button></div>
+                  <div className="brain-chat-input"><input aria-label="Ask OMA Brain" placeholder="Ask about this analysis…" /><button>Send</button></div>
+                </div>
+              </> : <div className="team-chat-workspace">
+                <div className="team-chat-intro"><strong>Order team conversation</strong><span>3 messages · Fit analysis context</span></div>
+                <div className="team-chat-thread">
+                  <article><b>Demo Manager <small>Jul 9 · 02:23</small></b><p>Were the requested customer photos added to the fit profile?</p></article>
+                  <article className="reply"><b>Demo Specialist <small>Jul 11 · 17:45</small></b><p>Yes — the demo photos are attached and ready for analysis.</p></article>
+                  <article><b>Demo Manager <small>Jul 12 · 19:14</small></b><p>Perfect. Please complete the final fit review before moving the order to Ready.</p></article>
+                </div>
+                <div className="team-chat-input"><input aria-label="Message the ClickUp team" placeholder="Message the ClickUp team…" /><button>Send</button></div>
+              </div>}
             </section>
           </aside>
         </section>
       </section>
       </div>
 
-      <button className="chat-launcher" onClick={() => setChatOpen(!chatOpen)} aria-label="Open ClickUp team chat"><span>▧</span><b>ClickUp</b><em>3</em></button>
-      {chatOpen && (
-        <section className="chat-popover">
-          <header><div><strong>ClickUp Team Chat</strong><span>Connected</span></div><button aria-label="Close team chat" onClick={() => setChatOpen(false)}>×</button></header>
-          <div className="chat-thread">
-            <article><b>Demo Manager <small>Jul 9 · 02:23</small></b><p>Were the requested customer photos added to the fit profile?</p></article>
-            <article className="reply"><b>Demo Specialist <small>Jul 11 · 17:45</small></b><p>Yes — the demo photos are attached and ready for analysis.</p></article>
-            <article><b>Demo Manager <small>Jul 12 · 19:14</small></b><p>Perfect. Please complete the final fit review before moving the order to Ready.</p></article>
-          </div>
-          <footer><input placeholder="Message the ClickUp team…" /><button>Send</button></footer>
-        </section>
-      )}
       {toast && <div className="toast">✓ {toast}</div>}
     </main>
   );
