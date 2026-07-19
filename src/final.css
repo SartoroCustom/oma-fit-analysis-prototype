@@ -546,3 +546,187 @@
   background: #fff;
   box-shadow: 0 1px 3px rgba(30,54,49,.13);
 }
+
+/* Garment Measurements: a finish-decision workspace with historical QC context. */
+.analysis-stage.garment-mode > .profile-strip { grid-column: 1 / 4; }
+.analysis-stage.garment-mode > .analysis-card { grid-column: 1 / 3; }
+.garment-mode .analysis-toolbar { flex: 0 0 42px; height: 42px; }
+.garment-mode .table-actions { gap: 10px; }
+.garment-mode .column-toggle { font-size: 9.5px; }
+
+.garment-record-workspace {
+  flex: 0 0 98px;
+  padding: 7px 9px;
+  border-bottom: 1px solid var(--line);
+  display: grid;
+  grid-template-rows: 39px 44px;
+  gap: 1px;
+  background: #fbfcfc;
+}
+.garment-type-tabs {
+  min-width: 0;
+  padding: 3px;
+  border: 1px solid #dde6e3;
+  border-radius: 9px 9px 0 0;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(72px, 1fr));
+  gap: 3px;
+  background: #eef3f2;
+}
+.garment-type-tabs button {
+  min-width: 0;
+  height: 31px;
+  padding: 0 9px;
+  border: 0;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  color: #66716e;
+  background: transparent;
+  font-size: 10.5px;
+  font-weight: 720;
+  cursor: pointer;
+}
+.garment-type-tabs button small {
+  min-width: 18px;
+  padding: 2px 4px;
+  border-radius: 999px;
+  color: #74807c;
+  background: rgba(255,255,255,.75);
+  font-size: 8px;
+  font-weight: 800;
+  text-align: center;
+}
+.garment-type-tabs button.active {
+  color: #fff;
+  background: var(--teal);
+  box-shadow: 0 2px 7px rgba(0,86,78,.18);
+}
+.garment-type-tabs button.active small { color: var(--teal-dark); background: #fff; }
+
+.history-record-bar {
+  min-width: 0;
+  padding: 4px 6px 4px 9px;
+  border: 1px solid #e1e7e5;
+  border-top: 0;
+  border-radius: 0 0 9px 9px;
+  display: grid;
+  grid-template-columns: minmax(178px, .8fr) minmax(150px, .72fr) minmax(220px, 1fr) auto;
+  align-items: center;
+  gap: 7px;
+  background: #fff;
+}
+.history-record-title { min-width: 0; display: flex; align-items: center; gap: 7px; }
+.history-record-title > span { width: 25px; height: 25px; flex: 0 0 25px; border-radius: 6px; display: grid; place-items: center; color: var(--teal); background: var(--teal-soft); font-size: 15px; }
+.history-record-title > div { min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.history-record-title strong { font-size: 10px; }
+.history-record-title small { overflow: hidden; color: #87918e; font-size: 8px; text-overflow: ellipsis; white-space: nowrap; }
+.history-record-bar label { min-width: 0; height: 32px; padding: 3px 7px; border: 1px solid #d9e1df; border-radius: 6px; display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 6px; background: #fff; }
+.history-record-bar label > span { color: #798480; font-size: 8px; font-weight: 680; }
+.history-record-bar select { min-width: 0; width: 100%; border: 0; outline: 0; color: #273431; background: transparent; font-size: 10px; font-weight: 720; text-overflow: ellipsis; }
+.record-loaded { display: flex; align-items: center; gap: 5px; color: #237a5e; font-size: 8.5px; font-weight: 750; white-space: nowrap; }
+.record-loaded i { width: 7px; height: 7px; border-radius: 50%; background: #21a16f; box-shadow: 0 0 0 3px #e1f4eb; }
+
+.garment-table-wrap { min-height: 0; flex: 1; overflow: hidden; }
+.garment-measurement-table { width: 100%; height: 100%; border-collapse: collapse; table-layout: fixed; font-size: clamp(10.5px, .76vw, 12px); }
+.garment-measurement-table col.g-name { width: 118px; }
+.garment-measurement-table col.g-body { width: 76px; }
+.garment-measurement-table col.g-data { width: 126px; }
+.garment-measurement-table col.g-brands { width: 108px; }
+.garment-measurement-table col.g-input { width: 64px; }
+.garment-measurement-table col.g-hist { width: 70px; }
+.garment-measurement-table col.g-finish { width: 94px; }
+.garment-measurement-table th {
+  height: 38px;
+  padding: 4px 5px;
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  color: #3e4946;
+  background: #f7f9f8;
+  font-size: 10px;
+  font-weight: 760;
+  text-align: center;
+  white-space: nowrap;
+}
+.garment-measurement-table th:first-child { padding-left: 9px; text-align: left; }
+.garment-measurement-table th:last-child { border-right: 0; }
+.garment-measurement-table th small { display: block; margin-top: 2px; color: #919a97; font-size: 7.5px; font-weight: 570; }
+.garment-measurement-table th:nth-child(2) { color: #46605a; background: #f2f7f5; }
+.garment-measurement-table th:nth-last-child(4) { color: #805441; background: #fbf7f4; }
+.garment-measurement-table th:nth-last-child(3) { color: #72519a; background: #f8f5fb; }
+.garment-measurement-table th:nth-last-child(2) { color: #0d6a61; background: #eff8f5; }
+.garment-measurement-table th.finish-head {
+  padding-inline: 9px;
+  border-right: 2px solid #b9d2df;
+  border-left: 2px solid #b9d2df;
+  color: #155275;
+  background: #eaf3f8;
+  font-size: 12px;
+  font-weight: 850;
+}
+.garment-measurement-table tbody tr { height: 22px; }
+.garment-measurement-table tbody tr:nth-child(even) { background: #f8faf9; }
+.garment-measurement-table tbody tr:hover { background: #eef7f4; }
+.garment-measurement-table td { height: 22px; padding: 1px 5px; overflow: hidden; border-right: 1px solid var(--line-soft); border-bottom: 1px solid var(--line-soft); text-overflow: ellipsis; vertical-align: middle; white-space: nowrap; }
+.garment-measurement-table td:last-child { border-right: 0; }
+.garment-measurement-name { padding-left: 9px !important; color: #303b38; font-weight: 730; }
+.body-final-cell { text-align: center; background: #f5f8f7; }
+.body-final-cell span { color: #3e5952; font-size: 10.5px; font-weight: 800; }
+.garment-measurement-table .cohort-data b { font-size: 10.5px; }
+.garment-measurement-table .cohort-data span { margin-left: 4px; font-size: 8.5px; }
+.garment-input-cell { padding: 1px 5px !important; text-align: center; }
+.garment-input-cell input,
+.finish-cell input { width: 100%; height: 20px; padding: 0 3px; border: 1px solid #d2dcda; border-radius: 4px; outline: 0; background: #fff; text-align: center; font-size: 10.5px; font-weight: 720; }
+.garment-input-cell.mg input { color: #815641; border-color: #d9c5bb; }
+.garment-input-cell.alt input { color: #6b488d; border-color: #d5c9df; background: #fcfaff; }
+.garment-input-cell input:focus { border-color: var(--teal); box-shadow: 0 0 0 2px rgba(0,109,98,.08); }
+.historical-cell { text-align: center; background: #f2f9f7; }
+.historical-cell span { min-width: 43px; height: 19px; padding: 0 6px; border: 1px dashed #60a79c; border-radius: 4px; display: inline-grid; place-items: center; color: #0b6258; background: #fff; font-size: 10.5px; font-weight: 790; }
+.finish-cell { padding-inline: 9px !important; border-right: 2px solid #d3e3eb !important; border-left: 2px solid #d3e3eb; background: #f3f8fb !important; }
+.garment-measurement-table tbody tr:nth-child(even) .finish-cell { background: #eaf3f8 !important; }
+.finish-cell input { height: 21px; border-color: #9dbdcd; color: #123f5a; font-size: 12px; font-weight: 850; }
+.finish-cell input:focus { border-color: #34799b; box-shadow: 0 0 0 2px rgba(52,121,155,.1); }
+.finish-cell.changed input { color: #075f52; border-color: #3e9a88; background: #edf8f5; }
+
+.garment-reference-rail {
+  min-width: 0;
+  min-height: 0;
+  grid-column: 3;
+  grid-row: 2;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  box-shadow: var(--shadow);
+}
+.garment-reference-rail > header { min-height: 58px; padding: 9px 10px; border-bottom: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; gap: 8px; background: #fbfcfc; }
+.garment-reference-rail > header > div { min-width: 0; display: flex; align-items: center; gap: 8px; }
+.garment-reference-rail > header > div > span { width: 30px; height: 30px; flex: 0 0 30px; border-radius: 7px; display: grid; place-items: center; color: #155275; background: #eaf3f8; font-size: 16px; }
+.garment-reference-rail > header > div > div { min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+.garment-reference-rail header strong { font-size: 11.5px; }
+.garment-reference-rail header small { overflow: hidden; color: #87918e; font-size: 8px; text-overflow: ellipsis; white-space: nowrap; }
+.garment-reference-rail header em { flex: 0 0 auto; padding: 4px 6px; border-radius: 999px; color: #0c6e62; background: #e4f4ef; font-size: 7.5px; font-style: normal; font-weight: 760; }
+.body-reference-list { min-height: 0; flex: 1; padding: 5px 7px; display: grid; grid-template-rows: repeat(20, minmax(20px, 1fr)); }
+.body-reference-list > div { min-height: 0; padding: 1px 5px 1px 8px; border-bottom: 1px solid #edf1ef; display: flex; align-items: center; justify-content: space-between; gap: 8px; color: #7d8784; }
+.body-reference-list > div:nth-child(even) { background: #fafbfb; }
+.body-reference-list > div.relevant { color: #293936; background: #f0f7f5; box-shadow: inset 2px 0 0 #56a797; }
+.body-reference-list span { overflow: hidden; font-size: 9.5px; font-weight: 650; text-overflow: ellipsis; white-space: nowrap; }
+.body-reference-list b { min-width: 47px; height: 19px; border: 1px solid #dce4e2; border-radius: 4px; display: grid; place-items: center; color: #65706d; background: #fff; font-size: 10.5px; font-weight: 790; }
+.body-reference-list .relevant b { color: #123f5a; border-color: #b6ccd7; background: #f4f9fb; font-size: 11.5px; }
+.garment-reference-rail > footer { min-height: 54px; padding: 7px 10px; border-top: 1px solid var(--line); display: flex; flex-direction: column; justify-content: center; gap: 5px; background: #fbfcfc; }
+.garment-reference-rail > footer span { display: flex; align-items: center; gap: 5px; color: #72807c; font-size: 8px; }
+.garment-reference-rail > footer i { width: 7px; height: 7px; border-radius: 50%; background: #56a797; }
+.garment-reference-rail > footer button { align-self: flex-start; padding: 0; border: 0; color: var(--teal); background: transparent; font-size: 9px; font-weight: 760; cursor: pointer; }
+
+@media (max-width: 1320px) {
+  .analysis-stage.garment-mode { grid-template-columns: minmax(0, 1fr) 265px; grid-template-rows: auto minmax(0, 1fr); overflow: hidden; }
+  .analysis-stage.garment-mode > .profile-strip { grid-column: 1 / 3; }
+  .analysis-stage.garment-mode > .analysis-card { grid-column: 1; }
+  .garment-reference-rail { grid-column: 2; }
+  .history-record-bar { grid-template-columns: minmax(160px,.7fr) minmax(145px,.7fr) minmax(190px,1fr); }
+  .record-loaded { display: none; }
+}
