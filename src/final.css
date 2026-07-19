@@ -173,3 +173,72 @@
 .team-chat-input { display: flex; gap: 6px; }
 .team-chat-input input { min-width: 0; height: 38px; flex: 1; padding: 0 10px; border: 1px solid #ccd8d4; border-radius: 7px; outline: 0; background: #fff; font-size: 9.5px; }
 .team-chat-input button { height: 38px; padding: 0 12px; border: 0; border-radius: 7px; color: #fff; background: #40524e; font-size: 9.5px; font-weight: 750; cursor: pointer; }
+
+/* Compact, single-row cohort search with paired expected-length references. */
+.analysis-stage .cohort-panel { height: 84px; flex-basis: 84px; padding-top: 3px; }
+.analysis-stage .cohort-panel.expanded { height: 126px; flex-basis: 126px; }
+.analysis-stage .cohort-title { height: 20px; }
+.analysis-stage .cohort-primary-fields {
+  height: 54px;
+  grid-template-columns: 174px minmax(88px, 1fr) minmax(92px, 1.08fr) 48px 44px 48px 76px 48px;
+  gap: 4px;
+}
+.analysis-stage .expected-lengths {
+  width: auto;
+  height: 54px;
+  margin: 0;
+  padding: 4px 5px;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
+}
+.length-stack { min-width: 0; display: grid; grid-template-rows: 1fr 1fr; gap: 2px; }
+.analysis-stage .length-reference { min-width: 0; gap: 3px; }
+.analysis-stage .length-reference > span { width: 34px; flex: 0 0 34px; font-size: 7.5px; }
+.analysis-stage .length-reference > div { gap: 1px; }
+.analysis-stage .length-reference b { padding: 2px 3px; font-size: 7.5px; }
+.analysis-stage .length-reference b.average { font-size: 8.5px; }
+.analysis-stage .cohort-core-field { padding: 4px 5px; gap: 3px; }
+.analysis-stage .cohort-core-field > b { font-size: 18px; }
+.analysis-stage .cohort-core-field > b small { font-size: 9px; }
+.analysis-stage .cohort-core-field > div { gap: 2px; }
+.analysis-stage .cohort-core-field button { width: 19px; height: 19px; font-size: 11px; }
+.analysis-stage .cohort-core-field span { font-size: 13.5px; }
+.analysis-stage .cohort-primary-fields .cohort-select { padding-inline: 5px; }
+.analysis-stage .cohort-primary-fields .cohort-select small { font-size: 8px; }
+.analysis-stage .cohort-primary-fields .cohort-select b { font-size: 13.5px; }
+.analysis-stage .cohort-primary-fields .cohort-select > span { right: 4px; }
+.analysis-stage .cohort-search { width: 76px; height: 36px; }
+.analysis-stage .cohort-results { width: 48px; height: 36px; padding-inline: 3px; }
+.analysis-stage .cohort-results span { font-size: 14px; }
+
+/* DTA width control lives at the far right and communicates direction through arrows. */
+.analysis-stage .dta-width-toggle { width: 23px; padding: 0; margin-left: 4px; font-size: 11px; }
+
+/* Full labels and recognizable product marks in the intelligence tabs. */
+.intelligence-tabs { min-width: 0; flex: 1; grid-template-columns: 1fr 1fr; }
+.intelligence-logo { width: 16px; height: 16px; flex: 0 0 16px; display: block; }
+.intelligence-tabs button { padding-inline: 5px; gap: 4px; }
+.intelligence-tabs button b { overflow: visible; font-size: 10px !important; text-overflow: clip; }
+.intelligence-tabs em { min-width: 14px; height: 14px; }
+
+/* Brain analysis typography is intentionally one step larger than supporting UI. */
+.analysis-stage .brain-score small,
+.analysis-stage .brain-score span { font-size: 10.5px; }
+.analysis-stage .brain-score b { font-size: 13px; }
+.analysis-stage .brain-section-title h3 { font-size: 13px; }
+.analysis-stage .brain-section-title > span { font-size: 9.5px; }
+.analysis-stage .brain-body .attention-list li b { font-size: 11.5px; }
+.analysis-stage .brain-body .attention-list li span,
+.analysis-stage .analysis-summary span { font-size: 10.5px; }
+.analysis-stage .analysis-summary b { font-size: 10.5px; }
+.analysis-stage .brain-body .attention-list li b em { font-size: 8px; }
+.analysis-stage .evidence-coverage b { font-size: 10px; }
+.analysis-stage .evidence-coverage span { font-size: 9px; }
+.analysis-stage .evidence-coverage em { font-size: 8px; }
+.analysis-stage .brain-chat-title strong { font-size: 12px; }
+.analysis-stage .brain-chat-title small { font-size: 9px; }
+.analysis-stage .brain-chat-message b { font-size: 10px; }
+.analysis-stage .brain-chat-message p { font-size: 10.5px; }
+.analysis-stage .brain-chat-prompts button { font-size: 9.5px; }
+.analysis-stage .brain-chat-input input,
+.analysis-stage .brain-chat-input button { font-size: 10px; }

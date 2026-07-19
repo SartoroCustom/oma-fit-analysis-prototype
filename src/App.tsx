@@ -77,6 +77,14 @@ function Icon({ children }: { children: string }) {
   return <span className="nav-icon" aria-hidden="true">{children}</span>;
 }
 
+function BrainLogo() {
+  return <svg className="intelligence-logo brain-logo" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="3.5" r="2.6" fill="#7a39d6"/><circle cx="15.5" cy="6.5" r="2.6" fill="#d349d8"/><circle cx="15.5" cy="13.5" r="2.6" fill="#fa4f8d"/><circle cx="10" cy="16.5" r="2.6" fill="#5a6ff0"/><circle cx="4.5" cy="13.5" r="2.6" fill="#27a9e8"/><circle cx="4.5" cy="6.5" r="2.6" fill="#7b5ce1"/><circle cx="10" cy="10" r="2.2" fill="#fff"/></svg>;
+}
+
+function ClickUpLogo() {
+  return <svg className="intelligence-logo clickup-logo" viewBox="0 0 22 20" aria-hidden="true"><path d="M4 7.7 11 2l7 5.7-2.4 2.8L11 6.8l-4.6 3.7L4 7.7Z" fill="#ff5ac8"/><path d="M4.7 12.1 7.6 10c.9 1.3 2 2 3.4 2s2.5-.7 3.4-2l2.9 2.1C15.8 14.7 13.7 16 11 16s-4.8-1.3-6.3-3.9Z" fill="#7b38e8"/></svg>;
+}
+
 function CohortValue({ values }: { values: [string, string, string] }) {
   if (values.every((value) => value === "—")) return <span className="no-cohort-data">—</span>;
   return <><b>{values[1]}</b><span>({values[0]}–{values[2]})</span></>;
@@ -232,8 +240,8 @@ export default function Home() {
                 <thead>
                   <tr>
                     <th>Measurement</th>
-                    <th>Order Data</th>
                     <th>Brand Data</th>
+                    <th>Order Data</th>
                     {showBrandMeasurements && <th>Brand Measurements <small>SUSU · AOS</small></th>}
                     <th>SM</th>
                     {showStaff && <th><span>Staff</span><small>Measured</small></th>}
@@ -241,8 +249,8 @@ export default function Home() {
                     <th className="dta-head">
                       <span className="dta-title"><b>DTA</b><small>{selectedCount} selected</small></span>
                       {!allSelected && <button className="select-all-action" onClick={toggleAll}>Select all</button>}
-                      <button className="dta-width-toggle" aria-label={dtaExpanded ? "Restore standard DTA width" : "Give DTA more width"} title={dtaExpanded ? "Restore standard DTA width" : "Give DTA more width"} onClick={() => setDtaExpanded(!dtaExpanded)}>{dtaExpanded ? "Standard" : "Widen"}</button>
                       <button className="header-apply" disabled={!selectedCount} onClick={applySelected}>Apply Selected</button>
+                      <button className="dta-width-toggle" aria-label={dtaExpanded ? "Restore standard DTA width" : "Give DTA more width"} title={dtaExpanded ? "Restore standard DTA width" : "Give DTA more width"} onClick={() => setDtaExpanded(!dtaExpanded)}>{dtaExpanded ? "↤" : "↔"}</button>
                     </th>
                   </tr>
                 </thead>
@@ -256,8 +264,8 @@ export default function Home() {
                         <td className="measurement-name">
                           <span>{item.name}</span>
                         </td>
-                        <td className="cohort-data"><CohortValue values={item.order} /></td>
                         <td className="cohort-data"><CohortValue values={item.brand} /></td>
+                        <td className="cohort-data"><CohortValue values={item.order} /></td>
                         {showBrandMeasurements && <td className="double"><span>{item.labels[0]}</span><span>{item.labels[1]}</span></td>}
                         <td className="source-input-cell sm"><input aria-label={`${item.name} self measurement`} placeholder="—" value={sourceValues[`${tab}:${item.name}:sm`] ?? (item.sm === "—" ? "" : item.sm)} onChange={(event) => updateSource(item.name, "sm", event.target.value)} /></td>
                         {showStaff && <td className="source-input-cell staff"><input aria-label={`${item.name} staff measurement`} placeholder="—" value={sourceValues[`${tab}:${item.name}:staff`] ?? (item.staff === "—" ? "" : item.staff)} onChange={(event) => updateSource(item.name, "staff", event.target.value)} /></td>}
@@ -276,13 +284,12 @@ export default function Home() {
 
             <section className={`cohort-panel ${cohortExpanded ? "expanded" : ""}`}>
               <div className="cohort-title"><strong>Reference Cohort Search</strong><button onClick={() => setCohortExpanded(!cohortExpanded)}>{cohortExpanded ? "Fewer filters" : "More filters"}<i>{cohortExpanded ? "⌃" : "⌄"}</i></button><button>Reset</button></div>
-              <div className="expected-lengths" aria-label="Expected length references for this height">
-                <strong>Expected lengths <small>at 6&apos;3&quot;</small></strong>
-                {[["Jacket", ["31″", "32″", "33″"]], ["Sleeve", ["25.5″", "26.5″", "27.5″"]], ["Outseam", ["41″", "41.7″", "42.4″"]], ["Inseam", ["30.9″", "31.4″", "31.9″"]]].map(([label, values]) => (
-                  <div className="length-reference" key={label as string}><span>{label as string}</span><div>{(values as string[]).map((value, index) => <b className={index === 1 ? "average" : ""} key={value}>{value}</b>)}</div></div>
-                ))}
-              </div>
               <div className="cohort-primary-fields">
+                <div className="expected-lengths" aria-label="Expected length references for this height">
+                  {[[["Jacket", ["31″", "32″", "33″"]], ["Sleeve", ["25.5″", "26.5″", "27.5″"]]], [["Outseam", ["41″", "41.7″", "42.4″"]], ["Inseam", ["30.9″", "31.4″", "31.9″"]]]].map((group, groupIndex) => (
+                    <div className="length-stack" key={groupIndex}>{group.map(([label, values]) => <div className="length-reference" key={label as string}><span>{label as string}</span><div>{(values as string[]).map((value, index) => <b className={index === 1 ? "average" : ""} key={value}>{value}</b>)}</div></div>)}</div>
+                  ))}
+                </div>
                 <div className="cohort-core-field" aria-label={`Height 75 inches, plus or minus ${heightTolerance} inches`}><b>75<small>in</small></b><div><button aria-label="Decrease height tolerance" onClick={() => setHeightTolerance(Math.max(1, heightTolerance - 1))}>−</button><span>± {heightTolerance}&quot;</span><button aria-label="Increase height tolerance" onClick={() => setHeightTolerance(heightTolerance + 1)}>+</button></div></div>
                 <div className="cohort-core-field" aria-label={`Weight 185 pounds, plus or minus ${weightTolerance} pounds`}><b>185<small>lb</small></b><div><button aria-label="Decrease weight tolerance" onClick={() => setWeightTolerance(Math.max(5, weightTolerance - 5))}>−</button><span>± {weightTolerance}</span><button aria-label="Increase weight tolerance" onClick={() => setWeightTolerance(weightTolerance + 5)}>+</button></div></div>
                 {[["Jacket", "40"], ["Length", "L"], ["Pants", "34"]].map(([label, value]) => (
@@ -334,8 +341,8 @@ export default function Home() {
             <section className="brain-card intelligence-card">
               <header className="intelligence-header">
                 <div className="intelligence-tabs" role="tablist" aria-label="Order intelligence">
-                  <button className={intelligenceTab === "brain" ? "active" : ""} role="tab" aria-selected={intelligenceTab === "brain"} onClick={() => setIntelligenceTab("brain")}><span>✣</span><b>OMA Brain</b></button>
-                  <button className={intelligenceTab === "clickup" ? "active" : ""} role="tab" aria-selected={intelligenceTab === "clickup"} onClick={() => setIntelligenceTab("clickup")}><span>▧</span><b>ClickUp</b><em>3</em></button>
+                  <button className={intelligenceTab === "brain" ? "active" : ""} role="tab" aria-selected={intelligenceTab === "brain"} onClick={() => setIntelligenceTab("brain")}><BrainLogo /><b>OMA Brain</b></button>
+                  <button className={intelligenceTab === "clickup" ? "active" : ""} role="tab" aria-selected={intelligenceTab === "clickup"} onClick={() => setIntelligenceTab("clickup")}><ClickUpLogo /><b>ClickUp</b><em>3</em></button>
                 </div>
                 {intelligenceTab === "brain" && <button className="run-button">Run Again</button>}
                 {intelligenceTab === "clickup" && <span className="connected-status">Connected</span>}
