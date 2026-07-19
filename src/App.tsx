@@ -428,7 +428,7 @@ export default function Home() {
               <div className="garment-data-layout">
                 <aside className="garment-body-reference" aria-label="Body final measurements">
                   <header><strong>Body Data</strong><span>Final</span></header>
-                  <div style={{ gridTemplateRows: `repeat(${garmentMeasurements[activeGarment].length}, minmax(0, 1fr))` }}>{garmentMeasurements[activeGarment].map((item) => <div key={item.name}><span>{item.bodyName}</span><b>{item.bodyName ? (finals[item.bodyName] ?? item.body) : "—"}</b></div>)}</div>
+                  <div style={{ gridTemplateRows: `repeat(${garmentMeasurements[activeGarment].length}, minmax(0, 1fr))` }}>{garmentMeasurements[activeGarment].map((item) => <div key={item.name}><span>{item.bodyName}</span><b className={item.bodyName ? "" : "empty"}>{item.bodyName ? (finals[item.bodyName] ?? item.body) : ""}</b></div>)}</div>
                 </aside>
                 <div className="garment-table-wrap">
                 <table className={`garment-measurement-table ${showBrandMeasurements ? "with-brands" : "without-brands"}`}>
