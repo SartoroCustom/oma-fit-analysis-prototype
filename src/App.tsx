@@ -112,6 +112,7 @@ export default function Home() {
   const [profileExpanded, setProfileExpanded] = useState(false);
   const [showStaff, setShowStaff] = useState(false);
   const [showBrandMeasurements, setShowBrandMeasurements] = useState(false);
+  const [unit, setUnit] = useState<"in" | "cm">("in");
   const [heightTolerance, setHeightTolerance] = useState(1);
   const [weightTolerance, setWeightTolerance] = useState(5);
   const [reconExpanded, setReconExpanded] = useState(true);
@@ -247,7 +248,7 @@ export default function Home() {
                 <span className="column-label">Show columns</span>
                 <label className="column-toggle"><input type="checkbox" checked={showStaff} onChange={(event) => setShowStaff(event.target.checked)} />Staff</label>
                 <label className="column-toggle"><input type="checkbox" checked={showBrandMeasurements} onChange={(event) => setShowBrandMeasurements(event.target.checked)} />Brand measurements</label>
-                <button className="unit-select" aria-label="Measurement units, inches"><b>in</b><span>⌄</span></button>
+                <div className="unit-toggle" role="group" aria-label="Measurement units"><button className={unit === "in" ? "active" : ""} aria-pressed={unit === "in"} onClick={() => setUnit("in")}>IN</button><button className={unit === "cm" ? "active" : ""} aria-pressed={unit === "cm"} onClick={() => setUnit("cm")}>CM</button></div>
               </div>
             </div>
 
@@ -313,12 +314,18 @@ export default function Home() {
                     <div className="length-stack" key={groupIndex}>{group.map(([label, values]) => <div className="length-reference" key={label as string}><span>{label as string}</span><div>{(values as string[]).map((value, index) => <b className={index === 1 ? "average" : ""} key={value}>{value}</b>)}</div></div>)}</div>
                   ))}
                 </div>
-                <div className="cohort-core-field" aria-label={`Height 75 inches, plus or minus ${heightTolerance} inches`}><b>75<small>in</small></b><div><button aria-label="Decrease height tolerance" onClick={() => setHeightTolerance(Math.max(1, heightTolerance - 1))}>−</button><span>± {heightTolerance} in</span><button aria-label="Increase height tolerance" onClick={() => setHeightTolerance(heightTolerance + 1)}>+</button></div></div>
-                <div className="cohort-core-field" aria-label={`Weight 185 pounds, plus or minus ${weightTolerance} pounds`}><b>185<small>lb</small></b><div><button aria-label="Decrease weight tolerance" onClick={() => setWeightTolerance(Math.max(5, weightTolerance - 5))}>−</button><span>± {weightTolerance} lb</span><button aria-label="Increase weight tolerance" onClick={() => setWeightTolerance(weightTolerance + 5)}>+</button></div></div>
-                {[["Jacket", "40"], ["Length", "L"], ["Pants", "34"]].map(([label, value]) => (
-                  <button className="cohort-select" key={label}><small>{label}</small><b>{value}</b><span>⌄</span></button>
-                ))}
-                <button className="cohort-search" onClick={() => { setToast("Reference cohort updated"); setTimeout(() => setToast(""), 2200); }}>⌕ Search</button>
+                <div className="cohort-search-controls">
+                  <div className="cohort-core-row">
+                    <div className="cohort-core-field" aria-label={`Height 75 inches, plus or minus ${heightTolerance} inches`}><b>75<small>in</small></b><div><button aria-label="Decrease height tolerance" onClick={() => setHeightTolerance(Math.max(1, heightTolerance - 1))}>−</button><span>± {heightTolerance} in</span><button aria-label="Increase height tolerance" onClick={() => setHeightTolerance(heightTolerance + 1)}>+</button></div></div>
+                    <div className="cohort-core-field" aria-label={`Weight 185 pounds, plus or minus ${weightTolerance} pounds`}><b>185<small>lb</small></b><div><button aria-label="Decrease weight tolerance" onClick={() => setWeightTolerance(Math.max(5, weightTolerance - 5))}>−</button><span>± {weightTolerance} lb</span><button aria-label="Increase weight tolerance" onClick={() => setWeightTolerance(weightTolerance + 5)}>+</button></div></div>
+                  </div>
+                  <div className="cohort-filter-row">
+                    {[["Jacket", "40"], ["Length", "L"], ["Pants", "34"]].map(([label, value]) => (
+                      <button className="cohort-select" key={label}><small>{label}</small><b>{value}</b><span>⌄</span></button>
+                    ))}
+                    <button className="cohort-search" onClick={() => { setToast("Reference cohort updated"); setTimeout(() => setToast(""), 2200); }}>⌕ Search</button>
+                  </div>
+                </div>
               </div>
               {cohortExpanded && <div className="cohort-secondary-fields">
                 {[["Fit Pref.", "Modern"], ["Shoulder", "Average"], ["Arms", "Long"], ["Rise", "Mid"], ["Seat", "Average"]].map(([label, value]) => (
