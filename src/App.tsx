@@ -16,6 +16,66 @@ type Measurement = {
   labels: [string, string];
 };
 
+type OrderIconId = "priority" | "rush" | "returning" | "multiple" | "notes" | "lining" | "wedding" | "reconfirm" | "adjustments";
+
+type OrderIconState = { id: string; label: string; file: string };
+
+type OrderIconDefinition = {
+  id: OrderIconId;
+  label: string;
+  states: OrderIconState[];
+};
+
+const orderIconDefinitions: Record<OrderIconId, OrderIconDefinition> = {
+  priority: { id: "priority", label: "Priority Shipping", states: [
+    { id: "inactive", label: "Inactive", file: "priority-shipping-inactive.svg" },
+    { id: "active", label: "Active", file: "priority-shipping-active.svg" },
+  ] },
+  rush: { id: "rush", label: "Rush Shipping", states: [
+    { id: "inactive", label: "Inactive", file: "rush-shipping-inactive.svg" },
+    { id: "active", label: "Active", file: "rush-shipping-active.svg" },
+  ] },
+  returning: { id: "returning", label: "Returning Customer", states: [
+    { id: "inactive", label: "Inactive", file: "returning-customer-inactive.svg" },
+    { id: "same-fit", label: "Same Fit Profile", file: "returning-customer-same-fit-profile.svg" },
+    { id: "different-fit", label: "Different Fit Profile", file: "returning-customer-different-fit-profile.svg" },
+  ] },
+  multiple: { id: "multiple", label: "Multiple Active Orders", states: [
+    { id: "inactive", label: "Inactive", file: "multiple-active-orders-inactive.svg" },
+    { id: "active", label: "Active", file: "multiple-active-orders-active.svg" },
+  ] },
+  notes: { id: "notes", label: "Customer Order Notes", states: [
+    { id: "inactive", label: "Inactive", file: "customer-order-notes-inactive.svg" },
+    { id: "active", label: "Active", file: "customer-order-notes-active.svg" },
+  ] },
+  lining: { id: "lining", label: "Custom Lining", states: [
+    { id: "inactive", label: "Inactive", file: "custom-lining-inactive.svg" },
+    { id: "active", label: "Active", file: "custom-lining-active.svg" },
+  ] },
+  wedding: { id: "wedding", label: "Wedding Party", states: [
+    { id: "inactive", label: "Inactive", file: "wedding-party-inactive.svg" },
+    { id: "active", label: "Active", file: "wedding-party-active.svg" },
+  ] },
+  reconfirm: { id: "reconfirm", label: "Fit Reconfirmation", states: [
+    { id: "inactive", label: "Inactive", file: "fit-reconfirmation-inactive.svg" },
+    { id: "in-progress", label: "In Progress", file: "fit-reconfirmation-in-progress.svg" },
+    { id: "completed", label: "Completed", file: "fit-reconfirmation-completed.svg" },
+  ] },
+  adjustments: { id: "adjustments", label: "Adjustments & Fit Requests", states: [
+    { id: "inactive", label: "Inactive", file: "adjustments-fit-requests-inactive.svg" },
+    { id: "manual", label: "Manually Activated", file: "adjustments-fit-requests-manually-activated.svg" },
+    { id: "alteration", label: "Alteration Reimbursement Request", file: "adjustments-fit-requests-alteration-reimbursement.svg" },
+    { id: "remake", label: "Remake Request", file: "adjustments-fit-requests-remake.svg" },
+    { id: "adjust-fit", label: "Adjust My Fit Request", file: "adjustments-fit-requests-adjust-my-fit.svg" },
+  ] },
+};
+
+const topOrderIcons: OrderIconId[] = ["priority", "rush", "returning", "multiple"];
+const toolbarOrderIcons: OrderIconId[] = ["notes", "lining", "wedding", "reconfirm", "adjustments"];
+const initialOrderIconStates: Record<OrderIconId, number> = {
+  priority: 1, rush: 0, returning: 1, multiple: 1, notes: 1, lining: 0, wedding: 1, reconfirm: 1, adjustments: 3,
+};
+
 const bodyMeasurements: Measurement[] = [
   { name: "Neck", bm: "15.5", sm: "15.5", staff: "—", dta: "15.5", final: "15.5", confidence: 92, rationale: "Matches order average", order: ["15.6", "15.8", "16.5"], brand: ["16.0", "16.2", "16.7"], labels: ["15.9", "16.1"] },
   { name: "Chest", bm: "40.0", sm: "40.0", staff: "—", dta: "40.0", final: "40.0", confidence: 96, rationale: "SM + photo proportions align", order: ["39.3", "39.8", "41.7"], brand: ["40.5", "41.5", "43.2"], labels: ["40.8", "42.1"] },
@@ -194,6 +254,12 @@ function ClickUpLogo() {
   return <svg className="intelligence-logo clickup-logo" viewBox="0 0 22 20" aria-hidden="true"><path d="M4 7.7 11 2l7 5.7-2.4 2.8L11 6.8l-4.6 3.7L4 7.7Z" fill="#ff5ac8"/><path d="M4.7 12.1 7.6 10c.9 1.3 2 2 3.4 2s2.5-.7 3.4-2l2.9 2.1C15.8 14.7 13.7 16 11 16s-4.8-1.3-6.3-3.9Z" fill="#7b38e8"/></svg>;
 }
 
+function OrderStatusIcon({ definition, stateIndex, onCycle }: { definition: OrderIconDefinition; stateIndex: number; onCycle: () => void }) {
+  const state = definition.states[stateIndex];
+  const description = `${definition.label}: ${state.label}. Click to show next state.`;
+  return <button className="order-status-icon" type="button" aria-label={description} title={description} onClick={onCycle}><img src={`/icons/${state.file}`} alt="" aria-hidden="true" /></button>;
+}
+
 function CohortValue({ values, compact = false }: { values: [string, string, string]; compact?: boolean }) {
   if (values.every((value) => value === "—")) return <span className="no-cohort-data">—</span>;
   return <><b>{values[1]}</b>{!compact && <span>({values[0]}–{values[2]})</span>}</>;
@@ -241,6 +307,7 @@ export default function Home() {
   const [dtaExpanded, setDtaExpanded] = useState(false);
   const [photo, setPhoto] = useState(0);
   const [toast, setToast] = useState("");
+  const [orderIconStates, setOrderIconStates] = useState<Record<OrderIconId, number>>(initialOrderIconStates);
   const selectedCount = selected.size;
   const allSelected = measurements.length > 0 && measurements.every((item) => selected.has(item.name));
   const changedCount = useMemo(() => tab === "body"
@@ -290,6 +357,11 @@ export default function Home() {
     setTimeout(() => setToast(""), 2400);
   }
 
+  function cycleOrderIcon(id: OrderIconId) {
+    const definition = orderIconDefinitions[id];
+    setOrderIconStates((current) => ({ ...current, [id]: (current[id] + 1) % definition.states.length }));
+  }
+
   return (
     <main className="app-shell">
       <aside className="global-nav" aria-label="OMA navigation">
@@ -318,7 +390,7 @@ export default function Home() {
         <div className="collaboration-note">
           <strong>Demo Manager</strong><span>Today · Customer photos received and fit profile ready for final analysis.</span>
         </div>
-        <div className="order-signals" aria-label="Order activity"><span>▣</span><span>♡</span><span>▤</span><span>▧</span></div>
+        <div className="order-signals" aria-label="Shipping and customer order indicators">{topOrderIcons.map((id) => <OrderStatusIcon key={id} definition={orderIconDefinitions[id]} stateIndex={orderIconStates[id]} onCycle={() => cycleOrderIcon(id)} />)}</div>
         <div className="deadline">
           <span><b>6 Days</b> to ship</span>
           <div className="deadline-bar"><i /><i /><i /><i /><i /><i /></div>
@@ -340,7 +412,7 @@ export default function Home() {
           <section className="order-toolbar">
             <div className="profile-control"><span>Profile</span><button><strong>Jun 27, 2025 · Primary</strong><small>active</small><b>⌄</b></button><button className="assign-button">Assign to Order</button></div>
             <div className="garment-segments" aria-label="Customer order history"><span className="has-orders">Jackets <b>2</b></span><span>Pants <b>0</b></span><span className="has-orders">Shirts <b>5</b></span><span>Vests <b>0</b></span></div>
-            <nav className="module-actions" aria-label="Order tools"><button aria-label="Shipping">✈</button><button aria-label="Delivery">▣</button><button aria-label="Customer messages">▧</button><button aria-label="Favorites">♡</button><button aria-label="Documents">▤</button><button aria-label="Measurements">◉</button><button aria-label="Print">▥</button></nav>
+            <nav className="module-actions order-status-actions" aria-label="Order status indicators">{toolbarOrderIcons.map((id) => <OrderStatusIcon key={id} definition={orderIconDefinitions[id]} stateIndex={orderIconStates[id]} onCycle={() => cycleOrderIcon(id)} />)}</nav>
           </section>
 
         <section className={`analysis-stage ${tab === "garment" ? "garment-mode" : "body-mode"}`}>
@@ -442,7 +514,7 @@ export default function Home() {
                   <div className="cohort-core-row">
                     <div className="cohort-core-field" aria-label={`Height 75 inches, plus or minus ${heightTolerance} inches`}><b>75<small>in</small></b><div><button aria-label="Decrease height tolerance" onClick={() => setHeightTolerance(Math.max(1, heightTolerance - 1))}>−</button><span>± {heightTolerance} in</span><button aria-label="Increase height tolerance" onClick={() => setHeightTolerance(heightTolerance + 1)}>+</button></div></div>
                     <div className="cohort-core-field" aria-label={`Weight 185 pounds, plus or minus ${weightTolerance} pounds`}><b>185<small>lb</small></b><div><button aria-label="Decrease weight tolerance" onClick={() => setWeightTolerance(Math.max(5, weightTolerance - 5))}>−</button><span>± {weightTolerance} lb</span><button aria-label="Increase weight tolerance" onClick={() => setWeightTolerance(weightTolerance + 5)}>+</button></div></div>
-                    <button className="cohort-select cohort-torso"><small>Torso</small><b>Rectangle</b><span>⌄</span></button>
+                    <button className="cohort-select cohort-torso" aria-label="Torso shape: Rectangle"><b>Rectangle</b><span>⌄</span></button>
                   </div>
                   <div className="cohort-filter-row">
                     {[["Jacket", "40"], ["Length", "L"], ["Pants", "34"], ["Age", "Young"]].map(([label, value]) => (
@@ -516,7 +588,7 @@ export default function Home() {
                     <div className="cohort-core-row">
                       <div className="cohort-core-field" aria-label={`Height 75 inches, plus or minus ${heightTolerance} inches`}><b>75<small>in</small></b><div><button aria-label="Decrease height tolerance" onClick={() => setHeightTolerance(Math.max(1, heightTolerance - 1))}>−</button><span>± {heightTolerance} in</span><button aria-label="Increase height tolerance" onClick={() => setHeightTolerance(heightTolerance + 1)}>+</button></div></div>
                       <div className="cohort-core-field" aria-label={`Weight 185 pounds, plus or minus ${weightTolerance} pounds`}><b>185<small>lb</small></b><div><button aria-label="Decrease weight tolerance" onClick={() => setWeightTolerance(Math.max(5, weightTolerance - 5))}>−</button><span>± {weightTolerance} lb</span><button aria-label="Increase weight tolerance" onClick={() => setWeightTolerance(weightTolerance + 5)}>+</button></div></div>
-                      <button className="cohort-select cohort-torso"><small>Torso</small><b>Rectangle</b><span>⌄</span></button>
+                      <button className="cohort-select cohort-torso" aria-label="Torso shape: Rectangle"><b>Rectangle</b><span>⌄</span></button>
                     </div>
                     <div className="cohort-filter-row">
                       {[["Jacket", "40"], ["Length", "L"], ["Pants", "34"], ["Age", "Young"]].map(([label, value]) => <button className="cohort-select" key={label}><small>{label}</small><b>{value}</b><span>⌄</span></button>)}

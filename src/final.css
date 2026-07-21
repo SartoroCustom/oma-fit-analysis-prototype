@@ -141,6 +141,40 @@
   .topbar { grid-template-columns: minmax(400px, 1fr) 140px 120px minmax(286px, auto); gap: 9px; }
 }
 
+/* Production order-status icon system. The artwork owns its active-state
+   container, so both rows use the exact same 32px optical canvas. */
+.order-signals,
+.module-actions.order-status-actions { gap: 6px; }
+.order-signals .order-status-icon,
+.module-actions.order-status-actions .order-status-icon {
+  width: 34px;
+  min-width: 34px;
+  height: 34px;
+  padding: 1px;
+  border: 0;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  color: inherit;
+  background: transparent;
+  cursor: pointer;
+  transition: background-color .14s ease, transform .14s ease;
+}
+.order-signals .order-status-icon:hover,
+.module-actions.order-status-actions .order-status-icon:hover { background: #edf3f1; transform: translateY(-1px); }
+.order-signals .order-status-icon:focus-visible,
+.module-actions.order-status-actions .order-status-icon:focus-visible { outline: 2px solid #307e73; outline-offset: 2px; }
+.order-status-icon img { width: 32px; height: 32px; display: block; pointer-events: none; }
+.order-signals .order-status-icon:nth-child(4) { display: grid; }
+
+@media (max-width: 1500px) {
+  .order-signals,
+  .module-actions.order-status-actions { gap: 4px; }
+  .order-signals .order-status-icon,
+  .module-actions.order-status-actions .order-status-icon { width: 32px; min-width: 32px; height: 32px; }
+  .order-status-icon img { width: 30px; height: 30px; }
+}
+
 /* Garment sign-off pass: one row label, aligned Body Final, and full use of the
    approved analysis workspace. */
 .garment-data-layout {
@@ -1552,4 +1586,45 @@
   .garment-data-layout .garment-input-cell input,
   .garment-data-layout .historical-cell span { height: 20px; }
   .garment-data-layout .finish-cell input { height: 21px; }
+}
+
+/* Search control refinement. Kept last so the final signed-off grid cannot
+   reintroduce the redundant Torso label or undersize the primary action. */
+.analysis-stage .cohort-torso {
+  padding: 0 24px 0 10px;
+  justify-content: center;
+}
+.analysis-stage .cohort-torso b {
+  width: 100%;
+  overflow: visible;
+  font-size: 14px;
+  line-height: 1;
+  text-align: center;
+  text-overflow: clip;
+}
+.analysis-stage .cohort-torso > span {
+  right: 8px;
+  bottom: 12px;
+}
+.analysis-stage .cohort-filter-row {
+  grid-template-columns: .68fr .55fr .68fr .82fr minmax(108px, 1.28fr);
+  gap: 6px;
+}
+.analysis-stage .cohort-filter-row .cohort-search {
+  min-width: 108px;
+  padding-inline: 16px;
+  font-size: 12px;
+  font-weight: 780;
+  letter-spacing: .01em;
+}
+
+@media (max-width: 1500px) {
+  .analysis-stage .cohort-filter-row {
+    grid-template-columns: .62fr .5fr .62fr .76fr minmax(100px, 1.2fr);
+    gap: 5px;
+  }
+  .analysis-stage .cohort-filter-row .cohort-search {
+    min-width: 100px;
+    padding-inline: 12px;
+  }
 }
