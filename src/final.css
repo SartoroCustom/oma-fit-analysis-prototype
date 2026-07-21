@@ -265,12 +265,21 @@
 @media (max-width: 1500px) {
   .garment-mode .history-record-bar { grid-template-columns: 145px 205px minmax(245px, 1fr); }
   .garment-mode .record-loaded { display: none; }
-  .analysis-stage .cohort-primary-fields { grid-template-columns: 360px minmax(0, 1fr); }
+  .analysis-stage .cohort-primary-fields { grid-template-columns: 342px minmax(0, 1fr); }
   .analysis-stage .expected-lengths { gap: 10px; padding-inline: 8px; }
   .analysis-stage .length-reference > span { width: 44px; flex-basis: 44px; font-size: 10.5px; }
   .analysis-stage .length-reference > div { gap: 4px; }
   .analysis-stage .cohort-core-row .cohort-core-field > b { font-size: 16px; }
   .analysis-stage .cohort-core-row .cohort-core-field span { font-size: 10px; }
+}
+
+@media (max-height: 960px) {
+  .garment-data-layout .garment-measurement-table { height: 100% !important; }
+  .garment-data-layout .garment-measurement-table tbody tr,
+  .garment-data-layout .garment-measurement-table td { min-height: 0; }
+  .garment-data-layout .garment-input-cell input,
+  .garment-data-layout .historical-cell span { height: 20px; }
+  .garment-data-layout .finish-cell input { height: 21px; }
 }
 
 /* Brain and ClickUp share one non-obstructive intelligence workspace. */
