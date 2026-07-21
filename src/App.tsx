@@ -230,16 +230,14 @@ const garmentSkuOptions: Record<GarmentType, string[]> = {
 };
 
 type ProfileKey = "Sex" | "Height" | "Weight" | "Age" | "BMI" | "Torso" | "Jacket" | "Length" | "Pants" | "Shirt" | "Fit Pref." | "Shoulder" | "Rise" | "Seat";
+type CohortSearchKey = "height" | "weight" | "torso" | "jacket" | "length" | "pants" | "age";
 
 const profileItems: ProfileKey[] = ["Sex", "Height", "Weight", "Age", "BMI", "Torso", "Jacket", "Length", "Pants", "Shirt", "Fit Pref.", "Shoulder", "Rise", "Seat"];
 const initialProfileValues: Record<ProfileKey, string> = {
   Sex: "Male", Height: "6'3\"", Weight: "185 lbs", Age: "25–34", BMI: "23.1", Torso: "Rectangle", Jacket: "40", Length: "Long", Pants: "34", Shirt: "15.5 / 36", "Fit Pref.": "Modern", Shoulder: "Average", Rise: "Mid", Seat: "Average",
 };
-const editableProfileFields = new Set<ProfileKey>(["Height", "Weight", "Jacket", "Pants"]);
-const profileOptions: Partial<Record<ProfileKey, string[]>> = {
-  Age: ["18–24", "25–34", "35–44", "45–54", "55–64", "65+"],
-  Torso: ["Rectangle", "Trapezoid", "Inverted Triangle", "Oval", "Chiseled"],
-  Length: ["Short", "Regular", "Long", "Extra Long"],
+const initialCohortSearch: Record<CohortSearchKey, string> = {
+  height: "75", weight: "185", torso: "Rectangle", jacket: "40", length: "Long", pants: "34", age: "Young",
 };
 
 function tone(confidence: number) {
@@ -262,21 +260,21 @@ function ClickUpLogo() {
 
 function OrderIconArtwork({ id, state }: { id: OrderIconId; state: OrderIconState }) {
   const active = state.id !== "inactive";
-  const ink = active ? "#fff" : "#65716E";
-  const darkInk = active && (id === "notes" || state.id === "alteration") ? "#302A1D" : ink;
-  const common = { fill: "none", stroke: darkInk, strokeWidth: 1.6, strokeLinecap: "round" as const, strokeLinejoin: "round" as const };
-  return <svg className="order-icon-art" viewBox="0 0 32 32" aria-hidden="true">
-    {active && <rect x="1" y="1" width="30" height="30" rx="7.5" fill={state.color} />}
-    {!active && <rect x="1.25" y="1.25" width="29.5" height="29.5" rx="7.25" fill="#F7F8F8" stroke="#DCE2E0" strokeWidth="1.1" />}
-    {id === "priority" && <g {...common}><path d="M5 10.2h12.3v10.6H5z"/><path d="M17.3 13.4h4.6l4.2 4.2v3.2h-8.8z"/><path d="M6.9 14h6.8M6.9 17h4.8"/><circle cx="9.2" cy="22.3" r="2"/><circle cx="22.5" cy="22.3" r="2"/></g>}
-    {id === "rush" && <g {...common}><path d="M16 4.7c1 0 1.7 1.3 1.7 3.1v6.1l9 4v2.5l-9-1.7v4.7l3 2v1.9L16 26.2l-4.7 1.1v-1.9l3-2v-4.7l-9 1.7v-2.5l9-4V7.8c0-1.8.7-3.1 1.7-3.1Z"/><path d="M14.3 13.9h3.4"/></g>}
-    {id === "returning" && <g {...common}><path d="M16 25.7S6.4 20.3 6.4 13.2a5.2 5.2 0 0 1 9.6-2.8 5.2 5.2 0 0 1 9.6 2.8c0 7.1-9.6 12.5-9.6 12.5Z"/><path d="M12.1 10.5c-1.8.4-2.8 1.7-2.8 3.5"/></g>}
-    {id === "multiple" && <g {...common}><path d="M4.8 12.6h12.8l-1 13.4H5.8z"/><path d="M8.1 12.5V10a3.1 3.1 0 0 1 6.2 0v2.5"/><path d="M15.5 10.1h11.7l-1 12.8h-8.7M18.8 10V8a2.8 2.8 0 0 1 5.6 0v2"/><path d="M9.2 17h4"/></g>}
-    {id === "notes" && <g {...common}><circle cx="10.3" cy="10.2" r="3.7"/><path d="M4.8 24.7c.5-4.3 2.3-6.6 5.5-6.6 1.7 0 3 .6 4 1.8"/><path d="M16.3 7.7h10.6v10.7h-5.1l-3.6 3.2v-3.2h-1.9z"/><path d="M19.5 11.4h4.1M19.5 14.6h2.8"/></g>}
-    {id === "lining" && <g {...common}><path d="m10.8 5.2-5.4 4.5 2 5.2 2.4-1.2L8.9 27h6.4V14.8L10.8 5.2Z"/><path d="m21.2 5.2 5.4 4.5-2 5.2-2.4-1.2.9 13.3h-6.4V14.8l4.5-9.6Z"/><path d="m10.8 5.2 5.2 9.6 5.2-9.6M8.8 10.7l6.5 4.1M23.2 10.7l-6.5 4.1"/><path d="m10.2 18 2-1.7 2 1.7-2 1.7-2-1.7Zm7.6 0 2-1.7 2 1.7-2 1.7-2-1.7Zm-7.6 5 2-1.7 2 1.7-2 1.7-2-1.7Zm7.6 0 2-1.7 2 1.7-2 1.7-2-1.7" strokeWidth="1.1"/></g>}
-    {id === "wedding" && <g {...common}><circle cx="12.5" cy="18.4" r="6.3"/><circle cx="20" cy="18.4" r="6.3"/><path d="m16.2 7.8 2.1-3.1h3.4l2.1 3.1-3.8 3.4-3.8-3.4Z"/><path d="M8 7.4h2.4M9.2 6.2v2.4"/></g>}
-    {id === "reconfirm" && <g {...common}><path d="M18.5 8.8C12.7 6.5 7 9.8 7 15c0 4.3 3.4 7.4 7.6 7.4 3.7 0 6.5-2.4 6.5-5.7 0-2.6-2.1-4.6-4.8-4.6-2.2 0-3.9 1.5-3.9 3.5 0 1.6 1.2 2.7 2.8 2.7 1.2 0 2.1-.8 2.1-1.8"/><path d="M20.8 17.6h6.4v5.1h-6.4zM22.3 19.2v1.7M24.3 19.2v1M26.3 19.2v1.7M27.2 22.7l1.2 2"/><path d="M7.4 11.6l2.7 1M6.9 15h2.8M7.7 18.5l2.6-1"/></g>}
-    {id === "adjustments" && <g {...common}><path d="m7.1 6-3 2.7 1.6 3.5 1.6-.8L7 23.7h8.3L15 11.4l1.6.8 1.6-3.5-3-2.7-2.1 2.3H9.2L7.1 6Z"/><path d="M18.5 17.2h8.8v7.2h-8.8zM20.3 17.2v-3h3.5l1.8 3M21.2 20.1h3.5M23 20.1v2.1M18.5 24.4l-1.7 2M27.3 17.2l1.5-1.4"/><circle cx="20.5" cy="22.5" r=".6" fill={darkInk} stroke="none"/></g>}
+  const ink = active ? "#fff" : "#53615e";
+  const detailInk = active && (id === "notes" || state.id === "alteration") ? "#322a1d" : ink;
+  const common = { fill: "none", stroke: detailInk, strokeWidth: 1.9, strokeLinecap: "round" as const, strokeLinejoin: "round" as const };
+  return <svg className="order-icon-art" viewBox="0 0 40 40" aria-hidden="true">
+    {active && <rect x="1" y="1" width="38" height="38" rx="10" fill={state.color} />}
+    {!active && <rect x="1.2" y="1.2" width="37.6" height="37.6" rx="9.8" fill="#F8FAF9" stroke="#D8E0DD" strokeWidth="1.2" />}
+    {id === "priority" && <g {...common}><path d="M6.4 12.2h16v14.4h-16z"/><path d="M22.4 16.3h6l4.1 4.9v5.4H22.4z"/><path d="M9.6 16.7h8.1M9.6 20.6h6.3M25.3 18.2h3.1"/><path d="M5.7 26.6h27.1"/><circle cx="11.5" cy="29.2" r="2.6"/><circle cx="27.8" cy="29.2" r="2.6"/></g>}
+    {id === "rush" && <g {...common}><path d="M20 5.4c1.2 0 2.1 1.4 2.1 3.4v7.9l10.5 4.9v2.6l-10.5-1.9v6.1l3.4 2.6v2L20 31.6 14.5 33v-2l3.4-2.6v-6.1L7.4 24.2v-2.6l10.5-4.9V8.8c0-2 .9-3.4 2.1-3.4Z"/><path d="M17.9 16.8h4.2M11.3 11.6l3.4 2M28.7 11.6l-3.4 2"/></g>}
+    {id === "returning" && <g {...common}><path d="M20 31.4S7.3 24.4 7.3 15.1a6.7 6.7 0 0 1 12.7-3 6.7 6.7 0 0 1 12.7 3c0 9.3-12.7 16.3-12.7 16.3Z"/><path d="M12.6 14.1c-1.7.5-2.8 1.8-2.8 3.7"/></g>}
+    {id === "multiple" && <g {...common}><path d="M7 14.5h16.6l-1.2 17H8.2z"/><path d="M11.1 14.5v-3a4.2 4.2 0 0 1 8.4 0v3"/><path d="M20.4 9.6h12.1l-1 14.6h-8.8M24 9.6V7.3a3.5 3.5 0 0 1 7 0v2.3"/><path d="M12.8 20.1h5M24 14.8h4"/></g>}
+    {id === "notes" && <g {...common}><circle cx="12.2" cy="12.2" r="4.4"/><path d="M5.7 29.8c.7-5.1 2.9-7.7 6.5-7.7 2.2 0 4.1.9 5.4 2.7"/><path d="M20.3 9.2h13v12.6h-6.1l-4.2 3.8v-3.8h-2.7z"/><path d="M24.2 13.5h5.3M24.2 17.1h3.7"/></g>}
+    {id === "lining" && <g {...common}><path d="m13.1 6.3-7.2 5.8 2.3 6.2 3.2-1.5-.8 16.8h8.3V18.5L13.1 6.3Z"/><path d="m26.9 6.3 7.2 5.8-2.3 6.2-3.2-1.5.8 16.8h-8.3V18.5l5.8-12.2Z"/><path d="m13.1 6.3 6.9 12.2 6.9-12.2M11.3 12.6l7.6 5.9M28.7 12.6l-7.6 5.9"/><path d="m12.8 21.5 2.4-2 2.5 2-2.5 2-2.4-2Zm9.5 0 2.4-2 2.5 2-2.5 2-2.4-2Zm-9.5 6 2.4-2 2.5 2-2.5 2-2.4-2Zm9.5 0 2.4-2 2.5 2-2.5 2-2.4-2Z" strokeWidth="1.35"/></g>}
+    {id === "wedding" && <g {...common}><circle cx="15.7" cy="23.3" r="7.1"/><circle cx="24.3" cy="23.3" r="7.1"/><path d="m20 10.6 2.6-4h4.1l2.6 4-4.7 4.1-4.6-4.1Z"/><path d="M7.1 10.4h3.4M8.8 8.7v3.4"/></g>}
+    {id === "reconfirm" && <g {...common}><path d="M23.3 10.9C16.2 7.6 8.6 11.5 8.6 18c0 5.4 4.2 9.2 9.2 9.2 4.3 0 7.5-2.8 7.5-6.7 0-3.1-2.5-5.5-5.7-5.5-2.6 0-4.6 1.8-4.6 4.2 0 1.9 1.5 3.3 3.4 3.3 1.5 0 2.6-1 2.6-2.3"/><path d="M25.2 22.1h7.7v6.2h-7.7zM27.1 24v2.1M29.5 24v1.3M31.8 24v2.1M32.9 28.3l1.6 2.4"/><path d="M9.1 14.2l3.1 1.2M8.5 18l3.2.1M9.4 21.7l3-1.2"/></g>}
+    {id === "adjustments" && <g {...common}><path d="m9.8 7.1-4.2 3.5 2 4.5 2.3-1.1-.2 15.6h10.1L19.6 14l2.3 1.1 2-4.5-4.2-3.5-2.8 3H12.6l-2.8-3Z"/><path d="M23.2 21.2h10.2v8.5H23.2zM25.2 21.2v-4h4.2l2.3 4M26 24.6h4.1M28.1 24.6v2.5M23.2 29.7l-2 2.5M33.4 21.2l1.8-1.7"/><circle cx="25.6" cy="27.5" r=".8" fill={detailInk} stroke="none"/></g>}
   </svg>;
 }
 
@@ -333,7 +331,7 @@ export default function Home() {
   const [dtaExpanded, setDtaExpanded] = useState(false);
   const [photo, setPhoto] = useState(0);
   const [photoLightboxOpen, setPhotoLightboxOpen] = useState(false);
-  const [profileValues, setProfileValues] = useState<Record<ProfileKey, string>>(initialProfileValues);
+  const [cohortSearch, setCohortSearch] = useState<Record<CohortSearchKey, string>>(initialCohortSearch);
   const [clickUpDraft, setClickUpDraft] = useState("");
   const [clickUpMessages, setClickUpMessages] = useState([
     { author: "Demo Manager", initials: "DM", time: "Jul 9 · 02:23", body: "Were the requested customer photos added to the fit profile?", mine: false },
@@ -396,8 +394,8 @@ export default function Home() {
     setOrderIconStates((current) => ({ ...current, [id]: (current[id] + 1) % definition.states.length }));
   }
 
-  function updateProfile(key: ProfileKey, value: string) {
-    setProfileValues((current) => ({ ...current, [key]: value }));
+  function updateCohortSearch(key: CohortSearchKey, value: string) {
+    setCohortSearch((current) => ({ ...current, [key]: value }));
   }
 
   function sendClickUpMessage() {
@@ -465,12 +463,9 @@ export default function Home() {
           <div className="profile-summary-row">
             <div className="profile-facts">
               {profileItems.map((label) => {
-                const options = profileOptions[label];
-                return <div key={label} className={`fact ${["Height", "Weight", "Age", "BMI"].includes(label) ? "vital" : ""} ${["Jacket", "Length", "Pants", "Shirt"].includes(label) ? "size-fact" : ""} ${["Torso", "Shirt"].includes(label) ? "group-end" : ""} ${editableProfileFields.has(label) || options ? "interactive" : ""}`}>
-                  <label htmlFor={`profile-${label.replace(/\W/g, "-")}`}>{label}</label>
-                  {editableProfileFields.has(label) ? <input id={`profile-${label.replace(/\W/g, "-")}`} aria-label={`${label} profile value`} value={profileValues[label]} onChange={(event) => updateProfile(label, event.target.value)} />
-                    : options ? <select id={`profile-${label.replace(/\W/g, "-")}`} aria-label={`${label} profile option`} value={profileValues[label]} onChange={(event) => updateProfile(label, event.target.value)}>{options.map((option) => <option key={option}>{option}</option>)}</select>
-                    : <strong>{profileValues[label]}</strong>}
+                return <div key={label} className={`fact ${["Height", "Weight", "Age", "BMI"].includes(label) ? "vital" : ""} ${["Jacket", "Length", "Pants", "Shirt"].includes(label) ? "size-fact" : ""} ${["Torso", "Shirt"].includes(label) ? "group-end" : ""}`}>
+                  <small>{label}</small>
+                  <strong>{initialProfileValues[label]}</strong>
                 </div>;
               })}
             </div>
@@ -568,15 +563,16 @@ export default function Home() {
                 </div>
                 <div className="cohort-search-controls">
                   <div className="cohort-core-row">
-                    <div className="cohort-core-field" aria-label={`Height 75 inches, plus or minus ${heightTolerance} inches`}><b>75<small>in</small></b><div><button aria-label="Decrease height tolerance" onClick={() => setHeightTolerance(Math.max(1, heightTolerance - 1))}>−</button><span>± {heightTolerance} in</span><button aria-label="Increase height tolerance" onClick={() => setHeightTolerance(heightTolerance + 1)}>+</button></div></div>
-                    <div className="cohort-core-field" aria-label={`Weight 185 pounds, plus or minus ${weightTolerance} pounds`}><b>185<small>lb</small></b><div><button aria-label="Decrease weight tolerance" onClick={() => setWeightTolerance(Math.max(5, weightTolerance - 5))}>−</button><span>± {weightTolerance} lb</span><button aria-label="Increase weight tolerance" onClick={() => setWeightTolerance(weightTolerance + 5)}>+</button></div></div>
-                    <button className="cohort-select cohort-torso" aria-label="Torso shape: Rectangle"><b>Rectangle</b><span>⌄</span></button>
+                    <label className="cohort-core-field" aria-label={`Height ${cohortSearch.height} inches, plus or minus ${heightTolerance} inches`}><span>Height</span><div className="core-value"><input aria-label="Search height in inches" inputMode="decimal" value={cohortSearch.height} onChange={(event) => updateCohortSearch("height", event.target.value)} /><small>in</small></div><div><button aria-label="Decrease height tolerance" onClick={() => setHeightTolerance(Math.max(1, heightTolerance - 1))}>−</button><span>± {heightTolerance} in</span><button aria-label="Increase height tolerance" onClick={() => setHeightTolerance(heightTolerance + 1)}>+</button></div></label>
+                    <label className="cohort-core-field" aria-label={`Weight ${cohortSearch.weight} pounds, plus or minus ${weightTolerance} pounds`}><span>Weight</span><div className="core-value"><input aria-label="Search weight in pounds" inputMode="decimal" value={cohortSearch.weight} onChange={(event) => updateCohortSearch("weight", event.target.value)} /><small>lb</small></div><div><button aria-label="Decrease weight tolerance" onClick={() => setWeightTolerance(Math.max(5, weightTolerance - 5))}>−</button><span>± {weightTolerance} lb</span><button aria-label="Increase weight tolerance" onClick={() => setWeightTolerance(weightTolerance + 5)}>+</button></div></label>
+                    <label className="cohort-select cohort-torso"><small>Torso</small><select aria-label="Search torso" value={cohortSearch.torso} onChange={(event) => updateCohortSearch("torso", event.target.value)}><option>Rectangle</option><option>Trapezoid</option><option>Inverted Triangle</option><option>Oval</option><option>Chiseled</option></select></label>
                   </div>
                   <div className="cohort-filter-row">
-                    {[["Jacket", "40"], ["Length", "L"], ["Pants", "34"], ["Age", "Young"]].map(([label, value]) => (
-                      <button className="cohort-select" key={label}><small>{label}</small><b>{value}</b><span>⌄</span></button>
-                    ))}
                     <button className="cohort-search" onClick={() => { setToast("Reference cohort updated"); setTimeout(() => setToast(""), 2200); }}>⌕ Search</button>
+                    <label className="cohort-select"><small>Jacket</small><input aria-label="Search jacket size" inputMode="decimal" value={cohortSearch.jacket} onChange={(event) => updateCohortSearch("jacket", event.target.value)} /></label>
+                    <label className="cohort-select"><small>Length</small><select aria-label="Search jacket length" value={cohortSearch.length} onChange={(event) => updateCohortSearch("length", event.target.value)}><option>Short</option><option>Regular</option><option>Long</option><option>Extra Long</option></select></label>
+                    <label className="cohort-select"><small>Pants</small><input aria-label="Search pants size" inputMode="decimal" value={cohortSearch.pants} onChange={(event) => updateCohortSearch("pants", event.target.value)} /></label>
+                    <label className="cohort-select"><small>Age</small><select aria-label="Search age band" value={cohortSearch.age} onChange={(event) => updateCohortSearch("age", event.target.value)}><option>Young</option><option>Prime</option><option>Older</option></select></label>
                   </div>
                 </div>
               </div>
@@ -642,13 +638,16 @@ export default function Home() {
                   </div>
                   <div className="cohort-search-controls">
                     <div className="cohort-core-row">
-                      <div className="cohort-core-field" aria-label={`Height 75 inches, plus or minus ${heightTolerance} inches`}><b>75<small>in</small></b><div><button aria-label="Decrease height tolerance" onClick={() => setHeightTolerance(Math.max(1, heightTolerance - 1))}>−</button><span>± {heightTolerance} in</span><button aria-label="Increase height tolerance" onClick={() => setHeightTolerance(heightTolerance + 1)}>+</button></div></div>
-                      <div className="cohort-core-field" aria-label={`Weight 185 pounds, plus or minus ${weightTolerance} pounds`}><b>185<small>lb</small></b><div><button aria-label="Decrease weight tolerance" onClick={() => setWeightTolerance(Math.max(5, weightTolerance - 5))}>−</button><span>± {weightTolerance} lb</span><button aria-label="Increase weight tolerance" onClick={() => setWeightTolerance(weightTolerance + 5)}>+</button></div></div>
-                      <button className="cohort-select cohort-torso" aria-label="Torso shape: Rectangle"><b>Rectangle</b><span>⌄</span></button>
+                      <label className="cohort-core-field" aria-label={`Height ${cohortSearch.height} inches, plus or minus ${heightTolerance} inches`}><span>Height</span><div className="core-value"><input aria-label="Search height in inches" inputMode="decimal" value={cohortSearch.height} onChange={(event) => updateCohortSearch("height", event.target.value)} /><small>in</small></div><div><button aria-label="Decrease height tolerance" onClick={() => setHeightTolerance(Math.max(1, heightTolerance - 1))}>−</button><span>± {heightTolerance} in</span><button aria-label="Increase height tolerance" onClick={() => setHeightTolerance(heightTolerance + 1)}>+</button></div></label>
+                      <label className="cohort-core-field" aria-label={`Weight ${cohortSearch.weight} pounds, plus or minus ${weightTolerance} pounds`}><span>Weight</span><div className="core-value"><input aria-label="Search weight in pounds" inputMode="decimal" value={cohortSearch.weight} onChange={(event) => updateCohortSearch("weight", event.target.value)} /><small>lb</small></div><div><button aria-label="Decrease weight tolerance" onClick={() => setWeightTolerance(Math.max(5, weightTolerance - 5))}>−</button><span>± {weightTolerance} lb</span><button aria-label="Increase weight tolerance" onClick={() => setWeightTolerance(weightTolerance + 5)}>+</button></div></label>
+                      <label className="cohort-select cohort-torso"><small>Torso</small><select aria-label="Search torso" value={cohortSearch.torso} onChange={(event) => updateCohortSearch("torso", event.target.value)}><option>Rectangle</option><option>Trapezoid</option><option>Inverted Triangle</option><option>Oval</option><option>Chiseled</option></select></label>
                     </div>
                     <div className="cohort-filter-row">
-                      {[["Jacket", "40"], ["Length", "L"], ["Pants", "34"], ["Age", "Young"]].map(([label, value]) => <button className="cohort-select" key={label}><small>{label}</small><b>{value}</b><span>⌄</span></button>)}
                       <button className="cohort-search" onClick={() => { setToast("Reference cohort updated"); setTimeout(() => setToast(""), 2200); }}>⌕ Search</button>
+                      <label className="cohort-select"><small>Jacket</small><input aria-label="Search jacket size" inputMode="decimal" value={cohortSearch.jacket} onChange={(event) => updateCohortSearch("jacket", event.target.value)} /></label>
+                      <label className="cohort-select"><small>Length</small><select aria-label="Search jacket length" value={cohortSearch.length} onChange={(event) => updateCohortSearch("length", event.target.value)}><option>Short</option><option>Regular</option><option>Long</option><option>Extra Long</option></select></label>
+                      <label className="cohort-select"><small>Pants</small><input aria-label="Search pants size" inputMode="decimal" value={cohortSearch.pants} onChange={(event) => updateCohortSearch("pants", event.target.value)} /></label>
+                      <label className="cohort-select"><small>Age</small><select aria-label="Search age band" value={cohortSearch.age} onChange={(event) => updateCohortSearch("age", event.target.value)}><option>Young</option><option>Prime</option><option>Older</option></select></label>
                     </div>
                   </div>
                 </div>

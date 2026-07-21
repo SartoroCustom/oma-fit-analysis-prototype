@@ -1906,3 +1906,46 @@
 .intelligence-card .team-chat-input { margin: 0 10px 10px; border: 1px solid #d8d8dd; border-radius: 9px; display: block; overflow: hidden; background: #fff; }
 .intelligence-card .team-chat-input textarea { width: 100%; height: 56px; padding: 9px 38px 7px 9px; border: 0; outline: 0; resize: none; color: #36373b; background: #fff; font: 9px/1.4 inherit; }
 .intelligence-card .team-chat-input .clickup-send { position: absolute; right: 6px; bottom: 6px; width: 28px; height: 28px; padding: 0; border: 0; border-radius: 7px; color: #fff; background: #7b3bd1; }
+
+/* Search is the editable modelling tool. The customer Fit Profile above is a
+   record, deliberately presented as read-only data. */
+.analysis-stage .profile-strip .fact label { display: block; }
+.analysis-stage .profile-strip .fact strong { display: block; margin-top: 4px; color: #1c2c28; font-weight: 760; line-height: 1.1; }
+.analysis-stage .profile-strip .fact.vital strong { font-size: 18px; }
+
+/* Larger, technical-but-finished operational icon controls. */
+.order-status-icon .order-icon-art { width: 40px; height: 40px; }
+.order-signals .order-status-icon,
+.module-actions.order-status-actions .order-status-icon { width: 42px; min-width: 42px; height: 42px; padding: 1px; border-radius: 11px; }
+.module-actions.order-status-actions { gap: 7px; }
+.order-status-icon:hover { background: #eaf1ef !important; }
+
+/* Search is intentionally first on the lower row, away from Save & Ready. */
+.analysis-stage .cohort-core-row { grid-template-columns: 1fr 1fr minmax(114px, .92fr); gap: 6px; }
+.analysis-stage .cohort-core-field { min-width: 0; padding: 4px 7px 5px; border: 1px solid #d7e0dc; border-radius: 7px; display: grid; grid-template-columns: auto 1fr; grid-template-rows: 10px 22px; column-gap: 5px; align-items: center; background: #fff; }
+.analysis-stage .cohort-core-field > span { grid-column: 1 / 3; color: #7c8884; font-size: 8px; font-weight: 760; letter-spacing: .02em; text-transform: uppercase; }
+.analysis-stage .cohort-core-field .core-value { display: flex; align-items: baseline; gap: 3px; min-width: 0; }
+.analysis-stage .cohort-core-field .core-value input { width: 42px; min-width: 0; padding: 0; border: 0; outline: 0; color: #18342d; background: transparent; font: 800 18px/1 inherit; letter-spacing: -.04em; }
+.analysis-stage .cohort-core-field .core-value small { color: #71807b; font-size: 9px; font-weight: 720; }
+.analysis-stage .cohort-core-field > div:last-child { justify-self: end; display: flex; align-items: center; gap: 3px; }
+.analysis-stage .cohort-core-field > div:last-child span { color: #43514d; font-size: 10px; font-weight: 760; white-space: nowrap; }
+.analysis-stage .cohort-core-field button { width: 19px; height: 19px; }
+.analysis-stage .cohort-torso { padding: 4px 7px 5px; align-items: stretch; gap: 1px; }
+.analysis-stage .cohort-torso small { color: #7c8884; font-size: 8px; font-weight: 760; letter-spacing: .02em; text-transform: uppercase; }
+.analysis-stage .cohort-torso select,
+.analysis-stage .cohort-filter-row .cohort-select select,
+.analysis-stage .cohort-filter-row .cohort-select input { width: 100%; min-width: 0; padding: 0; border: 0; outline: 0; color: #19352e; background: transparent; font: 760 13px/1.15 inherit; text-align: left; }
+.analysis-stage .cohort-filter-row { grid-template-columns: minmax(108px, 1.2fr) 58px minmax(72px, .86fr) 58px minmax(72px, .9fr); gap: 6px; }
+.analysis-stage .cohort-filter-row .cohort-select { height: 36px; padding: 4px 7px 5px; cursor: text; }
+.analysis-stage .cohort-filter-row .cohort-select small { color: #7c8884; font-size: 8px; font-weight: 760; line-height: 1; text-transform: uppercase; }
+.analysis-stage .cohort-filter-row .cohort-search { width: 100%; min-width: 108px; height: 36px; border-radius: 7px; font-size: 11px; letter-spacing: .01em; }
+
+@media (max-width: 1500px) {
+  .order-status-icon .order-icon-art { width: 37px; height: 37px; }
+  .order-signals .order-status-icon,
+  .module-actions.order-status-actions .order-status-icon { width: 39px; min-width: 39px; height: 39px; }
+  .module-actions.order-status-actions { gap: 5px; }
+  .analysis-stage .cohort-core-row { grid-template-columns: 1fr 1fr minmax(96px, .86fr); gap: 5px; }
+  .analysis-stage .cohort-filter-row { grid-template-columns: minmax(96px, 1.16fr) 51px minmax(63px, .82fr) 51px minmax(64px, .84fr); gap: 5px; }
+  .analysis-stage .cohort-filter-row .cohort-search { min-width: 96px; }
+}
