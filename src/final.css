@@ -1096,3 +1096,122 @@
 .remake-footer { gap: 8px; }
 .remake-footer span { font-size: 9px; }
 .remake-footer button { font-size: 9px; }
+
+/* Garment pass 5: exact Body-table typography and breathing room.
+   Garment rows are fewer, so they should never inherit a denser visual scale. */
+.garment-data-layout {
+  grid-template-columns: 140px minmax(0, 1fr);
+}
+
+.garment-data-layout .garment-body-reference {
+  grid-template-rows: 38px auto;
+}
+.garment-data-layout .garment-body-reference > header {
+  height: 38px;
+  padding-inline: 10px;
+}
+.garment-data-layout .garment-body-reference > header strong,
+.garment-data-layout .garment-body-reference > header span {
+  font-size: 11px;
+}
+.garment-data-layout .garment-body-reference > div > div {
+  height: 23px;
+  padding-inline: 9px 7px;
+}
+.garment-data-layout .garment-body-reference > div span {
+  font-size: 11px;
+  font-weight: 700;
+}
+.garment-data-layout .garment-body-reference > div b {
+  width: 44px;
+  height: 21px;
+  flex-basis: 44px;
+  font-size: 12px;
+}
+
+.garment-data-layout .garment-table-wrap {
+  padding-right: 10px;
+}
+.garment-data-layout .garment-measurement-table {
+  width: 100%;
+  max-width: 820px;
+  font-size: clamp(11px, .735vw, 12px);
+}
+.garment-data-layout .garment-measurement-table col.g-name { width: 112px; }
+.garment-data-layout .garment-measurement-table col.g-data { width: 108px; }
+.garment-data-layout .garment-measurement-table col.g-brands { width: 96px; }
+.garment-data-layout .garment-measurement-table col.g-input { width: 62px; }
+.garment-data-layout .garment-measurement-table col.g-hist { width: 70px; }
+.garment-data-layout .garment-measurement-table col.g-finish { width: 88px; }
+.garment-data-layout .garment-measurement-table col.g-notes { width: 170px; }
+.garment-data-layout .garment-measurement-table th {
+  height: 38px;
+  padding-inline: 6px;
+  font-size: 10.5px;
+}
+.garment-data-layout .garment-measurement-table th:first-child {
+  padding-left: 10px;
+}
+.garment-data-layout .garment-measurement-table th.finish-head {
+  padding-inline: 9px;
+  font-size: 12px;
+}
+.garment-data-layout .garment-measurement-table th.customer-note-head {
+  padding-left: 10px;
+  font-size: 10.5px;
+}
+.garment-data-layout .garment-measurement-table th small {
+  margin-top: 2px;
+  font-size: 8px;
+}
+.garment-data-layout .garment-measurement-table tbody tr,
+.garment-data-layout .garment-measurement-table td {
+  height: 23px;
+}
+.garment-data-layout .garment-measurement-table td {
+  padding-inline: 5px;
+}
+.garment-data-layout .garment-measurement-name {
+  padding-left: 10px !important;
+  font-size: 1em;
+  font-weight: 730;
+}
+.garment-data-layout .garment-measurement-table .cohort-data b {
+  font-size: 1.02em;
+}
+.garment-data-layout .garment-measurement-table .cohort-data span {
+  margin-left: 5px;
+  font-size: .9em;
+}
+.garment-data-layout .garment-input-cell {
+  padding-inline: 5px !important;
+}
+.garment-data-layout .garment-input-cell input {
+  height: 21px;
+  padding-inline: 3px;
+  font-size: 10.5px;
+}
+.garment-data-layout .historical-cell span {
+  min-width: 44px;
+  height: 21px;
+  padding-inline: 5px;
+  font-size: 11px;
+}
+.garment-data-layout .finish-cell {
+  padding-inline: 8px !important;
+}
+.garment-data-layout .finish-cell input {
+  height: 22px;
+  font-size: 12px;
+}
+.garment-data-layout .customer-note-cell {
+  padding-inline: 10px !important;
+}
+.garment-data-layout .customer-note-cell span {
+  font-size: 10.5px;
+  line-height: 1.25;
+}
+
+@media (max-width: 1500px) {
+  .garment-data-layout .garment-measurement-table { font-size: 11.1px; }
+}
