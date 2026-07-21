@@ -1949,3 +1949,80 @@
   .analysis-stage .cohort-filter-row { grid-template-columns: minmax(96px, 1.16fr) 51px minmax(63px, .82fr) 51px minmax(64px, .84fr); gap: 5px; }
   .analysis-stage .cohort-filter-row .cohort-search { min-width: 96px; }
 }
+
+
+/* Cohort search: values are the interface. Remove redundant field labels and
+   use the freed room for the controls staff actually scan and change. */
+.analysis-stage .cohort-core-field.compact {
+  height: 34px;
+  padding: 4px 6px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-rows: 1fr;
+  column-gap: 5px;
+}
+.analysis-stage .cohort-core-field.compact .core-value { min-width: 0; }
+.analysis-stage .cohort-core-field.compact .core-value input { width: 45px; }
+.analysis-stage .cohort-core-field.compact > div:last-child { gap: 3px; }
+.analysis-stage .cohort-core-field.compact > div:last-child span { font-size: 10px; }
+.analysis-stage .cohort-torso {
+  height: 34px;
+  padding: 0 27px 0 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.analysis-stage .cohort-torso select {
+  width: 100%;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  color: #19352e;
+  background: transparent;
+  font: 760 14px/1.15 inherit;
+  text-align: center;
+}
+.analysis-stage .cohort-filter-row {
+  grid-template-columns: minmax(126px, 1.32fr) 46px minmax(104px, 1.02fr) 46px minmax(82px, .84fr);
+  gap: 6px;
+}
+.analysis-stage .cohort-filter-row .cohort-select {
+  height: 36px;
+  padding: 4px 7px;
+  justify-content: center;
+}
+.analysis-stage .cohort-filter-row .size-filter {
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+  cursor: text;
+}
+.analysis-stage .cohort-filter-row .size-filter .field-prefix {
+  position: static;
+  width: auto;
+  color: #73807c;
+  font-size: 11px;
+  font-weight: 820;
+  line-height: 1;
+}
+.analysis-stage .cohort-filter-row .size-filter input { font-size: 15px; font-weight: 800; }
+.analysis-stage .cohort-filter-row .length-filter,
+.analysis-stage .cohort-filter-row .age-filter { padding-right: 23px; }
+.analysis-stage .cohort-filter-row .length-filter select,
+.analysis-stage .cohort-filter-row .age-filter select { font-size: 15px; font-weight: 760; }
+.analysis-stage .cohort-filter-row .cohort-search {
+  min-width: 126px;
+  padding-inline: 17px;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+@media (max-width: 1500px) {
+  .analysis-stage .cohort-filter-row {
+    grid-template-columns: minmax(118px, 1.28fr) 44px minmax(96px, 1fr) 44px minmax(76px, .8fr);
+    gap: 5px;
+  }
+  .analysis-stage .cohort-filter-row .cohort-search { min-width: 118px; padding-inline: 14px; }
+  .analysis-stage .cohort-core-row { grid-template-columns: minmax(0, 1fr) minmax(0, 1.04fr) minmax(108px, .96fr); }
+}
