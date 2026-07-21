@@ -442,9 +442,10 @@ export default function Home() {
                   <div className="cohort-core-row">
                     <div className="cohort-core-field" aria-label={`Height 75 inches, plus or minus ${heightTolerance} inches`}><b>75<small>in</small></b><div><button aria-label="Decrease height tolerance" onClick={() => setHeightTolerance(Math.max(1, heightTolerance - 1))}>−</button><span>± {heightTolerance} in</span><button aria-label="Increase height tolerance" onClick={() => setHeightTolerance(heightTolerance + 1)}>+</button></div></div>
                     <div className="cohort-core-field" aria-label={`Weight 185 pounds, plus or minus ${weightTolerance} pounds`}><b>185<small>lb</small></b><div><button aria-label="Decrease weight tolerance" onClick={() => setWeightTolerance(Math.max(5, weightTolerance - 5))}>−</button><span>± {weightTolerance} lb</span><button aria-label="Increase weight tolerance" onClick={() => setWeightTolerance(weightTolerance + 5)}>+</button></div></div>
+                    <button className="cohort-select cohort-torso"><small>Torso</small><b>Rectangle</b><span>⌄</span></button>
                   </div>
                   <div className="cohort-filter-row">
-                    {[["Jacket", "40"], ["Length", "L"], ["Pants", "34"], ["Torso", "Rectangle"], ["Age", "Young"]].map(([label, value]) => (
+                    {[["Jacket", "40"], ["Length", "L"], ["Pants", "34"], ["Age", "Young"]].map(([label, value]) => (
                       <button className="cohort-select" key={label}><small>{label}</small><b>{value}</b><span>⌄</span></button>
                     ))}
                     <button className="cohort-search" onClick={() => { setToast("Reference cohort updated"); setTimeout(() => setToast(""), 2200); }}>⌕ Search</button>
@@ -476,15 +477,11 @@ export default function Home() {
                 </div>
               </section>
 
-              <div className="garment-data-layout" style={{ "--garment-table-height": `${38 + garmentMeasurements[activeGarment].length * 28}px` } as CSSProperties}>
-                <aside className="garment-body-reference" aria-label="Body final measurements">
-                  <header><strong>Body Data</strong><span>Final</span></header>
-                  <div style={{ gridTemplateRows: `repeat(${garmentMeasurements[activeGarment].length}, minmax(0, 1fr))` }}>{garmentMeasurements[activeGarment].map((item) => <div key={item.name}><span>{item.bodyName}</span><b className={item.bodyName ? "" : "empty"}>{item.bodyName ? (finals[item.bodyName] ?? item.body) : ""}</b></div>)}</div>
-                </aside>
+              <div className="garment-data-layout" style={{ "--garment-table-height": `${38 + garmentMeasurements[activeGarment].length * 36}px` } as CSSProperties}>
                 <div className="garment-table-wrap">
                 <table className={`garment-measurement-table ${showBrandMeasurements ? "with-brands" : "without-brands"}`}>
-                  <colgroup><col className="g-name" /><col className="g-data" /><col className="g-data" />{showBrandMeasurements && <col className="g-brands" />}<col className="g-input" /><col className="g-input" /><col className="g-hist" /><col className="g-finish" /><col className="g-notes" /></colgroup>
-                  <thead><tr><th>Measurement</th><th>Brand Data</th><th>Order Data</th>{showBrandMeasurements && <th>Brands<small>SUSU · AOS</small></th>}<th>MG</th><th>ALT</th><th>HIST<small>QC record</small></th><th className="finish-head">Finish</th><th className="customer-note-head">Customer Notes</th></tr></thead>
+                  <colgroup><col className="g-name" /><col className="g-body-final" /><col className="g-data" /><col className="g-data" />{showBrandMeasurements && <col className="g-brands" />}<col className="g-input" /><col className="g-input" /><col className="g-hist" /><col className="g-finish" /><col className="g-notes" /></colgroup>
+                  <thead><tr><th>Measurement</th><th className="body-final-head">Body Final</th><th>Brand Data</th><th>Order Data</th>{showBrandMeasurements && <th>Brands<small>SUSU · AOS</small></th>}<th>MG</th><th>ALT</th><th>HIST<small>QC record</small></th><th className="finish-head">Finish</th><th className="customer-note-head">Customer Notes</th></tr></thead>
                   <tbody>{garmentMeasurements[activeGarment].map((item) => {
                     const key = `${activeGarment}:${item.name}`;
                     const historyOffset = historicalOrder.startsWith("#6041") ? 0 : historicalOrder.startsWith("#5718") ? -.2 : .2;
@@ -492,6 +489,7 @@ export default function Home() {
                     const finishValue = garmentFinishes[key] ?? item.finish;
                     return <tr key={item.name}>
                       <td className="garment-measurement-name">{item.name}</td>
+                      <td className={`garment-body-final-cell ${item.bodyName ? "" : "empty"}`}>{item.bodyName ? (finals[item.bodyName] ?? item.body) : "—"}</td>
                       <td className="cohort-data"><CohortValue values={item.brand} /></td>
                       <td className="cohort-data"><CohortValue values={item.order} /></td>
                       {showBrandMeasurements && <td className="double"><span>{item.labels[0]}</span><span>{item.labels[1]}</span></td>}
@@ -518,9 +516,10 @@ export default function Home() {
                     <div className="cohort-core-row">
                       <div className="cohort-core-field" aria-label={`Height 75 inches, plus or minus ${heightTolerance} inches`}><b>75<small>in</small></b><div><button aria-label="Decrease height tolerance" onClick={() => setHeightTolerance(Math.max(1, heightTolerance - 1))}>−</button><span>± {heightTolerance} in</span><button aria-label="Increase height tolerance" onClick={() => setHeightTolerance(heightTolerance + 1)}>+</button></div></div>
                       <div className="cohort-core-field" aria-label={`Weight 185 pounds, plus or minus ${weightTolerance} pounds`}><b>185<small>lb</small></b><div><button aria-label="Decrease weight tolerance" onClick={() => setWeightTolerance(Math.max(5, weightTolerance - 5))}>−</button><span>± {weightTolerance} lb</span><button aria-label="Increase weight tolerance" onClick={() => setWeightTolerance(weightTolerance + 5)}>+</button></div></div>
+                      <button className="cohort-select cohort-torso"><small>Torso</small><b>Rectangle</b><span>⌄</span></button>
                     </div>
                     <div className="cohort-filter-row">
-                      {[["Jacket", "40"], ["Length", "L"], ["Pants", "34"], ["Torso", "Rectangle"], ["Age", "Young"]].map(([label, value]) => <button className="cohort-select" key={label}><small>{label}</small><b>{value}</b><span>⌄</span></button>)}
+                      {[["Jacket", "40"], ["Length", "L"], ["Pants", "34"], ["Age", "Young"]].map(([label, value]) => <button className="cohort-select" key={label}><small>{label}</small><b>{value}</b><span>⌄</span></button>)}
                       <button className="cohort-search" onClick={() => { setToast("Reference cohort updated"); setTimeout(() => setToast(""), 2200); }}>⌕ Search</button>
                     </div>
                   </div>
