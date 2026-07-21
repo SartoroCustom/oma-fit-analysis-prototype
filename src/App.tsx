@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, type CSSProperties } from "react";
 
 type Measurement = {
   name: string;
@@ -476,7 +476,7 @@ export default function Home() {
                 </div>
               </section>
 
-              <div className="garment-data-layout">
+              <div className="garment-data-layout" style={{ "--garment-table-height": `${38 + garmentMeasurements[activeGarment].length * 28}px` } as CSSProperties}>
                 <aside className="garment-body-reference" aria-label="Body final measurements">
                   <header><strong>Body Data</strong><span>Final</span></header>
                   <div style={{ gridTemplateRows: `repeat(${garmentMeasurements[activeGarment].length}, minmax(0, 1fr))` }}>{garmentMeasurements[activeGarment].map((item) => <div key={item.name}><span>{item.bodyName}</span><b className={item.bodyName ? "" : "empty"}>{item.bodyName ? (finals[item.bodyName] ?? item.body) : ""}</b></div>)}</div>
