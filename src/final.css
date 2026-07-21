@@ -1222,5 +1222,32 @@
 }
 
 @media (max-width: 1500px) {
-  .garment-data-layout .garment-measurement-table { font-size: 11.1px; }
+  .garment-data-layout { grid-template-columns: 112px minmax(0, 1fr); }
+  .garment-data-layout .garment-table-wrap { padding-right: 0; }
+  .garment-data-layout .garment-measurement-table {
+    max-width: 100%;
+    font-size: 11.1px;
+  }
+  .garment-data-layout .garment-measurement-table col.g-name { width: 82px; }
+  .garment-data-layout .garment-measurement-table col.g-data { width: 74px; }
+  .garment-data-layout .garment-measurement-table col.g-brands { width: 60px; }
+  .garment-data-layout .garment-measurement-table col.g-input { width: 43px; }
+  .garment-data-layout .garment-measurement-table col.g-hist { width: 48px; }
+  .garment-data-layout .garment-measurement-table col.g-finish { width: 68px; }
+  .garment-data-layout .garment-measurement-table col.g-notes { width: 144px; }
+  .garment-data-layout .garment-body-reference > header { padding-inline: 7px; }
+  .garment-data-layout .garment-body-reference > div > div { padding-inline: 7px 5px; }
+  .garment-data-layout .garment-body-reference > div span { font-size: 10px; }
+  .garment-data-layout .garment-body-reference > div b {
+    width: 38px;
+    flex-basis: 38px;
+    font-size: 11px;
+  }
+  .garment-data-layout .garment-measurement-table th,
+  .garment-data-layout .garment-measurement-table th.customer-note-head { padding-inline: 4px; }
+  .garment-data-layout .garment-measurement-table td { padding-inline: 3px; }
+  .garment-data-layout .garment-measurement-name { padding-left: 7px !important; }
+  .garment-data-layout .garment-input-cell { padding-inline: 3px !important; }
+  .garment-data-layout .finish-cell { padding-inline: 5px !important; }
+  .garment-data-layout .customer-note-cell { padding-inline: 7px !important; }
 }
