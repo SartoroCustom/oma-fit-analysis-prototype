@@ -1950,7 +1950,6 @@
   .analysis-stage .cohort-filter-row .cohort-search { min-width: 96px; }
 }
 
-
 /* Cohort search: values are the interface. Remove redundant field labels and
    use the freed room for the controls staff actually scan and change. */
 .analysis-stage .cohort-core-field.compact {
@@ -2018,11 +2017,44 @@
   font-weight: 800;
 }
 
+/* Final search-bar balance: Jacket and Pants need enough room to read as real
+   inputs, while Length is intentionally compact. Every parameter now shares
+   the same medium weight rather than mixing a regular top row with bold lower
+   controls. */
+.analysis-stage .cohort-core-field.compact .core-value input,
+.analysis-stage .cohort-core-field.compact > div:last-child span,
+.analysis-stage .cohort-torso select,
+.analysis-stage .cohort-filter-row .cohort-select input,
+.analysis-stage .cohort-filter-row .cohort-select select {
+  font-weight: 700;
+}
+.analysis-stage .cohort-filter-row {
+  grid-template-columns: minmax(118px, 1.18fr) 68px minmax(58px, .58fr) 68px minmax(76px, .74fr);
+}
+.analysis-stage .cohort-filter-row .cohort-search {
+  min-width: 118px;
+  padding-inline: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  font-weight: 700;
+}
+.analysis-stage .cohort-filter-row .cohort-search .search-icon {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.35;
+  stroke-linecap: round;
+}
+
 @media (max-width: 1500px) {
   .analysis-stage .cohort-filter-row {
-    grid-template-columns: minmax(118px, 1.28fr) 44px minmax(96px, 1fr) 44px minmax(76px, .8fr);
+    grid-template-columns: minmax(110px, 1.16fr) 64px minmax(54px, .56fr) 64px minmax(70px, .72fr);
     gap: 5px;
   }
-  .analysis-stage .cohort-filter-row .cohort-search { min-width: 118px; padding-inline: 14px; }
+  .analysis-stage .cohort-filter-row .cohort-search { min-width: 110px; padding-inline: 11px; }
   .analysis-stage .cohort-core-row { grid-template-columns: minmax(0, 1fr) minmax(0, 1.04fr) minmax(108px, .96fr); }
 }
