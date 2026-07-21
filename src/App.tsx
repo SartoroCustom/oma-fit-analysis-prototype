@@ -18,7 +18,7 @@ type Measurement = {
 
 type OrderIconId = "priority" | "rush" | "returning" | "multiple" | "notes" | "lining" | "wedding" | "reconfirm" | "adjustments";
 
-type OrderIconState = { id: string; label: string; file: string };
+type OrderIconState = { id: string; label: string; file: string; color?: string };
 
 type OrderIconDefinition = {
   id: OrderIconId;
@@ -29,44 +29,44 @@ type OrderIconDefinition = {
 const orderIconDefinitions: Record<OrderIconId, OrderIconDefinition> = {
   priority: { id: "priority", label: "Priority Shipping", states: [
     { id: "inactive", label: "Inactive", file: "priority-shipping-inactive.svg" },
-    { id: "active", label: "Active", file: "priority-shipping-active.svg" },
+    { id: "active", label: "Active", file: "priority-shipping-active.svg", color: "#C8742D" },
   ] },
   rush: { id: "rush", label: "Rush Shipping", states: [
     { id: "inactive", label: "Inactive", file: "rush-shipping-inactive.svg" },
-    { id: "active", label: "Active", file: "rush-shipping-active.svg" },
+    { id: "active", label: "Active", file: "rush-shipping-active.svg", color: "#B94742" },
   ] },
   returning: { id: "returning", label: "Returning Customer", states: [
     { id: "inactive", label: "Inactive", file: "returning-customer-inactive.svg" },
-    { id: "same-fit", label: "Same Fit Profile", file: "returning-customer-same-fit-profile.svg" },
-    { id: "different-fit", label: "Different Fit Profile", file: "returning-customer-different-fit-profile.svg" },
+    { id: "same-fit", label: "Same Fit Profile", file: "returning-customer-same-fit-profile.svg", color: "#3E6FAE" },
+    { id: "different-fit", label: "Different Fit Profile", file: "returning-customer-different-fit-profile.svg", color: "#B94742" },
   ] },
   multiple: { id: "multiple", label: "Multiple Active Orders", states: [
     { id: "inactive", label: "Inactive", file: "multiple-active-orders-inactive.svg" },
-    { id: "active", label: "Active", file: "multiple-active-orders-active.svg" },
+    { id: "active", label: "Active", file: "multiple-active-orders-active.svg", color: "#6E5192" },
   ] },
   notes: { id: "notes", label: "Customer Order Notes", states: [
     { id: "inactive", label: "Inactive", file: "customer-order-notes-inactive.svg" },
-    { id: "active", label: "Active", file: "customer-order-notes-active.svg" },
+    { id: "active", label: "Active", file: "customer-order-notes-active.svg", color: "#C69A2B" },
   ] },
   lining: { id: "lining", label: "Custom Lining", states: [
     { id: "inactive", label: "Inactive", file: "custom-lining-inactive.svg" },
-    { id: "active", label: "Active", file: "custom-lining-active.svg" },
+    { id: "active", label: "Active", file: "custom-lining-active.svg", color: "#704C69" },
   ] },
   wedding: { id: "wedding", label: "Wedding Party", states: [
     { id: "inactive", label: "Inactive", file: "wedding-party-inactive.svg" },
-    { id: "active", label: "Active", file: "wedding-party-active.svg" },
+    { id: "active", label: "Active", file: "wedding-party-active.svg", color: "#287E73" },
   ] },
   reconfirm: { id: "reconfirm", label: "Fit Reconfirmation", states: [
     { id: "inactive", label: "Inactive", file: "fit-reconfirmation-inactive.svg" },
-    { id: "in-progress", label: "In Progress", file: "fit-reconfirmation-in-progress.svg" },
-    { id: "completed", label: "Completed", file: "fit-reconfirmation-completed.svg" },
+    { id: "in-progress", label: "In Progress", file: "fit-reconfirmation-in-progress.svg", color: "#C8742D" },
+    { id: "completed", label: "Completed", file: "fit-reconfirmation-completed.svg", color: "#347C5A" },
   ] },
   adjustments: { id: "adjustments", label: "Adjustments & Fit Requests", states: [
     { id: "inactive", label: "Inactive", file: "adjustments-fit-requests-inactive.svg" },
-    { id: "manual", label: "Manually Activated", file: "adjustments-fit-requests-manually-activated.svg" },
-    { id: "alteration", label: "Alteration Reimbursement Request", file: "adjustments-fit-requests-alteration-reimbursement.svg" },
-    { id: "remake", label: "Remake Request", file: "adjustments-fit-requests-remake.svg" },
-    { id: "adjust-fit", label: "Adjust My Fit Request", file: "adjustments-fit-requests-adjust-my-fit.svg" },
+    { id: "manual", label: "Manually Activated", file: "adjustments-fit-requests-manually-activated.svg", color: "#347C5A" },
+    { id: "alteration", label: "Alteration Reimbursement Request", file: "adjustments-fit-requests-alteration-reimbursement.svg", color: "#C69A2B" },
+    { id: "remake", label: "Remake Request", file: "adjustments-fit-requests-remake.svg", color: "#C8742D" },
+    { id: "adjust-fit", label: "Adjust My Fit Request", file: "adjustments-fit-requests-adjust-my-fit.svg", color: "#3E6FAE" },
   ] },
 };
 
@@ -229,12 +229,18 @@ const garmentSkuOptions: Record<GarmentType, string[]> = {
   shirt: ["SHT-15.5/36 · White Poplin", "SHT-15.5/36 · Blue Twill"], vest: ["VST-40L · Navy Hopsack"], coat: ["COT-40L · Camel Wool"], shorts: ["SHR-34 · Stone Cotton"],
 };
 
-const profileItems = [
-  ["Sex", "Male"], ["Height", "6'3\""], ["Weight", "185 lbs"], ["Age", "26"],
-  ["BMI", "23.1"], ["Torso", "Rectangle"], ["Jacket", "40"], ["Pants", "34"],
-  ["Shirt", "15.5 / 36"], ["Fit Pref.", "Modern"], ["Shoulder", "Average"], ["Arms", "Long"],
-  ["Rise", "Mid"], ["Seat", "Average"],
-];
+type ProfileKey = "Sex" | "Height" | "Weight" | "Age" | "BMI" | "Torso" | "Jacket" | "Length" | "Pants" | "Shirt" | "Fit Pref." | "Shoulder" | "Rise" | "Seat";
+
+const profileItems: ProfileKey[] = ["Sex", "Height", "Weight", "Age", "BMI", "Torso", "Jacket", "Length", "Pants", "Shirt", "Fit Pref.", "Shoulder", "Rise", "Seat"];
+const initialProfileValues: Record<ProfileKey, string> = {
+  Sex: "Male", Height: "6'3\"", Weight: "185 lbs", Age: "25–34", BMI: "23.1", Torso: "Rectangle", Jacket: "40", Length: "Long", Pants: "34", Shirt: "15.5 / 36", "Fit Pref.": "Modern", Shoulder: "Average", Rise: "Mid", Seat: "Average",
+};
+const editableProfileFields = new Set<ProfileKey>(["Height", "Weight", "Jacket", "Pants"]);
+const profileOptions: Partial<Record<ProfileKey, string[]>> = {
+  Age: ["18–24", "25–34", "35–44", "45–54", "55–64", "65+"],
+  Torso: ["Rectangle", "Trapezoid", "Inverted Triangle", "Oval", "Chiseled"],
+  Length: ["Short", "Regular", "Long", "Extra Long"],
+};
 
 function tone(confidence: number) {
   if (confidence >= 88) return "good";
@@ -254,10 +260,30 @@ function ClickUpLogo() {
   return <svg className="intelligence-logo clickup-logo" viewBox="0 0 22 20" aria-hidden="true"><path d="M4 7.7 11 2l7 5.7-2.4 2.8L11 6.8l-4.6 3.7L4 7.7Z" fill="#ff5ac8"/><path d="M4.7 12.1 7.6 10c.9 1.3 2 2 3.4 2s2.5-.7 3.4-2l2.9 2.1C15.8 14.7 13.7 16 11 16s-4.8-1.3-6.3-3.9Z" fill="#7b38e8"/></svg>;
 }
 
+function OrderIconArtwork({ id, state }: { id: OrderIconId; state: OrderIconState }) {
+  const active = state.id !== "inactive";
+  const ink = active ? "#fff" : "#65716E";
+  const darkInk = active && (id === "notes" || state.id === "alteration") ? "#302A1D" : ink;
+  const common = { fill: "none", stroke: darkInk, strokeWidth: 1.6, strokeLinecap: "round" as const, strokeLinejoin: "round" as const };
+  return <svg className="order-icon-art" viewBox="0 0 32 32" aria-hidden="true">
+    {active && <rect x="1" y="1" width="30" height="30" rx="7.5" fill={state.color} />}
+    {!active && <rect x="1.25" y="1.25" width="29.5" height="29.5" rx="7.25" fill="#F7F8F8" stroke="#DCE2E0" strokeWidth="1.1" />}
+    {id === "priority" && <g {...common}><path d="M5 10.2h12.3v10.6H5z"/><path d="M17.3 13.4h4.6l4.2 4.2v3.2h-8.8z"/><path d="M6.9 14h6.8M6.9 17h4.8"/><circle cx="9.2" cy="22.3" r="2"/><circle cx="22.5" cy="22.3" r="2"/></g>}
+    {id === "rush" && <g {...common}><path d="M16 4.7c1 0 1.7 1.3 1.7 3.1v6.1l9 4v2.5l-9-1.7v4.7l3 2v1.9L16 26.2l-4.7 1.1v-1.9l3-2v-4.7l-9 1.7v-2.5l9-4V7.8c0-1.8.7-3.1 1.7-3.1Z"/><path d="M14.3 13.9h3.4"/></g>}
+    {id === "returning" && <g {...common}><path d="M16 25.7S6.4 20.3 6.4 13.2a5.2 5.2 0 0 1 9.6-2.8 5.2 5.2 0 0 1 9.6 2.8c0 7.1-9.6 12.5-9.6 12.5Z"/><path d="M12.1 10.5c-1.8.4-2.8 1.7-2.8 3.5"/></g>}
+    {id === "multiple" && <g {...common}><path d="M4.8 12.6h12.8l-1 13.4H5.8z"/><path d="M8.1 12.5V10a3.1 3.1 0 0 1 6.2 0v2.5"/><path d="M15.5 10.1h11.7l-1 12.8h-8.7M18.8 10V8a2.8 2.8 0 0 1 5.6 0v2"/><path d="M9.2 17h4"/></g>}
+    {id === "notes" && <g {...common}><circle cx="10.3" cy="10.2" r="3.7"/><path d="M4.8 24.7c.5-4.3 2.3-6.6 5.5-6.6 1.7 0 3 .6 4 1.8"/><path d="M16.3 7.7h10.6v10.7h-5.1l-3.6 3.2v-3.2h-1.9z"/><path d="M19.5 11.4h4.1M19.5 14.6h2.8"/></g>}
+    {id === "lining" && <g {...common}><path d="m10.8 5.2-5.4 4.5 2 5.2 2.4-1.2L8.9 27h6.4V14.8L10.8 5.2Z"/><path d="m21.2 5.2 5.4 4.5-2 5.2-2.4-1.2.9 13.3h-6.4V14.8l4.5-9.6Z"/><path d="m10.8 5.2 5.2 9.6 5.2-9.6M8.8 10.7l6.5 4.1M23.2 10.7l-6.5 4.1"/><path d="m10.2 18 2-1.7 2 1.7-2 1.7-2-1.7Zm7.6 0 2-1.7 2 1.7-2 1.7-2-1.7Zm-7.6 5 2-1.7 2 1.7-2 1.7-2-1.7Zm7.6 0 2-1.7 2 1.7-2 1.7-2-1.7" strokeWidth="1.1"/></g>}
+    {id === "wedding" && <g {...common}><circle cx="12.5" cy="18.4" r="6.3"/><circle cx="20" cy="18.4" r="6.3"/><path d="m16.2 7.8 2.1-3.1h3.4l2.1 3.1-3.8 3.4-3.8-3.4Z"/><path d="M8 7.4h2.4M9.2 6.2v2.4"/></g>}
+    {id === "reconfirm" && <g {...common}><circle cx="13" cy="16" r="7.1"/><path d="M13 8.9v3.5M9.7 9.7l1 3.2M6.9 11.8l2 2.5M6 16h3.4M7.1 20.3l3-1.6"/><path d="M19 18.5h7.7v5.2H19zM21.1 18.5v-2.2h3.5v2.2M22.9 20.4v1.4M26.7 23.7l1.3 1.5"/></g>}
+    {id === "adjustments" && <g {...common}><path d="m7.1 6-3 2.7 1.6 3.5 1.6-.8L7 23.7h8.3L15 11.4l1.6.8 1.6-3.5-3-2.7-2.1 2.3H9.2L7.1 6Z"/><path d="M18.5 17.2h8.8v7.2h-8.8zM20.3 17.2v-3h3.5l1.8 3M21.2 20.1h3.5M23 20.1v2.1M18.5 24.4l-1.7 2M27.3 17.2l1.5-1.4"/><circle cx="20.5" cy="22.5" r=".6" fill={darkInk} stroke="none"/></g>}
+  </svg>;
+}
+
 function OrderStatusIcon({ definition, stateIndex, onCycle }: { definition: OrderIconDefinition; stateIndex: number; onCycle: () => void }) {
   const state = definition.states[stateIndex];
   const description = `${definition.label}: ${state.label}. Click to show next state.`;
-  return <button className="order-status-icon" type="button" aria-label={description} title={description} onClick={onCycle}><img src={`/icons/${state.file}`} alt="" aria-hidden="true" /></button>;
+  return <button className="order-status-icon" type="button" aria-label={description} title={description} onClick={onCycle}><OrderIconArtwork id={definition.id} state={state} /></button>;
 }
 
 function CohortValue({ values, compact = false }: { values: [string, string, string]; compact?: boolean }) {
@@ -306,6 +332,14 @@ export default function Home() {
   const [cohortExpanded, setCohortExpanded] = useState(false);
   const [dtaExpanded, setDtaExpanded] = useState(false);
   const [photo, setPhoto] = useState(0);
+  const [photoLightboxOpen, setPhotoLightboxOpen] = useState(false);
+  const [profileValues, setProfileValues] = useState<Record<ProfileKey, string>>(initialProfileValues);
+  const [clickUpDraft, setClickUpDraft] = useState("");
+  const [clickUpMessages, setClickUpMessages] = useState([
+    { author: "Demo Manager", initials: "DM", time: "Jul 9 · 02:23", body: "Were the requested customer photos added to the fit profile?", mine: false },
+    { author: "Demo Specialist", initials: "DS", time: "Jul 11 · 17:45", body: "Yes — the demo photos are attached and ready for analysis.", mine: true },
+    { author: "Demo Manager", initials: "DM", time: "Jul 12 · 19:14", body: "Perfect. Please complete the final fit review before moving the order to Ready.", mine: false },
+  ]);
   const [toast, setToast] = useState("");
   const [orderIconStates, setOrderIconStates] = useState<Record<OrderIconId, number>>(initialOrderIconStates);
   const selectedCount = selected.size;
@@ -360,6 +394,17 @@ export default function Home() {
   function cycleOrderIcon(id: OrderIconId) {
     const definition = orderIconDefinitions[id];
     setOrderIconStates((current) => ({ ...current, [id]: (current[id] + 1) % definition.states.length }));
+  }
+
+  function updateProfile(key: ProfileKey, value: string) {
+    setProfileValues((current) => ({ ...current, [key]: value }));
+  }
+
+  function sendClickUpMessage() {
+    const body = clickUpDraft.trim();
+    if (!body) return;
+    setClickUpMessages((current) => [...current, { author: "Andy Fine", initials: "AF", time: "Just now", body, mine: true }]);
+    setClickUpDraft("");
   }
 
   return (
@@ -419,17 +464,28 @@ export default function Home() {
         <section className={`profile-strip ${profileExpanded ? "expanded" : ""}`}>
           <div className="profile-summary-row">
             <div className="profile-facts">
-              {profileItems.map(([label, value]) => (
-                <div key={label} className={`fact ${["Height", "Weight", "Age", "BMI"].includes(label) ? "vital" : ""} ${["Jacket", "Pants", "Shirt"].includes(label) ? "size-fact" : ""} ${["Torso", "Shirt"].includes(label) ? "group-end" : ""}`}><small>{label}</small><strong>{value}</strong></div>
-              ))}
+              {profileItems.map((label) => {
+                const options = profileOptions[label];
+                return <div key={label} className={`fact ${["Height", "Weight", "Age", "BMI"].includes(label) ? "vital" : ""} ${["Jacket", "Length", "Pants", "Shirt"].includes(label) ? "size-fact" : ""} ${["Torso", "Shirt"].includes(label) ? "group-end" : ""} ${editableProfileFields.has(label) || options ? "interactive" : ""}`}>
+                  <label htmlFor={`profile-${label.replace(/\W/g, "-")}`}>{label}</label>
+                  {editableProfileFields.has(label) ? <input id={`profile-${label.replace(/\W/g, "-")}`} aria-label={`${label} profile value`} value={profileValues[label]} onChange={(event) => updateProfile(label, event.target.value)} />
+                    : options ? <select id={`profile-${label.replace(/\W/g, "-")}`} aria-label={`${label} profile option`} value={profileValues[label]} onChange={(event) => updateProfile(label, event.target.value)}>{options.map((option) => <option key={option}>{option}</option>)}</select>
+                    : <strong>{profileValues[label]}</strong>}
+                </div>;
+              })}
             </div>
             <button className="profile-details-toggle" aria-expanded={profileExpanded} onClick={() => setProfileExpanded(!profileExpanded)}>{profileExpanded ? "Hide details" : "Fit details"}<span>{profileExpanded ? "⌃" : "⌄"}</span></button>
           </div>
           {profileExpanded && (
             <div className="profile-details">
-              <div><strong>Jacket fit</strong><span>Cut <b>Modern</b></span><span>Shoulder <b>Average</b></span><span>Chest <b>Regular</b></span><span>Belly <b>Trim</b></span><span>Sleeves <b>Very long</b></span><span>Length <b>Long</b></span></div>
-              <div><strong>Shirt fit</strong><span>Cut <b>Modern</b></span><span>Chest <b>Average</b></span><span>Belly <b>Trim</b></span><span>Biceps <b>Average</b></span><span>Sleeves <b>Long</b></span></div>
-              <div><strong>Pants fit</strong><span>Waist <b>Mid</b></span><span>Seat <b>Average</b></span><span>Thigh <b>Slim</b></span><span>Calves <b>Slim</b></span><span>Length <b>Full</b></span></div>
+              {[
+                ["J", "Jacket fit", "Modern", [["Shoulder", "Average"], ["Chest", "Regular"], ["Belly", "Trim"], ["Sleeves", "Very long"], ["Length", "Long"]]],
+                ["S", "Shirt fit", "Modern", [["Chest", "Average"], ["Belly", "Trim"], ["Biceps", "Average"], ["Sleeves", "Long"], ["Length", "Tucked"]]],
+                ["P", "Pants fit", "Tailored", [["Rise", "Mid"], ["Seat", "Average"], ["Thigh", "Slim"], ["Calves", "Slim"], ["Break", "Full"]]],
+              ].map(([initial, title, fit, attributes]) => <section className="fit-detail-card" key={title as string}>
+                <header><span>{initial as string}</span><div><strong>{title as string}</strong><small>Customer preference</small></div><em>{fit as string}</em></header>
+                <div className="fit-attributes">{(attributes as string[][]).map(([name, value]) => <span key={name}><small>{name}</small><b>{value}</b></span>)}</div>
+              </section>)}
             </div>
           )}
         </section>
@@ -621,8 +677,8 @@ export default function Home() {
                 </div>}
               </section>}
 
-              <section className={`photo-card photo-${photo} ${tab === "garment" && showRemake ? "remake-photos" : ""}`} aria-label={tab === "garment" && showRemake ? "Remake photos" : "Customer photos"}>
-                <div className="photo-top"><span>{tab === "garment" && showRemake ? "3 remake photos" : "5 photos"}</span><button aria-label="Open full-screen photo">⛶</button></div>
+              <section className={`photo-card photo-${photo} ${tab === "garment" && showRemake ? "remake-photos" : ""}`} aria-label={tab === "garment" && showRemake ? "Remake photos" : "Customer photos"} onClick={(event) => { if ((event.target as HTMLElement).closest(".photo-thumbnails")) return; setPhotoLightboxOpen(true); }}>
+                <div className="photo-top"><span>{tab === "garment" && showRemake ? "3 remake photos" : "5 photos"}</span><button aria-label="Open full-screen photo" onClick={() => setPhotoLightboxOpen(true)}>⛶</button></div>
                 <div className="photo-thumbnails">
                   {(tab === "garment" && showRemake ? [0, 1, 2] : [0, 1, 2, 3, 4]).map((item) => <button key={item} className={photo === item ? "active" : ""} onClick={() => setPhoto(item)} aria-label={`View ${tab === "garment" && showRemake ? "remake" : "customer"} photo ${item + 1}`}><span /></button>)}
                 </div>
@@ -655,7 +711,6 @@ export default function Home() {
                   <button className={intelligenceTab === "brain" ? "active" : ""} role="tab" aria-selected={intelligenceTab === "brain"} onClick={() => setIntelligenceTab("brain")}><BrainLogo /><b>OMA Brain</b></button>
                   <button className={intelligenceTab === "clickup" ? "active" : ""} role="tab" aria-selected={intelligenceTab === "clickup"} onClick={() => setIntelligenceTab("clickup")}><ClickUpLogo /><b>ClickUp</b><em>3</em></button>
                 </div>
-                {intelligenceTab === "clickup" && <span className="connected-status">Connected</span>}
               </header>
 
               {intelligenceTab === "brain" ? <>
@@ -681,13 +736,13 @@ export default function Home() {
                   <div className="brain-chat-input"><input aria-label="Ask OMA Brain" placeholder="Ask about this analysis…" /><button>Send</button></div>
                 </div>
               </> : <div className="team-chat-workspace">
-                <div className="team-chat-intro"><strong>Order team conversation</strong><span>3 messages · Fit analysis context</span></div>
+                <div className="clickup-channel-head"><div><span className="channel-hash">#</span><div><strong>order-6608-fit</strong><small>Order team · 3 members</small></div></div><div className="clickup-head-actions"><button title="Search conversation">⌕</button><button title="Conversation settings">•••</button></div></div>
+                <div className="clickup-context"><span>▣</span><div><b>Fit Analysis · Order #6608</b><small>Linked order context</small></div><button>Open</button></div>
                 <div className="team-chat-thread">
-                  <article><b>Demo Manager <small>Jul 9 · 02:23</small></b><p>Were the requested customer photos added to the fit profile?</p></article>
-                  <article className="reply"><b>Demo Specialist <small>Jul 11 · 17:45</small></b><p>Yes — the demo photos are attached and ready for analysis.</p></article>
-                  <article><b>Demo Manager <small>Jul 12 · 19:14</small></b><p>Perfect. Please complete the final fit review before moving the order to Ready.</p></article>
+                  <div className="chat-date"><span>July 2025</span></div>
+                  {clickUpMessages.map((message, index) => <article className={message.mine ? "mine" : ""} key={`${message.time}-${index}`}><span className={`chat-avatar avatar-${message.initials.toLowerCase()}`}>{message.initials}</span><div><header><b>{message.author}</b><small>{message.time}</small></header><p>{message.body}</p><footer><button>☺</button><button>Reply</button><button>•••</button></footer></div></article>)}
                 </div>
-                <div className="team-chat-input"><input aria-label="Message the ClickUp team" placeholder="Message the ClickUp team…" /><button>Send</button></div>
+                <div className="team-chat-input"><div className="composer-tools"><button title="Add attachment">＋</button><button title="Format message">A</button><button title="Mention teammate">@</button><button title="Add emoji">☺</button></div><div><textarea aria-label="Message the ClickUp team" placeholder="Message #order-6608-fit" value={clickUpDraft} onChange={(event) => setClickUpDraft(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter" && !event.shiftKey) { event.preventDefault(); sendClickUpMessage(); } }} /><button className="clickup-send" aria-label="Send ClickUp message" onClick={sendClickUpMessage}>➤</button></div></div>
               </div>}
             </section>
           </aside>
@@ -696,6 +751,13 @@ export default function Home() {
       </div>
 
       {toast && <div className="toast">✓ {toast}</div>}
+      {photoLightboxOpen && <div className={`photo-lightbox photo-${photo}`} role="dialog" aria-modal="true" aria-label="Customer photo viewer" onClick={() => setPhotoLightboxOpen(false)}>
+        <button className="lightbox-close" aria-label="Close photo viewer" onClick={() => setPhotoLightboxOpen(false)}>×</button>
+        <button className="lightbox-arrow previous" aria-label="Previous photo" onClick={(event) => { event.stopPropagation(); setPhoto((photo + (tab === "garment" && showRemake ? 2 : 4)) % (tab === "garment" && showRemake ? 3 : 5)); }}>‹</button>
+        <div className="lightbox-image" onClick={(event) => event.stopPropagation()} />
+        <button className="lightbox-arrow next" aria-label="Next photo" onClick={(event) => { event.stopPropagation(); setPhoto((photo + 1) % (tab === "garment" && showRemake ? 3 : 5)); }}>›</button>
+        <span className="lightbox-count">{photo + 1} / {tab === "garment" && showRemake ? 3 : 5}</span>
+      </div>}
     </main>
   );
 }
