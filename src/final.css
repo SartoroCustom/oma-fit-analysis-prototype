@@ -1536,3 +1536,20 @@
   .analysis-stage .cohort-core-row .cohort-core-field > b { font-size: 16px; }
   .analysis-stage .cohort-core-row .cohort-core-field span { font-size: 10px; }
 }
+
+/* Short laptop viewport correction: preserve the readable type scale while
+   fitting every jacket row above the cohort panel. */
+@media (max-width: 1500px) {
+  .analysis-stage .cohort-primary-fields { grid-template-columns: 342px minmax(0, 1fr); }
+}
+@media (max-height: 960px) {
+  .garment-data-layout .garment-measurement-table { height: 100% !important; }
+  .garment-data-layout .garment-measurement-table tbody tr,
+  .garment-data-layout .garment-measurement-table td {
+    height: 24px !important;
+    min-height: 0;
+  }
+  .garment-data-layout .garment-input-cell input,
+  .garment-data-layout .historical-cell span { height: 20px; }
+  .garment-data-layout .finish-cell input { height: 21px; }
+}
