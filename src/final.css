@@ -1236,18 +1236,31 @@
   .garment-data-layout .garment-measurement-table col.g-finish { width: 68px; }
   .garment-data-layout .garment-measurement-table col.g-notes { width: 144px; }
   .garment-data-layout .garment-body-reference > header { padding-inline: 7px; }
-  .garment-data-layout .garment-body-reference > div > div { padding-inline: 7px 5px; }
+  .garment-data-layout .garment-body-reference > div > div {
+    height: 22px;
+    min-height: 22px;
+    padding-inline: 7px 5px;
+  }
   .garment-data-layout .garment-body-reference > div span { font-size: 10px; }
   .garment-data-layout .garment-body-reference > div b {
     width: 38px;
+    height: 20px;
     flex-basis: 38px;
     font-size: 11px;
   }
   .garment-data-layout .garment-measurement-table th,
   .garment-data-layout .garment-measurement-table th.customer-note-head { padding-inline: 4px; }
+  .garment-data-layout .garment-measurement-table tbody tr,
+  .garment-data-layout .garment-measurement-table td {
+    height: 22px;
+    min-height: 22px;
+  }
   .garment-data-layout .garment-measurement-table td { padding-inline: 3px; }
   .garment-data-layout .garment-measurement-name { padding-left: 7px !important; }
   .garment-data-layout .garment-input-cell { padding-inline: 3px !important; }
+  .garment-data-layout .garment-input-cell input,
+  .garment-data-layout .historical-cell span { height: 19px; }
   .garment-data-layout .finish-cell { padding-inline: 5px !important; }
+  .garment-data-layout .finish-cell input { height: 20px; }
   .garment-data-layout .customer-note-cell { padding-inline: 7px !important; }
 }
