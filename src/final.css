@@ -1264,3 +1264,47 @@
   .garment-data-layout .finish-cell input { height: 20px; }
   .garment-data-layout .customer-note-cell { padding-inline: 7px !important; }
 }
+
+/* Cohort filter completion: keep the always-visible demographic selectors readable,
+   while reserving measurement-specific filters for the expanded state. */
+.analysis-stage .cohort-primary-fields {
+  grid-template-columns: 282px minmax(0, 1fr);
+}
+.analysis-stage .cohort-filter-row {
+  grid-template-columns: .72fr .58fr .68fr 1.08fr .72fr .9fr;
+}
+.analysis-stage .cohort-filter-row .cohort-select {
+  min-width: 0;
+}
+.analysis-stage .cohort-filter-row .cohort-select b {
+  overflow: hidden;
+  font-size: clamp(11.5px, .85vw, 14px);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.analysis-stage .cohort-secondary-fields {
+  grid-template-columns: 1fr 1.15fr .78fr .78fr .78fr minmax(150px, 1.6fr);
+}
+.history-record-title > div {
+  justify-content: center;
+}
+.history-record-title strong {
+  font-size: 11px;
+}
+
+@media (max-width: 1500px) {
+  .analysis-stage .cohort-primary-fields {
+    grid-template-columns: 270px minmax(0, 1fr);
+  }
+  .analysis-stage .cohort-filter-row {
+    gap: 4px;
+    grid-template-columns: .7fr .56fr .66fr 1fr .7fr .86fr;
+  }
+  .analysis-stage .cohort-filter-row .cohort-select {
+    padding-right: 15px;
+    padding-left: 5px;
+  }
+  .analysis-stage .cohort-filter-row .cohort-select small {
+    font-size: 7.5px;
+  }
+}

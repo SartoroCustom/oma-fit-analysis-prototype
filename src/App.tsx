@@ -444,7 +444,7 @@ export default function Home() {
                     <div className="cohort-core-field" aria-label={`Weight 185 pounds, plus or minus ${weightTolerance} pounds`}><b>185<small>lb</small></b><div><button aria-label="Decrease weight tolerance" onClick={() => setWeightTolerance(Math.max(5, weightTolerance - 5))}>−</button><span>± {weightTolerance} lb</span><button aria-label="Increase weight tolerance" onClick={() => setWeightTolerance(weightTolerance + 5)}>+</button></div></div>
                   </div>
                   <div className="cohort-filter-row">
-                    {[["Jacket", "40"], ["Length", "L"], ["Pants", "34"]].map(([label, value]) => (
+                    {[["Jacket", "40"], ["Length", "L"], ["Pants", "34"], ["Torso", "Rectangle"], ["Age", "Young"]].map(([label, value]) => (
                       <button className="cohort-select" key={label}><small>{label}</small><b>{value}</b><span>⌄</span></button>
                     ))}
                     <button className="cohort-search" onClick={() => { setToast("Reference cohort updated"); setTimeout(() => setToast(""), 2200); }}>⌕ Search</button>
@@ -452,7 +452,7 @@ export default function Home() {
                 </div>
               </div>
               {cohortExpanded && <div className="cohort-secondary-fields">
-                {[["Fit Pref.", "Modern"], ["Shoulder", "Average"], ["Arms", "Long"], ["Rise", "Mid"], ["Seat", "Average"]].map(([label, value]) => (
+                {[["Hip / Seat", "Average"], ["Fit Preference", "Modern"], ["Chest", "40.0"], ["Waist", "34.0"], ["Neck", "15.5"]].map(([label, value]) => (
                   <button className="cohort-select" key={label}><small>{label}</small><b>{value}</b><span>⌄</span></button>
                 ))}
                 <span className="cohort-summary">Advanced filters refine the same historical cohort.</span>
@@ -464,7 +464,7 @@ export default function Home() {
                   {(Object.keys(garmentTypeLabels) as GarmentType[]).map((type) => <button key={type} role="tab" aria-selected={activeGarment === type} className={activeGarment === type ? "active" : ""} onClick={() => changeGarment(type)}><span>{garmentTypeLabels[type]}</span><small>{garmentMeasurements[type].length}</small></button>)}
                 </div>
                 <div className="history-record-bar">
-                  <div className="history-record-title"><span>↶</span><div><strong>Historical QC record</strong><small>Choose the exact prior garment used for HIST</small></div></div>
+                  <div className="history-record-title"><span>↶</span><div><strong>Historical Data</strong></div></div>
                   <label><span>Order</span><select aria-label="Historical order" value={historicalOrder} onChange={(event) => setHistoricalOrder(event.target.value)}><option>#6041 · Mar 2024</option><option>#5718 · Sep 2023</option><option>#4922 · Nov 2022</option></select></label>
                   <label className="sku-picker"><span>Garment / SKU</span><select aria-label="Historical garment SKU" value={historicalSku} onChange={(event) => setHistoricalSku(event.target.value)}>{garmentSkuOptions[activeGarment].map((sku) => <option key={sku}>{sku}</option>)}</select></label>
                   <div className="record-loaded"><i />QC measurements loaded</div>
@@ -520,13 +520,13 @@ export default function Home() {
                       <div className="cohort-core-field" aria-label={`Weight 185 pounds, plus or minus ${weightTolerance} pounds`}><b>185<small>lb</small></b><div><button aria-label="Decrease weight tolerance" onClick={() => setWeightTolerance(Math.max(5, weightTolerance - 5))}>−</button><span>± {weightTolerance} lb</span><button aria-label="Increase weight tolerance" onClick={() => setWeightTolerance(weightTolerance + 5)}>+</button></div></div>
                     </div>
                     <div className="cohort-filter-row">
-                      {[["Jacket", "40"], ["Length", "L"], ["Pants", "34"]].map(([label, value]) => <button className="cohort-select" key={label}><small>{label}</small><b>{value}</b><span>⌄</span></button>)}
+                      {[["Jacket", "40"], ["Length", "L"], ["Pants", "34"], ["Torso", "Rectangle"], ["Age", "Young"]].map(([label, value]) => <button className="cohort-select" key={label}><small>{label}</small><b>{value}</b><span>⌄</span></button>)}
                       <button className="cohort-search" onClick={() => { setToast("Reference cohort updated"); setTimeout(() => setToast(""), 2200); }}>⌕ Search</button>
                     </div>
                   </div>
                 </div>
                 {cohortExpanded && <div className="cohort-secondary-fields">
-                  {[["Fit Pref.", "Modern"], ["Shoulder", "Average"], ["Arms", "Long"], ["Rise", "Mid"], ["Seat", "Average"]].map(([label, value]) => <button className="cohort-select" key={label}><small>{label}</small><b>{value}</b><span>⌄</span></button>)}
+                  {[["Hip / Seat", "Average"], ["Fit Preference", "Modern"], ["Chest", "40.0"], ["Waist", "34.0"], ["Neck", "15.5"]].map(([label, value]) => <button className="cohort-select" key={label}><small>{label}</small><b>{value}</b><span>⌄</span></button>)}
                   <span className="cohort-summary">Advanced filters refine the same historical cohort.</span>
                 </div>}
               </section>
